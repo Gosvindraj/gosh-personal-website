@@ -7,220 +7,203 @@ const posts = (await getCollection("blog")).sort(
 );
 
 function formatDate(date: Date) {
-  return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+  return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
 ---
-<BaseLayout title="Gosvindraj | Blog" description="Opinions, observations, and things I'm working through.">
-  <section id="blog">
-    <div class="blog-header">
-      <p class="section-label">Writing</p>
-      <h2 class="section-title">Brain dump.</h2>
-      <p class="section-sub">opinions, observations, things i'm figuring out. written by me, not AI, so expect imperfections.</p>
-    </div>
+<BaseLayout title="Gosvindraj | Blog" description="Opinions, observations, and things I'm working through. Written by hand, no AI.">
 
+  <section id="blog-head">
+    <div class="bh-top">
+      <span class="m-label"><span class="lb">[</span> writing <span class="lb">/</span> unfiltered <span class="lb">]</span></span>
+      <span class="m-label">{posts.length} {posts.length === 1 ? "entry" : "entries"}</span>
+    </div>
+    <h1 class="bh-display display">
+      <span class="line-mask"><span class="line">brain</span></span>
+      <span class="line-mask"><span class="line"><span class="serif acid">dump.</span></span></span>
+    </h1>
+    <p class="bh-sub">
+      opinions, observations, things i'm figuring out. written by me,
+      not AI, so expect imperfections. that's the point.
+    </p>
+  </section>
+
+  <section class="sec" id="blog-list">
     <div class="post-list">
       {posts.map((post) => (
-        <a href={`/blog/${post.id}`} class="post-row">
+        <a href={`/blog/${post.id}`} class="post-row" data-reveal>
           <div class="post-meta">
             <span class="post-date">{formatDate(post.data.date)}</span>
-            {post.data.tags && post.data.tags.map((tag: string) => (
+            {(post.data.tags ?? []).filter(Boolean).map((tag: string) => (
               <span class="post-tag">{tag}</span>
             ))}
           </div>
-          <h3 class="post-title">{post.data.title}</h3>
-          {post.data.description && <p class="post-desc">{post.data.description}</p>}
-          <span class="post-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+          <div class="post-main">
+            <h2 class="post-title">{post.data.title.toLowerCase()}</h2>
+            {post.data.description && <p class="post-desc">{post.data.description}</p>}
+          </div>
+          <span class="post-arrow" aria-hidden="true">&#8599;</span>
         </a>
       ))}
     </div>
   </section>
+
 </BaseLayout>
 
 <style>
-  #blog {
-    min-height: calc(100vh - var(--nav-height));
-    padding: 4rem 8%;
+  #blog-head {
+    padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(3rem, 8vh, 5rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.75rem, 5vh, 3rem);
   }
 
-  .blog-header {
-    margin-bottom: 4rem;
-    opacity: 0;
+  .bh-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
   }
 
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
+  .bh-display { font-size: clamp(2.8rem, 10vw, 8.5rem); }
+
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
   }
 
-  .section-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.03em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-    opacity: 0;
+  .line { display: block; }
+
+  .bh-sub {
+    max-width: 48ch;
+    font-size: clamp(0.92rem, 1.6vw, 1.05rem);
+    color: var(--dim);
+    line-height: 1.85;
   }
 
-  .section-sub {
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.8;
+  #blog-list {
+    padding-top: 0;
+    border-top: none;
+    min-height: 30vh;
   }
 
   .post-list {
     display: flex;
     flex-direction: column;
-    gap: 0;
-    opacity: 0;
+    border-top: 1px solid var(--line);
   }
 
   .post-row {
     display: grid;
-    grid-template-columns: 160px 1fr auto;
-    grid-template-rows: auto auto;
-    column-gap: 2rem;
-    align-items: center;
-    padding: 1.75rem 0;
-    border-top: 1px solid var(--border);
-    color: var(--text);
-    text-decoration: none;
-    position: relative;
-    transition: background 0.2s;
+    grid-template-columns: minmax(8rem, 13rem) 1fr 3rem;
+    gap: 2rem;
+    align-items: start;
+    padding: clamp(1.6rem, 4vw, 2.5rem) 0.5rem;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.25s ease, padding-left 0.25s ease;
   }
 
-  .post-row:last-child { border-bottom: 1px solid var(--border); }
-
   .post-meta {
-    grid-column: 1;
-    grid-row: 1 / 3;
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
-    align-self: start;
-    padding-top: 0.15rem;
+    gap: 0.45rem;
+    padding-top: 0.35em;
   }
 
   .post-date {
-    font-size: 0.85rem;
-    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    transition: color 0.25s ease;
   }
 
   .post-tag {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.7;
+    color: var(--acid);
+    transition: color 0.25s ease;
+  }
+
+  .post-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
   }
 
   .post-title {
-    grid-column: 2;
-    grid-row: 1;
-    font-size: 1rem;
-    font-weight: 400;
-    color: var(--text);
-    transition: color 0.2s;
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 740;
+    font-size: clamp(1.4rem, 4vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--ink);
+    transition: color 0.25s ease;
   }
 
-  .post-row:hover .post-title { color: var(--accent); }
-
   .post-desc {
-    grid-column: 2;
-    grid-row: 2;
-    font-size: 0.8rem;
-    color: var(--muted);
+    max-width: 60ch;
+    font-size: 0.85rem;
+    color: var(--dim);
     line-height: 1.7;
-    margin-top: 0.3rem;
+    transition: color 0.25s ease;
   }
 
   .post-arrow {
-    grid-column: 3;
-    grid-row: 1 / 3;
-    font-size: 12px;
-    color: var(--muted);
-    transition: color 0.2s, transform 0.2s;
-    align-self: center;
+    font-size: 1.3rem;
+    color: var(--faint);
+    justify-self: end;
+    padding-top: 0.35em;
+    transition: color 0.25s ease, transform 0.25s ease;
   }
 
-  .post-row:hover .post-arrow {
-    color: var(--accent);
-    transform: translateX(4px);
-  }
+  .post-row:hover { background: var(--acid); padding-left: 1.25rem; }
+  .post-row:hover .post-title,
+  .post-row:hover .post-desc,
+  .post-row:hover .post-date,
+  .post-row:hover .post-tag { color: #0c0c0a; }
+  .post-row:hover .post-arrow { color: #0c0c0a; transform: translate(3px, -3px); }
 
-  @media (max-width: 600px) {
-    #blog { padding: 4rem 6%; }
-
-    .post-row {
-      grid-template-columns: 1fr auto;
-      grid-template-rows: auto auto auto;
-    }
-
+  @media (max-width: 700px) {
+    .post-row { grid-template-columns: 1fr 2.5rem; }
     .post-meta {
-      grid-column: 1;
-      grid-row: 1;
+      grid-column: 1 / -1;
       flex-direction: row;
-      align-items: center;
-      gap: 0.6rem;
+      align-items: baseline;
+      gap: 0.9rem;
       padding-top: 0;
-      margin-bottom: 0.4rem;
     }
-
-    .post-title { grid-column: 1; grid-row: 2; }
-    .post-desc  { grid-column: 1; grid-row: 3; }
-    .post-arrow { grid-column: 2; grid-row: 1 / 4; }
+    .post-arrow { grid-row: 2; }
   }
 </style>
 
 <script>
   import gsap from "gsap";
 
-  const GLITCH = "!<>-_\\/[]{}—=+*^?#@$%&";
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function glitchReveal(el: HTMLElement, finalText: string, duration = 780) {
-    const frames = 18;
-    const ms = Math.round(duration / frames);
-    let frame = 0;
-    const timer = setInterval(() => {
-      frame++;
-      const progress = frame / frames;
-      const revealed = Math.floor(progress * finalText.length);
-      let display = "";
-      for (let i = 0; i < finalText.length; i++) {
-        if (i < revealed) {
-          display += Math.random() < 0.07 * (1 - progress)
-            ? GLITCH[Math.floor(Math.random() * GLITCH.length)]
-            : finalText[i];
-        } else {
-          display += finalText[i] === " " ? " "
-            : GLITCH[Math.floor(Math.random() * GLITCH.length)];
-        }
-      }
-      el.textContent = display;
-      if (frame >= frames) {
-        clearInterval(timer);
-        el.textContent = finalText;
-      }
-    }, ms);
+  function initBlogHead() {
+    const head = document.getElementById("blog-head");
+    if (!head || reduced) return;
+
+    const lines = head.querySelectorAll<HTMLElement>(".line");
+    const top   = head.querySelector<HTMLElement>(".bh-top");
+    const sub   = head.querySelector<HTMLElement>(".bh-sub");
+
+    gsap.set(top, { opacity: 0 });
+    gsap.set(sub, { opacity: 0, y: 20 });
+    gsap.set(lines, { yPercent: 110 });
+
+    gsap.timeline({ delay: 0.15 })
+      .to(lines, { yPercent: 0, duration: 0.85, stagger: 0.12, ease: "power4.out" })
+      .to(sub, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, "-=0.4")
+      .to(top, { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.3");
   }
 
-  function initBlog() {
-    const header   = document.querySelector<HTMLElement>(".blog-header");
-    const postList = document.querySelector<HTMLElement>(".post-list");
-    const label    = document.querySelector<HTMLElement>(".section-label");
-    const title    = document.querySelector<HTMLElement>(".section-title");
-    const titleText = title?.textContent ?? "";
-
-    gsap.fromTo(header, { opacity: 0 }, { opacity: 1, duration: 0.01 });
-    if (label) gsap.fromTo(label, { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", delay: 0.1 });
-    if (title) setTimeout(() => { title.style.opacity = "1"; glitchReveal(title, titleText, 780); }, 250);
-    gsap.fromTo(postList, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.5 });
-  }
-
-  document.addEventListener("astro:page-load", initBlog);
+  document.addEventListener("astro:page-load", initBlogHead);
 </script>

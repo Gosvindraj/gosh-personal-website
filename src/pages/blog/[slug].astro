@@ -30,137 +30,162 @@ const jsonLd = {
   "publisher": { "@id": `${siteUrl}/#person` },
   "mainEntityOfPage": { "@type": "WebPage", "@id": postUrl },
 };
+
+const tags = (post.data.tags ?? []).filter(Boolean);
 ---
 <BaseLayout title={`Gosvindraj | ${post.data.title}`} description={post.data.description}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
-  <section id="post">
+  <article id="post">
     <div class="post-inner">
-      <div class="post-header">
-        <a href="/blog" class="back-link">
-          <i class="fa-solid fa-arrow-left"></i>
-          <span>all posts</span>
-        </a>
-        <div class="post-meta">
-          <span class="post-date">{formatDate(post.data.date)}</span>
-          {post.data.tags && post.data.tags.map((tag: string) => (
-            <span class="post-tag">{tag}</span>
-          ))}
+      <header class="post-header">
+        <a href="/blog" class="back-link m-label">&larr; all posts</a>
+
+        <div class="post-meta m-label">
+          <span>{formatDate(post.data.date)}</span>
+          {tags.map((tag: string) => <span class="hl">{tag}</span>)}
+          <span class="lb">/</span>
+          <span>written by hand, no ai</span>
         </div>
-        <h1 class="post-title">{post.data.title}</h1>
+
+        <h1 class="post-title display">{post.data.title.toLowerCase()}</h1>
         {post.data.description && <p class="post-desc">{post.data.description}</p>}
+      </header>
+
+      <div class="post-body">
+        <Content />
       </div>
 
-      <article class="post-body">
-        <Content />
-      </article>
+      <footer class="post-foot">
+        <a href="/blog" class="btn-line">&larr; back to all posts</a>
+      </footer>
     </div>
-  </section>
+  </article>
 </BaseLayout>
 
 <style>
   #post {
     min-height: calc(100vh - var(--nav-height));
-    padding: 4rem 8%;
+    padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(3rem, 8vh, 5rem);
   }
 
   .post-inner {
-    max-width: 680px;
+    max-width: 720px;
     margin: 0 auto;
-    opacity: 0;
+  }
+
+  .post-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 2.5rem;
   }
 
   .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 0.55rem 1.1rem;
-    border-radius: 2px;
-    transition: color 0.2s, border-color 0.2s, background 0.2s;
-    margin-bottom: 2.5rem;
-    display: inline-flex;
+    align-self: flex-start;
+    transition: color var(--transition);
   }
 
-  .back-link i { font-size: 10px; transition: transform 0.2s; }
-  .back-link:hover { color: var(--text); border-color: var(--border-hover); background: var(--accent-dim); }
-  .back-link:hover i { transform: translateX(-3px); }
+  .back-link:hover { color: var(--acid); }
 
   .post-meta {
     display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
-  }
-
-  .post-date {
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
-
-  .post-tag {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.7;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 
   .post-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.03em;
-    line-height: 1.15;
-    margin-bottom: 0.75rem;
+    font-size: clamp(1.8rem, 5vw, 3.4rem);
+    line-height: 1;
   }
 
   .post-desc {
-    font-size: 0.875rem;
-    color: var(--muted);
-    line-height: 1.8;
-    margin-bottom: 2.5rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.05rem, 2vw, 1.3rem);
+    color: var(--dim);
+    line-height: 1.6;
   }
 
   .post-body {
-    border-top: 1px solid var(--border);
-    padding-top: 2.5rem;
-    font-size: 0.9rem;
-    color: var(--text);
-    line-height: 1.9;
-    text-align: justify;
+    font-size: 0.95rem;
+    color: var(--ink);
+    line-height: 1.95;
   }
 
-  .post-body :global(p)      { margin-bottom: 1.4rem; }
-  .post-body :global(h2)     { font-family: "Cormorant Garamond", serif; font-size: 1.6rem; font-weight: 300; color: var(--text); margin: 2.5rem 0 1rem; }
-  .post-body :global(h3)     { font-size: 1rem; font-weight: 500; color: var(--text); margin: 2rem 0 0.75rem; letter-spacing: 0.04em; }
-  .post-body :global(a)      { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+  .post-body :global(p)  { margin-bottom: 1.5rem; color: var(--dim); }
+  .post-body :global(strong) { color: var(--ink); }
+  .post-body :global(em) { font-family: var(--font-serif); font-size: 1.05em; color: var(--dim); }
+  .post-body :global(h2) {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 740;
+    font-size: 1.7rem;
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    color: var(--ink);
+    margin: 2.75rem 0 1rem;
+  }
+  .post-body :global(h3) {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 2.25rem 0 0.75rem;
+  }
+  .post-body :global(a) {
+    color: var(--acid);
+    border-bottom: 1px solid rgba(155, 109, 206, 0.4);
+    transition: border-color 0.2s;
+  }
+  .post-body :global(a:hover) { border-color: var(--acid); }
   .post-body :global(ul),
-  .post-body :global(ol)     { padding-left: 1.5rem; margin-bottom: 1.4rem; }
-  .post-body :global(li)     { margin-bottom: 0.4rem; }
-  .post-body :global(code)   { font-family: "Courier New", monospace; font-size: 0.82em; background: var(--surface); padding: 0.15em 0.4em; border-radius: 2px; color: var(--accent); }
-  .post-body :global(pre)    { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 1.25rem; overflow-x: auto; margin-bottom: 1.4rem; }
-  .post-body :global(pre code) { background: none; padding: 0; color: var(--text); }
-  .post-body :global(blockquote) { border-left: 2px solid var(--accent); padding-left: 1.25rem; color: var(--muted); margin: 1.5rem 0; font-style: italic; }
-  .post-body :global(hr)     { border: none; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+  .post-body :global(ol) { padding-left: 1.5rem; margin-bottom: 1.5rem; color: var(--dim); }
+  .post-body :global(li) { margin-bottom: 0.45rem; }
+  .post-body :global(code) {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 0.12em 0.4em;
+    color: var(--acid);
+  }
+  .post-body :global(pre) {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+  }
+  .post-body :global(pre code) { background: none; border: none; padding: 0; color: var(--ink); }
+  .post-body :global(blockquote) {
+    border-left: 2px solid var(--acid);
+    padding-left: 1.25rem;
+    margin: 1.75rem 0;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 1.1em;
+    color: var(--dim);
+  }
+  .post-body :global(hr) { border: none; border-top: 1px solid var(--line); margin: 2.5rem 0; }
 
-  @media (max-width: 600px) {
-    #post { padding: 4rem 6%; }
+  .post-foot {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--line);
   }
 </style>
 
 <script>
   import gsap from "gsap";
 
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   function initPost() {
     const inner = document.querySelector<HTMLElement>(".post-inner");
-    gsap.fromTo(inner, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out", delay: 0.1 });
+    if (!inner || reduced) return;
+    gsap.fromTo(inner, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: "power3.out", delay: 0.1 });
   }
 
   document.addEventListener("astro:page-load", initPost);

@@ -4,427 +4,257 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const projects = [
   {
     index: "01",
-    title: "2D Snake Game",
-    summary: "A basic 2D snake game made with o4 mini high.",
-    detail: 'Just click "View Live" and try it yourself.',
-    live: "/snake-game",
-    source: "#",
+    title: "snake game",
+    summary: "classic 2D snake on a canvas. arrow keys, swipe, or d-pad. the food is my favicon, because branding.",
+    tags: ["canvas", "vanilla js"],
+    href: "/snake-game",
+    cta: "play it",
   },
   {
     index: "02",
-    title: "BTC Price in MYR",
-    summary: "Figure out the current price of BTC in MYR.",
-    detail: "Fetch API of exchange rate and BTC/USD pair, then convert.",
-    live: "/crypto-api",
-    source: "#",
+    title: "btc / myr tracker",
+    summary: "live bitcoin price in ringgit. pulls BTC/USD and the USD/MYR rate, converts on the spot, draws a 7-day sparkline.",
+    tags: ["api", "fintech"],
+    href: "/crypto-api",
+    cta: "check the price",
   },
   {
     index: "03",
-    title: "Avalanche Anomaly Detector",
-    summary: "Paste a C-Chain wallet address and detect anomalous transactions using an Isolation Forest model.",
-    detail: "Server-side ML on Avalanche C-Chain transaction data: value, gas, and timing patterns fed into an Isolation Forest to score and flag outliers.",
-    live: "/anomaly-detector",
-    source: "#",
+    title: "anomaly detector",
+    summary: "paste an avalanche c-chain wallet and an isolation forest model scores every transaction for value, gas, and timing outliers.",
+    tags: ["ml", "avalanche", "security"],
+    href: "/anomaly-detector",
+    cta: "scan a wallet",
   },
   {
     index: "04",
-    title: "AI News Bot",
-    summary: "A grok-powered agent that checks the internet daily, curates top AI news, and auto-posts to Instagram.",
-    detail: "built on xAI Grok's web search API. runs on a daily cron schedule via Cloudflare Workers. live feed below.",
-    live: "#instagram-feed",
-    source: "#",
+    title: "ai news bot",
+    summary: "a grok-powered agent that reads the internet daily, curates the top AI stories, and auto-posts them to instagram on a cron.",
+    tags: ["agents", "cloudflare workers", "grok"],
+    href: "#instagram-feed",
+    cta: "see the feed",
   },
   {
     index: "05",
-    title: "Project Five",
-    summary: "Nothing here yet. Stay tuned.",
-    detail: "Details coming soon.",
-    live: "#",
-    source: "#",
-  },
-  {
-    index: "06",
-    title: "Project Six",
-    summary: "Nothing here yet. Stay tuned.",
-    detail: "Details coming soon.",
-    live: "#",
-    source: "#",
+    title: "this website",
+    summary: "the thing you're looking at. astro, gsap, react islands, and an unreasonable number of hairlines. perpetually under construction.",
+    tags: ["astro", "gsap", "meta"],
+    href: "/about",
+    cta: "meet the builder",
   },
 ];
 ---
-<BaseLayout title="Gosvindraj | Projects">
-  <section id="projects">
-    <div class="projects-header">
-      <p class="section-label" id="projects-label">Work</p>
-      <h2 class="section-title" id="projects-title">Fun projects.</h2>
-    </div>
+<BaseLayout title="Gosvindraj | Projects" description="Things Gosvindraj built: browser games, crypto tools, ML anomaly detection, and AI agents.">
 
-    <div class="project-grid" id="project-grid">
+  <section id="projects-head">
+    <div class="ph-top">
+      <span class="m-label"><span class="lb">[</span> work <span class="lb">/</span> index <span class="lb">]</span></span>
+      <span class="m-label">{projects.length} entries, more compiling</span>
+    </div>
+    <h1 class="ph-display display">
+      <span class="line-mask"><span class="line">built to</span></span>
+      <span class="line-mask"><span class="line"><span class="serif acid">learn.</span></span></span>
+    </h1>
+    <p class="ph-sub">
+      nothing here was made to pad a resume. each one exists because
+      i wanted to know how something worked.
+    </p>
+  </section>
+
+  <section class="sec" id="projects-list">
+    <div class="proj-list">
       {projects.map((p) => (
-        <div class="project-card" role="button" tabindex="0" aria-expanded="false">
-          <span class="card-sheen"></span>
-          <span class="card-index">{p.index}</span>
-          <h3 class="card-title">{p.title}</h3>
-          <p class="card-summary">{p.summary}</p>
-          <div class="card-details">
-            <p class="card-detail-text">{p.detail}</p>
-            <div class="card-links">
-              <a href={p.live} class="card-link">View Live <span>↗</span></a>
-              <a href={p.source} class="card-link">Source <span>↗</span></a>
+        <a href={p.href} class="proj-row" data-reveal>
+          <span class="proj-index">{p.index}</span>
+          <div class="proj-main">
+            <span class="proj-title">{p.title}</span>
+            <p class="proj-summary">{p.summary}</p>
+            <div class="proj-tags">
+              {p.tags.map((t) => <span class="proj-tag">{t}</span>)}
             </div>
           </div>
-          <div class="card-indicator" aria-hidden="true">
-            <i class="fa-solid fa-chevron-down"></i>
-          </div>
-        </div>
+          <span class="proj-cta m-label">{p.cta} <span aria-hidden="true">&#8599;</span></span>
+        </a>
       ))}
     </div>
   </section>
 
-  <section id="instagram-feed">
-    <div class="insta-card-wrap">
-      <div class="insta-header">
-        <p class="section-label" id="insta-label">AI Daily Roundup</p>
-        <div class="insta-profile-link">
-          <i class="fa-brands fa-instagram"></i>
-          <span>@agentgosh</span>
-          <a href="https://www.instagram.com/agentgosh/" target="_blank" rel="noopener noreferrer" class="insta-follow-cta">Follow</a>
-        </div>
-      </div>
-      <div class="insta-grid" id="insta-grid"></div>
+  <!-- ── instagram feed ────────────────────────── -->
+  <section class="sec" id="instagram-feed">
+    <div class="sec-head" data-reveal>
+      <span class="m-label" id="insta-label"><span class="lb">[</span> live <span class="lb">/</span> ai daily roundup <span class="lb">]</span></span>
+      <a href="https://www.instagram.com/agentgosh/" target="_blank" rel="noopener noreferrer" class="m-label insta-follow">@agentgosh <span class="hl">follow &#8599;</span></a>
     </div>
+    <p class="insta-desc" data-reveal>
+      posted daily by the news bot above. zero human hands involved.
+    </p>
+    <div class="insta-grid" id="insta-grid" data-reveal></div>
   </section>
+
 </BaseLayout>
 
 <style>
-  #projects {
-    min-height: calc(100vh - var(--nav-height));
-    padding: 4rem 8% 6rem;
-  }
-
-  .projects-header {
-    margin-bottom: 3rem;
-  }
-
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0;
-  }
-
-  .section-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(2rem, 5vw, 3.8rem);
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.03em;
-    opacity: 0;
-  }
-
-  /* grid */
-  .project-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    border: 1px solid var(--border);
-    perspective: 1000px;
-  }
-
-  .project-card {
-    background: var(--bg);
-    padding: 2rem;
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
+  /* ── header ───────────────────────────────── */
+  #projects-head {
+    padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(3rem, 8vh, 5rem);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    position: relative;
-    overflow: hidden;
-    transition: background var(--transition);
-    opacity: 0; /* GSAP controls */
-    will-change: transform;
+    gap: clamp(1.75rem, 5vh, 3rem);
   }
 
-  .project-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 1px solid transparent;
-    transition: border-color var(--transition);
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .project-card:hover { background: var(--surface); }
-  .project-card:hover::before { border-color: var(--border-hover); }
-
-  /* sheen highlight (moved by JS) */
-  .card-sheen {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), rgba(155,109,206,0.07) 0%, transparent 60%);
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 0;
-  }
-
-  .project-card:hover .card-sheen { opacity: 1; }
-
-  .card-index {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    color: var(--muted);
-    font-family: "JetBrains Mono", monospace;
-    position: relative;
-    z-index: 2;
-  }
-
-  .card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: 0.01em;
-    position: relative;
-    z-index: 2;
-  }
-
-  .card-summary {
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.6;
-    flex: 1;
-    position: relative;
-    z-index: 2;
-  }
-
-  .card-details {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.35s ease, opacity 0.35s ease;
-    opacity: 0;
+  .ph-top {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    position: relative;
-    z-index: 2;
-  }
-
-  .project-card.active .card-details {
-    max-height: 120px;
-    opacity: 1;
-  }
-
-  .card-detail-text {
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.6;
-  }
-
-  .card-links {
-    display: flex;
-    gap: 1.25rem;
-  }
-
-  .card-link {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    transition: color var(--transition);
-    cursor: none;
-  }
-
-  .card-link span {
-    display: inline-block;
-    transition: transform var(--transition);
-  }
-
-  .card-link:hover { color: var(--accent); }
-  .card-link:hover span { transform: translate(2px, -2px); }
-
-  /* clickable card */
-  .project-card { cursor: none; }
-
-  .card-indicator {
-    position: absolute;
-    bottom: 0.9rem;
-    right: 1rem;
-    width: 22px;
-    height: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    color: var(--muted);
-    font-size: 9px;
-    z-index: 2;
-    transition: opacity var(--transition), color var(--transition),
-                border-color var(--transition), background var(--transition),
-                transform 0.3s ease;
-    /* hidden on desktop until hover */
-    opacity: 0;
-  }
-
-  .project-card:hover .card-indicator {
-    opacity: 1;
-    color: var(--accent);
-    border-color: var(--border-hover);
-    background: var(--accent-dim);
-  }
-
-  .project-card.active .card-indicator {
-    transform: rotate(180deg);
-  }
-
-  /* mobile: no hover available — always show indicator */
-  @media (hover: none) {
-    .card-indicator {
-      opacity: 0.35;
-      animation: indicator-bob 2.4s ease-in-out infinite;
-    }
-
-    .project-card.active .card-indicator {
-      opacity: 0.6;
-      animation: none;
-    }
-  }
-
-  @keyframes indicator-bob {
-    0%, 100% { transform: translateY(0); }
-    50%       { transform: translateY(-3px); }
-  }
-
-  @media (max-width: 700px) {
-    #projects { padding: 3rem 6% 4rem; }
-    .project-grid { grid-template-columns: 1fr; }
-  }
-
-  /* ── Instagram feed ──────────────────────── */
-  #instagram-feed {
-    padding: 4rem 8% 6rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .insta-card-wrap {
-    border-radius: 8px;
-    padding: 2rem;
-    background:
-      linear-gradient(var(--surface), var(--surface)) padding-box,
-      linear-gradient(135deg, rgba(155, 109, 206, 0.45), rgba(255, 255, 255, 0.04) 50%, rgba(0, 180, 220, 0.2)) border-box;
-    border: 1px solid transparent;
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.35);
-  }
-
-  .insta-header {
-    margin-bottom: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+    justify-content: space-between;
     gap: 1rem;
   }
 
-  .insta-profile-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-size: 1rem;
-    font-weight: 400;
-    letter-spacing: 0.03em;
-    color: #9a9aaf;
-    text-decoration: none;
-    cursor: none;
-    margin-top: 0.6rem;
+  .ph-display { font-size: clamp(2.8rem, 10vw, 8.5rem); }
+
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
   }
 
-  .insta-profile-link i {
-    font-size: 1.1rem;
-    color: #c2185b;
+  .line { display: block; }
+
+  .ph-sub {
+    max-width: 48ch;
+    font-size: clamp(0.92rem, 1.6vw, 1.05rem);
+    color: var(--dim);
+    line-height: 1.85;
   }
 
-  .insta-follow-cta {
-    padding: 4px 12px;
-    border: 1px solid var(--border);
-    border-radius: 2px;
+  /* ── list ─────────────────────────────────── */
+  #projects-list { padding-top: 0; border-top: none; }
+
+  .proj-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  .proj-row {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr auto;
+    gap: 2rem;
+    align-items: start;
+    padding: clamp(1.75rem, 4.5vw, 3rem) 0.5rem;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.25s ease, padding-left 0.25s ease;
+  }
+
+  .proj-index {
+    font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--accent);
-    text-decoration: none;
-    cursor: none;
-    transition: background var(--transition), border-color var(--transition), color var(--transition);
+    color: var(--faint);
+    padding-top: 0.6em;
+    transition: color 0.25s ease;
   }
 
-  .insta-follow-cta:hover {
-    background: var(--accent-dim);
-    border-color: var(--accent);
-    color: var(--text);
+  .proj-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+    min-width: 0;
   }
+
+  .proj-title {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 740;
+    font-size: clamp(1.8rem, 5.5vw, 3.6rem);
+    letter-spacing: -0.03em;
+    line-height: 0.98;
+    text-transform: lowercase;
+    color: var(--ink);
+    transition: color 0.25s ease;
+  }
+
+  .proj-summary {
+    max-width: 56ch;
+    font-size: 0.88rem;
+    color: var(--dim);
+    line-height: 1.75;
+    transition: color 0.25s ease;
+  }
+
+  .proj-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.35rem;
+  }
+
+  .proj-tag {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border: 1px solid var(--line);
+    padding: 0.25rem 0.6rem;
+    transition: color 0.25s ease, border-color 0.25s ease;
+  }
+
+  .proj-cta {
+    padding-top: 0.8em;
+    white-space: nowrap;
+    transition: color 0.25s ease;
+  }
+
+  .proj-row:hover { background: var(--acid); padding-left: 1.25rem; }
+  .proj-row:hover .proj-title,
+  .proj-row:hover .proj-summary,
+  .proj-row:hover .proj-index,
+  .proj-row:hover .proj-cta { color: #0c0c0a; }
+  .proj-row:hover .proj-cta .hl { color: #0c0c0a; }
+  .proj-row:hover .proj-tag { color: #0c0c0a; border-color: rgba(12, 12, 10, 0.4); }
+
+  @media (max-width: 700px) {
+    .proj-row { grid-template-columns: 2.5rem 1fr; }
+    .proj-cta { display: none; }
+  }
+
+  /* ── instagram ────────────────────────────── */
+  .insta-follow { transition: color var(--transition); }
+  .insta-follow:hover { color: var(--ink); }
 
   .insta-desc {
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.7;
-    margin-top: 0.75rem;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    color: var(--dim);
+    margin-bottom: 2rem;
   }
 
   .insta-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 0 0 1px var(--border), 0 8px 40px rgba(0, 0, 0, 0.4);
+    background: var(--line);
+    border: 1px solid var(--line);
   }
-
 
   @media (max-width: 1100px) {
     .insta-grid { grid-template-columns: repeat(4, 1fr); }
   }
 
   @media (max-width: 700px) {
-    #instagram-feed { padding: 3rem 6% 4rem; }
     .insta-grid { grid-template-columns: repeat(3, 1fr); }
   }
 </style>
 
 <style is:global>
-  /* Instagram feed — dynamically inserted via JS, needs global scope */
+  /* instagram cards are injected via JS, so styles must be global */
   .insta-card {
     position: relative;
     overflow: hidden;
     display: block;
     background: var(--bg);
-    border-right: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    opacity: 0;
-    cursor: none;
-    transition: background var(--transition);
   }
-
-  .insta-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border: 1px solid transparent;
-    transition: border-color var(--transition);
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  .insta-card:hover { background: var(--surface); }
-  .insta-card:hover::before { border-color: var(--border-hover); }
-  .insta-card:hover .card-sheen { opacity: 1; }
-  .insta-card:hover .insta-thumb img { transform: scale(1.04); }
-  .insta-card:hover .insta-overlay { opacity: 1; }
 
   .insta-thumb {
     position: relative;
@@ -440,73 +270,51 @@ const projects = [
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: transform 0.4s ease;
+    filter: grayscale(35%);
+    transition: transform 0.4s ease, filter 0.4s ease;
+  }
+
+  .insta-card:hover .insta-thumb img {
+    transform: scale(1.05);
+    filter: grayscale(0%);
   }
 
   .insta-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(11, 11, 13, 0.3);
+    background: rgba(12, 12, 10, 0.25);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    opacity: 1;
-    transition: background var(--transition);
+    transition: background 0.25s ease;
     z-index: 1;
   }
+
+  .insta-card:hover .insta-overlay { background: rgba(12, 12, 10, 0.78); }
 
   .insta-view,
   .insta-type-badge {
     opacity: 0;
-    transition: opacity var(--transition);
-  }
-
-  .insta-card:hover .insta-overlay {
-    background: rgba(11, 11, 13, 0.72);
+    transition: opacity 0.25s ease;
+    font-family: "JetBrains Mono", monospace;
   }
 
   .insta-card:hover .insta-view,
-  .insta-card:hover .insta-type-badge {
-    opacity: 1;
-  }
-
-  .insta-ig-icon {
-    position: absolute;
-    top: 0.55rem;
-    right: 0.6rem;
-    font-size: 13px;
-    color: var(--muted);
-    opacity: 0.45;
-    z-index: 3;
-    transition: opacity var(--transition), color var(--transition);
-    pointer-events: none;
-  }
-
-  .insta-card:hover .insta-ig-icon {
-    opacity: 0;
-  }
+  .insta-card:hover .insta-type-badge { opacity: 1; }
 
   .insta-view {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--text);
-  }
-
-  .insta-view i {
-    font-size: 13px;
+    color: var(--ink);
   }
 
   .insta-type-badge {
     font-size: 10px;
-    font-family: "JetBrains Mono", monospace;
-    color: var(--accent);
+    color: var(--acid);
     letter-spacing: 0.08em;
   }
 
@@ -514,154 +322,37 @@ const projects = [
     grid-column: 1 / -1;
     padding: 3rem;
     text-align: center;
-    font-size: 0.8rem;
-    color: var(--muted);
+    font-size: 0.75rem;
+    color: var(--dim);
     font-family: "JetBrains Mono", monospace;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 </style>
 
 <script>
   import gsap from "gsap";
   import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { ScrollToPlugin }  from "gsap/ScrollToPlugin";
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  gsap.registerPlugin(ScrollTrigger);
 
-  const GLITCH = "!<>-_\\/[]{}—=+*^?#@$%&";
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function glitchReveal(el: HTMLElement, finalText: string, duration = 780) {
-    const frames = 18;
-    const ms = Math.round(duration / frames);
-    let frame = 0;
-    el.style.opacity = "1";
+  function initHeader() {
+    const head = document.getElementById("projects-head");
+    if (!head || reduced) return;
 
-    const iv = setInterval(() => {
-      const progress = frame / frames;
-      const revealed = Math.floor(progress * finalText.length);
+    const lines = head.querySelectorAll<HTMLElement>(".line");
+    const top   = head.querySelector<HTMLElement>(".ph-top");
+    const sub   = head.querySelector<HTMLElement>(".ph-sub");
 
-      let display = "";
-      for (let i = 0; i < finalText.length; i++) {
-        if (i < revealed) {
-          display += Math.random() < 0.07 * (1 - progress)
-            ? GLITCH[Math.floor(Math.random() * GLITCH.length)]
-            : finalText[i];
-        } else {
-          display += finalText[i] === " " ? "\u00a0"
-            : GLITCH[Math.floor(Math.random() * GLITCH.length)];
-        }
-      }
-      el.textContent = display;
+    gsap.set(top, { opacity: 0 });
+    gsap.set(sub, { opacity: 0, y: 20 });
+    gsap.set(lines, { yPercent: 110 });
 
-      if (frame < frames - 2 && Math.random() < 0.4) {
-        el.style.textShadow = `${+(Math.random()*4-2).toFixed(1)}px 0 rgba(255,0,200,0.6),`
-                            + `${+(Math.random()*-4+2).toFixed(1)}px 0 rgba(0,255,255,0.6)`;
-      } else {
-        el.style.textShadow = "";
-      }
-
-      frame++;
-      if (frame > frames) {
-        clearInterval(iv);
-        el.textContent      = finalText;
-        el.style.textShadow = "";
-      }
-    }, ms);
-  }
-
-  function initProjects() {
-    const label = document.getElementById("projects-label");
-    const title = document.getElementById("projects-title");
-    const cards = document.querySelectorAll<HTMLElement>(".project-card");
-    if (!label || !cards.length) return;
-
-    const titleText = title?.textContent ?? "Fun projects.";
-
-    /* ── Header reveal ───────────────────────── */
-    gsap.fromTo(label, { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out", delay: 0.1 });
-    if (title) setTimeout(() => glitchReveal(title, titleText, 780), 250);
-
-    /* ── Card scroll reveals ─────────────────── */
-    gsap.fromTo(
-      cards,
-      { opacity: 0, y: 40, scale: 0.97 },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        stagger: { amount: 0.45, from: "start" },
-        duration: 0.6,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: "#project-grid",
-          start: "top 80%",
-          once: true,
-        },
-      }
-    );
-
-    /* ── Card 3D tilt + sheen ────────────────── */
-    cards.forEach((card) => {
-      const sheen = card.querySelector<HTMLElement>(".card-sheen");
-
-      card.addEventListener("mousemove", (e) => {
-        const rect = card.getBoundingClientRect();
-        const rx = ((e.clientY - rect.top)  / rect.height - 0.5) * 10;
-        const ry = ((e.clientX - rect.left) / rect.width  - 0.5) * -10;
-
-        gsap.to(card, {
-          rotationX: rx,
-          rotationY: ry,
-          duration: 0.4,
-          ease: "power2.out",
-          transformPerspective: 800,
-        });
-
-        if (sheen) {
-          const mx = ((e.clientX - rect.left) / rect.width)  * 100;
-          const my = ((e.clientY - rect.top)  / rect.height) * 100;
-          sheen.style.setProperty("--mx", mx + "%");
-          sheen.style.setProperty("--my", my + "%");
-        }
-      });
-
-      card.addEventListener("mouseleave", () => {
-        gsap.to(card, {
-          rotationX: 0,
-          rotationY: 0,
-          duration: 0.6,
-          ease: "elastic.out(1, 0.6)",
-          transformPerspective: 800,
-        });
-      });
-    });
-
-    /* ── Card toggle (full card click) ──────────── */
-    cards.forEach((card) => {
-      // stop link clicks from toggling the card; smooth-scroll hash links
-      card.querySelectorAll("a").forEach(a => a.addEventListener("click", e => {
-        e.stopPropagation();
-        const href = a.getAttribute("href") ?? "";
-        if (href.startsWith("#") && href.length > 1) {
-          e.preventDefault();
-          const target = document.querySelector(href);
-          if (target) gsap.to(window, { scrollTo: { y: target, offsetY: 80 }, duration: 0.9, ease: "power3.inOut" });
-        }
-      }));
-
-      function handleCardActivate() {
-        const isNowActive = card.classList.toggle("active");
-        card.setAttribute("aria-expanded", String(isNowActive));
-      }
-
-      card.addEventListener("click", handleCardActivate);
-
-      card.addEventListener("keydown", (e: KeyboardEvent) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          handleCardActivate();
-        }
-      });
-    });
+    gsap.timeline({ delay: 0.15 })
+      .to(lines, { yPercent: 0, duration: 0.85, stagger: 0.12, ease: "power4.out" })
+      .to(sub, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, "-=0.4")
+      .to(top, { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.3");
   }
 
   interface InstaPost {
@@ -675,25 +366,13 @@ const projects = [
   }
 
   async function initInstagramFeed() {
-    const grid  = document.getElementById("insta-grid");
-    const label = document.getElementById("insta-label");
+    const grid = document.getElementById("insta-grid");
     if (!grid) return;
 
-    if (label) {
-      ScrollTrigger.create({
-        trigger: label,
-        start: "top 85%",
-        once: true,
-        onEnter: () => {
-          gsap.fromTo(label, { opacity: 0, x: -16 }, { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" });
-        },
-      });
-    }
-
-    grid.innerHTML = `<p class="insta-status">loading feed…</p>`;
+    grid.innerHTML = `<p class="insta-status">loading feed...</p>`;
 
     try {
-      const res  = await fetch("https://marketing-automation-api.gosvind.workers.dev/api/public/instagram-feed");
+      const res = await fetch("https://marketing-automation-api.gosvind.workers.dev/api/public/instagram-feed");
       if (!res.ok) throw new Error("api error");
       const data = await res.json() as { posts: InstaPost[] };
       const posts = (data.posts ?? []).slice(0, 12);
@@ -704,49 +383,35 @@ const projects = [
       }
 
       grid.innerHTML = posts.map((post) => {
-        const src     = post.media_type === "VIDEO" ? (post.thumbnail_url ?? "") : post.media_url;
-        const badge   = post.media_type === "VIDEO"
-          ? `<span class="insta-type-badge">▶ video</span>`
+        const src   = post.media_type === "VIDEO" ? (post.thumbnail_url ?? "") : post.media_url;
+        const badge = post.media_type === "VIDEO"
+          ? `<span class="insta-type-badge">&#9654; video</span>`
           : "";
         return `<a href="${post.permalink}" target="_blank" rel="noopener noreferrer" class="insta-card" aria-label="View post on Instagram">
-          <span class="card-sheen"></span>
-          <span class="insta-ig-icon"><i class="fa-brands fa-instagram"></i></span>
           <div class="insta-thumb">
             <img src="${src}" alt="" loading="lazy">
-            <div class="insta-overlay">${badge}<span class="insta-view"><i class="fa-brands fa-instagram"></i> View on IG ↗</span></div>
+            <div class="insta-overlay">${badge}<span class="insta-view">view on ig &#8599;</span></div>
           </div>
         </a>`;
       }).join("");
 
-      const cards = grid.querySelectorAll<HTMLElement>(".insta-card");
-
-      gsap.fromTo(cards,
-        { opacity: 0, y: 30, scale: 0.97 },
-        {
-          opacity: 1, y: 0, scale: 1,
-          stagger: { amount: 0.5, from: "start" },
-          duration: 0.55,
-          ease: "power3.out",
-          scrollTrigger: { trigger: grid, start: "top 85%", once: true },
-        }
-      );
-
-      cards.forEach((card) => {
-        const sheen = card.querySelector<HTMLElement>(".card-sheen");
-        card.addEventListener("mousemove", (e) => {
-          const rect = card.getBoundingClientRect();
-          if (sheen) {
-            sheen.style.setProperty("--mx", ((e.clientX - rect.left) / rect.width  * 100) + "%");
-            sheen.style.setProperty("--my", ((e.clientY - rect.top)  / rect.height * 100) + "%");
+      if (!reduced) {
+        gsap.fromTo(grid.querySelectorAll(".insta-card"),
+          { opacity: 0, y: 24 },
+          {
+            opacity: 1, y: 0,
+            stagger: { amount: 0.5, from: "start" },
+            duration: 0.5,
+            ease: "power3.out",
+            scrollTrigger: { trigger: grid, start: "top 85%", once: true },
           }
-        });
-      });
-
+        );
+      }
     } catch {
       grid.innerHTML = `<p class="insta-status">couldn't load feed.</p>`;
     }
   }
 
-  document.addEventListener("astro:page-load", initProjects);
+  document.addEventListener("astro:page-load", initHeader);
   document.addEventListener("astro:page-load", initInstagramFeed);
 </script>

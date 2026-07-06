@@ -51,13 +51,11 @@ const jsonLd = [
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Primary -->
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="author" content="Gosvindraj" />
     <link rel="canonical" href={canonicalUrl} />
 
-    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:title" content={title} />
@@ -65,13 +63,11 @@ const jsonLd = [
     <meta property="og:image" content={ogImage} />
     <meta property="og:site_name" content="Gosvindraj" />
 
-    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
-    <!-- JSON-LD structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
     <link
@@ -86,24 +82,14 @@ const jsonLd = [
     <slot name="head" />
   </head>
   <body>
-    <!-- Preloader (persist across navigations so it only animates once) -->
+    <!-- preloader: counts once per session, then wipes up -->
     <div id="preloader" transition:persist>
-      <div id="preloader-inner">
-        <div id="preloader-bar-wrap">
-          <div id="preloader-bar"></div>
-        </div>
-        <span id="preloader-count">000</span>
-      </div>
+      <span id="preloader-count">000</span>
+      <span id="preloader-tag">gosvindraj / portfolio</span>
+      <div id="preloader-bar"></div>
     </div>
 
-    <!-- Ambient background orbs -->
-    <div id="ambient-bg" transition:persist>
-      <div class="orb orb-1"></div>
-      <div class="orb orb-2"></div>
-      <div class="orb orb-3"></div>
-    </div>
-
-    <!-- Custom cursor -->
+    <!-- custom cursor -->
     <div id="cursor-dot"  transition:persist></div>
     <div id="cursor-ring" transition:persist></div>
 
@@ -114,28 +100,32 @@ const jsonLd = [
 
     {!hideFooter && (
     <footer id="site-footer">
-      <div class="footer-inner">
-        <span class="footer-name">Gosvindraj</span>
-        <span class="footer-sep">·</span>
-        <span class="footer-copy">&copy; {new Date().getFullYear()}</span>
-        <span class="footer-sep">·</span>
-        <div class="footer-socials">
-          <a href="mailto:gosh@gosvindraj.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
-          <a href="https://www.linkedin.com/in/gosvindraj-m-3306b9280/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
-          <a href="https://www.instagram.com/gosv7ndraj/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-          <a href="https://github.com/Gosvindraj" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+      <a href="/contact" class="foot-cta">
+        <span class="m-label"><span class="lb">[</span> next step <span class="lb">]</span></span>
+        <span class="foot-cta-line">got an idea? say hi <span class="arrow">&#8599;</span></span>
+      </a>
+      <div class="foot-bottom">
+        <span>&copy; {new Date().getFullYear()} gosvindraj</span>
+        <span>penang, malaysia / 5.4141&deg; n, 100.3288&deg; e</span>
+        <div class="foot-socials">
+          <a href="mailto:gosh@gosvindraj.com">email</a>
+          <a href="https://github.com/Gosvindraj" target="_blank" rel="noopener">github</a>
+          <a href="https://www.linkedin.com/in/gosvindraj-m-3306b9280/" target="_blank" rel="noopener">linkedin</a>
+          <a href="https://www.instagram.com/gosv7ndraj/" target="_blank" rel="noopener">instagram</a>
         </div>
       </div>
     </footer>
     )}
 
-    <!-- Chatbot island — persists across page navigations -->
+    <!-- chatbot island: persists across page navigations -->
     <ChatBot client:load transition:persist />
 
     <script>
       import gsap from "gsap";
       import { ScrollTrigger } from "gsap/ScrollTrigger";
       gsap.registerPlugin(ScrollTrigger);
+
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
       /* ── ScrollTrigger cleanup on page transitions ── */
       document.addEventListener("astro:before-swap", () => {
@@ -145,233 +135,111 @@ const jsonLd = [
         ScrollTrigger.refresh();
       });
 
-      /* ── Preloader ──────────────────────────────── */
+      /* ── shared reveal helper ─────────────────────
+         any element with [data-reveal] rises in on scroll.
+         optional data-reveal-delay (seconds). content stays
+         visible without JS since hiding happens here. */
+      function initReveals() {
+        if (reduced) return;
+        document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((el) => {
+          const delay = parseFloat(el.dataset.revealDelay ?? "0");
+          gsap.fromTo(el,
+            { opacity: 0, y: 26 },
+            {
+              opacity: 1, y: 0, duration: 0.7, delay, ease: "power3.out",
+              scrollTrigger: { trigger: el, start: "top 88%", once: true },
+            }
+          );
+        });
+      }
+      document.addEventListener("astro:page-load", initReveals);
+
+      /* ── preloader ──────────────────────────────── */
       const preloader = document.getElementById("preloader");
 
       if (preloader) {
-        if (sessionStorage.getItem("intro-seen")) {
-          // skip — hide instantly
+        if (sessionStorage.getItem("intro-seen") || reduced) {
           preloader.style.display = "none";
+          sessionStorage.setItem("intro-seen", "1");
         } else {
-          const bar      = document.getElementById("preloader-bar")!;
-          const countEl  = document.getElementById("preloader-count")!;
+          const bar     = document.getElementById("preloader-bar")!;
+          const countEl = document.getElementById("preloader-count")!;
           document.body.style.overflow = "hidden";
 
-          // Drive a 0→100 counter linked to bar progress
           const counter = { val: 0 };
 
-          const tl = gsap.timeline({
+          gsap.timeline({
             onComplete: () => {
               preloader.style.display = "none";
               document.body.style.overflow = "";
               sessionStorage.setItem("intro-seen", "1");
             },
-          });
-
-          tl
-            // bar fills over ~1s
-            .to(bar, {
-              width: "100%",
-              duration: 1.0,
-              ease: "power2.inOut",
-            })
-            // counter counts in sync
+          })
+            .to(bar, { width: "100%", duration: 1.1, ease: "power2.inOut" })
             .to(counter, {
               val: 100,
-              duration: 1.0,
+              duration: 1.1,
               ease: "power2.inOut",
               onUpdate() {
-                const v = Math.round(counter.val);
-                countEl.textContent = v.toString().padStart(3, "0");
+                countEl.textContent = Math.round(counter.val).toString().padStart(3, "0");
               },
             }, "<")
-            // brief pause at 100
-            .to({}, { duration: 0.18 })
-            // count fades out
-            .to(countEl, { opacity: 0, duration: 0.2, ease: "power2.in" })
-            // curtain wipes upward
-            .to(preloader, {
-              yPercent: -100,
-              duration: 0.7,
-              ease: "expo.inOut",
-            });
+            .to({}, { duration: 0.15 })
+            .to([countEl, "#preloader-tag", bar], { opacity: 0, duration: 0.25, ease: "power2.in" })
+            .to(preloader, { yPercent: -100, duration: 0.65, ease: "expo.inOut" }, "-=0.05");
         }
       }
 
-      /* ── Cursor ─────────────────────────────────── */
+      /* ── cursor ─────────────────────────────────── */
       const dot  = document.getElementById("cursor-dot")!;
       const ring = document.getElementById("cursor-ring")!;
 
       let mouseX = 0, mouseY = 0;
       let ringX  = 0, ringY  = 0;
-      let prevX  = 0, prevY  = 0;
 
-      // text-rect cache: only recompute when hovered element changes
-      let lastTextEl: Element | null = null;
-      let textRects: DOMRect[] = [];
-
-      // center via xPercent/yPercent once
       gsap.set([dot, ring], { xPercent: -50, yPercent: -50 });
 
       document.addEventListener("mousemove", (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
         gsap.set(dot, { x: mouseX, y: mouseY });
-
-        // speed trail
-        const speed = Math.hypot(mouseX - prevX, mouseY - prevY);
-        if (speed > 22) {
-          const trail = document.createElement("div");
-          trail.className = "cursor-trail";
-          document.body.appendChild(trail);
-          gsap.set(trail, { xPercent: -50, yPercent: -50, x: mouseX, y: mouseY });
-          gsap.to(trail, {
-            opacity: 0,
-            scale: 0,
-            duration: 0.32,
-            ease: "power2.out",
-            onComplete: () => trail.remove(),
-          });
-        }
-        prevX = mouseX;
-        prevY = mouseY;
-
-        // precise text cursor: only active when over actual rendered glyphs
-        const hit = document.elementFromPoint(mouseX, mouseY);
-        const textEl = hit?.closest("p, h1, h2, h3, h4, h5, h6, li, span") ?? null;
-        if (textEl !== lastTextEl) {
-          lastTextEl = textEl;
-          if (textEl) {
-            const r = document.createRange();
-            r.selectNodeContents(textEl);
-            textRects = Array.from(r.getClientRects());
-          } else {
-            textRects = [];
-          }
-        }
-        const overGlyph = textRects.some(r =>
-          mouseX >= r.left && mouseX <= r.right &&
-          mouseY >= r.top  && mouseY <= r.bottom
-        );
-        document.body.classList.toggle("cursor-text", overGlyph);
       });
 
-      // ring follows with GSAP ticker lerp (smoother than RAF)
       gsap.ticker.add(() => {
-        ringX += (mouseX - ringX) * 0.1;
-        ringY += (mouseY - ringY) * 0.1;
+        ringX += (mouseX - ringX) * 0.14;
+        ringY += (mouseY - ringY) * 0.14;
         gsap.set(ring, { x: ringX, y: ringY });
       });
 
-      // prevent browser drag ghost on all elements
       document.addEventListener("dragstart", (e) => e.preventDefault());
 
-      // ── Click burst + hold-drag streak ──────────────
-      let isDown    = false;
-      let hasDragged = false;
-      let lastStreakX = 0, lastStreakY = 0;
-      const STREAK_GAP = 10; // px between streak particles
-
+      /* click ripple */
       document.addEventListener("mousedown", (e) => {
-        isDown     = true;
-        hasDragged = false;
-        lastStreakX = e.clientX;
-        lastStreakY = e.clientY;
-
-        const x = e.clientX;
-        const y = e.clientY;
-
-        // ripple ring
+        if (reduced) return;
         const ripple = document.createElement("div");
         ripple.className = "cursor-ripple";
         document.body.appendChild(ripple);
-        gsap.set(ripple, { xPercent: -50, yPercent: -50, x, y, scale: 0.2, opacity: 0.9 });
+        gsap.set(ripple, { xPercent: -50, yPercent: -50, x: e.clientX, y: e.clientY, scale: 0.2, opacity: 0.9, rotation: 45 });
         gsap.to(ripple, {
-          scale: 2.8,
+          scale: 2.4,
           opacity: 0,
-          duration: 0.55,
+          rotation: 90,
+          duration: 0.5,
           ease: "power2.out",
           onComplete: () => ripple.remove(),
         });
-
-        // spark particles
-        const COUNT = 7;
-        for (let i = 0; i < COUNT; i++) {
-          const angle = (i / COUNT) * Math.PI * 2;
-          const dist  = 28 + Math.random() * 20;
-          const spark = document.createElement("div");
-          spark.className = "cursor-spark";
-          document.body.appendChild(spark);
-          gsap.set(spark, { xPercent: -50, yPercent: -50, x, y, scale: 1, opacity: 0.85 });
-          gsap.to(spark, {
-            x: x + Math.cos(angle) * dist,
-            y: y + Math.sin(angle) * dist,
-            scale: 0,
-            opacity: 0,
-            duration: 0.42 + Math.random() * 0.15,
-            ease: "power3.out",
-            onComplete: () => spark.remove(),
-          });
-        }
       });
 
-      // drag streak: emit on mousemove while button held
-      document.addEventListener("mousemove", (e) => {
-        if (!isDown) return;
-        const dx = e.clientX - lastStreakX;
-        const dy = e.clientY - lastStreakY;
-        const dist = Math.hypot(dx, dy);
-        if (dist < STREAK_GAP) return;
-
-        hasDragged = true;
-        const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-        const length = 14 + Math.min(dist * 1.2, 32);
-
-        const streak = document.createElement("div");
-        streak.className = "cursor-streak";
-        document.body.appendChild(streak);
-        gsap.set(streak, {
-          xPercent: -50, yPercent: -50,
-          x: e.clientX, y: e.clientY,
-          width: length,
-          rotation: angle,
-          opacity: 0.55 + Math.random() * 0.3,
-          scaleX: 1,
-        });
-        gsap.to(streak, {
-          opacity: 0,
-          scaleX: 0.1,
-          duration: 0.45 + Math.random() * 0.15,
-          ease: "power2.out",
-          onComplete: () => streak.remove(),
-        });
-
-        lastStreakX = e.clientX;
-        lastStreakY = e.clientY;
-      });
-
-      document.addEventListener("mouseup", () => { isDown = false; });
-
-      // rebind hover/text states after each navigation
+      /* hover state rebinding after navigations */
       function bindCursorStates() {
         document.querySelectorAll("a, button, input, textarea, [data-cursor]").forEach((el) => {
           el.addEventListener("mouseenter", () => document.body.classList.add("cursor-hover"));
           el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-hover"));
         });
-        document.querySelectorAll("input, textarea").forEach((el) => {
-          el.addEventListener("mouseenter", () => document.body.classList.add("cursor-text"));
-          el.addEventListener("mouseleave", () => document.body.classList.remove("cursor-text"));
-        });
-
       }
 
       bindCursorStates();
       document.addEventListener("astro:page-load", bindCursorStates);
-
-      /* ── Ambient orbs ───────────────────────────── */
-      gsap.to(".orb-1", { x: 180, y: -110, duration: 40, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      gsap.to(".orb-2", { x: -150, y: 130,  duration: 28, repeat: -1, yoyo: true, ease: "sine.inOut" });
-      gsap.to(".orb-3", { x: 90,   y: -70,  duration: 35, repeat: -1, yoyo: true, ease: "sine.inOut" });
     </script>
   </body>
 </html>

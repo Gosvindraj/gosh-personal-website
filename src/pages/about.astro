@@ -4,1628 +4,495 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const timeline = [
   {
     year: "2006",
-    range: "2006 – 2010",
-    title: "Primary School",
+    range: "2006 / 2010",
+    title: "primary school",
     place: "SK Seri Permai, Penang",
     desc: "five years in my hometown. made friends, lost erasers, somehow survived. didn't know what a computer was yet but i was already curious about everything. the pattern starts early.",
-    tags: ["Early Life", "Home"],
+    tags: ["early life", "home"],
   },
   {
     year: "2011",
-    range: "2011 – 2015",
-    title: "Secondary School",
+    range: "2011 / 2015",
+    title: "secondary school",
     place: "Penang Free School, Penang",
-    desc: "one of malaysia's oldest schools. walked in as a kid, left as someone who actually had direction. SPM came around, pulled 8As. more importantly: around 12-13, i discovered gaming and got obsessed with how people could connect virtually. that was the spark.",
-    tags: ["Secondary School", "First Contact"],
+    desc: "one of malaysia's oldest schools. walked in as a kid, left as someone who actually had direction. SPM came around, pulled 8As. more importantly: around 12 or 13, i discovered gaming and got obsessed with how people could connect virtually. that was the spark.",
+    tags: ["secondary school", "first contact"],
   },
   {
     year: "2016",
-    range: "2016 – 2017",
-    title: "Matriculation",
+    range: "2016 / 2017",
+    title: "matriculation",
     place: "KMKT, Kelantan",
     desc: "packed my bags, moved to kelantan, and took my first real CS course. it was basic. very basic. but somewhere between the if-else blocks and the syntax errors, something clicked. i thought: yeah, i can see myself being happy doing this.",
-    tags: ["Matriculation", "CS Begins"],
+    tags: ["matriculation", "cs begins"],
   },
   {
     year: "2017",
-    range: "2017 – 2021",
-    title: "Degree",
+    range: "2017 / 2021",
+    title: "degree",
     place: "Universiti Sains Malaysia, Penang",
-    desc: "back home in penang. enrolled in BSc Computer Science, majoring in AI, minoring in Management. four years of figuring things out, building things, and learning what i actually care about.",
-    tags: ["University", "AI", "USM"],
+    desc: "back home in penang. enrolled in BSc Computer Science, majoring in AI, minoring in Management. four years of figuring things out, building things, and learning what i actually care about. also directed university events with crews of 220+ people, which taught me more about humans than any textbook.",
+    tags: ["university", "ai", "usm"],
   },
   {
     year: "2022",
-    range: "2022 – 2025",
-    title: "Work",
+    range: "2022 / 2025",
+    title: "work",
     place: "Remote",
     desc: "spent 3 years working part-time in the web3 space: technical support and community work in the blockchain industry. got hands-on with the real side of crypto beyond the hype.",
-    tags: ["Web3", "Blockchain", "Work"],
+    tags: ["web3", "blockchain", "work"],
   },
   {
     year: "2023",
-    range: "2023 – 2024",
-    title: "Masters",
+    range: "2023 / 2024",
+    title: "masters",
     place: "Universiti Sains Malaysia, Penang",
     desc: "went back for an MSc in Computer Science. mixed mode, dissertation in AI and Cybersecurity. another two years of going deep on things that actually matter.",
-    tags: ["Masters", "AI", "Cybersecurity"],
+    tags: ["masters", "ai", "cybersecurity"],
   },
   {
-    year: "Now",
-    range: "2025 – Present",
-    title: "Building & Exploring",
+    year: "now",
+    range: "2025 / present",
+    title: "building & exploring",
     place: "Penang / KL / The Internet",
-    desc: "working on personal projects, doing volunteer blockchain education, and going deep on the AI × blockchain intersection. not chasing a title, just chasing the thing that's most interesting right now. if you're reading this, hi. we should probably talk.",
-    tags: ["Present", "AI", "Blockchain", "Open to Collab"],
+    desc: "working on personal projects, doing volunteer blockchain education, and going deep on the AI and blockchain intersection. not chasing a title, just chasing the thing that's most interesting right now. if you're reading this, hi. we should probably talk.",
+    tags: ["present", "ai", "blockchain", "open to collab"],
   },
 ];
 
-const cards = [
-  {
-    id: "journey",
-    icon: "fa-solid fa-route",
-    tag: "origin story",
-    title: "how i got here",
-    preview: "in chronological order, because i respect your time.",
-  },
-  {
-    id: "fun",
-    icon: "fa-solid fa-gamepad",
-    tag: "leisure",
-    title: "things i do for fun",
-    preview: "yes, i have a life outside of a code editor. allegedly.",
-    body: [
-      "this section is still being written. check back soon.",
-    ],
-  },
-  {
-    id: "rabbit",
-    icon: "fa-solid fa-bolt",
-    tag: "obsessions",
-    title: "current rabbit holes",
-    preview: "whatever has fully consumed my brain this week.",
-    body: [
-      "this section is still being written. check back soon.",
-    ],
-  },
-  {
-    id: "tried",
-    icon: "fa-solid fa-code",
-    tag: "stack",
-    title: "tech stack",
-    preview: "what i actually build with.",
-    body: [],
-  },
-  {
-    id: "facts",
-    icon: "fa-solid fa-face-grin-stars",
-    tag: "personality",
-    title: "how i'm wired",
-    preview: "yellow, with range.",
-    body: [],
-  },
-  {
-    id: "places",
-    icon: "fa-solid fa-location-dot",
-    tag: "life",
-    title: "people & places",
-    preview: "the humans and spots that actually shaped me.",
-    body: [
-      "this section is still being written. check back soon.",
-    ],
-  },
-  {
-    id: "chaos",
-    icon: "fa-solid fa-fire",
-    tag: "chaos",
-    title: "the chaos log",
-    preview: "a running list of things that happened. no context.",
-    body: [
-      "this section is still being written. check back soon.",
-    ],
-  },
+const stack = [
+  { label: "languages",   items: ["JavaScript", "TypeScript", "Python", "HTML", "CSS"] },
+  { label: "frameworks & libraries", items: ["Astro", "React", "GSAP", "Django"] },
+  { label: "tools & infra", items: ["Git", "Node.js", "AWS", "Heroku", "Cloudflare", "Supabase"] },
+  { label: "ai & llms",   items: ["RAG", "xAI Grok", "Claude", "OpenAI Codex", "MCP"] },
+  { label: "blockchain",  items: ["Solidity", "Remix IDE", "EVM", "x402", "Avalanche"] },
+];
+
+const offline = [
+  { k: "beatboxing", v: "yes, actually. ask me for a demo at your own risk." },
+  { k: "event direction", v: "led university events with 220+ people crews. controlled chaos is a skill." },
+  { k: "public speaking", v: "give me a mic and a topic, i'll take it from there." },
+  { k: "gaming", v: "where the whole 'connecting virtually' obsession started." },
 ];
 ---
+<BaseLayout title="Gosvindraj | About" description="Who Gosvindraj is: AI-major computer scientist, web3 native, event director, beatboxer, and professional rabbit-hole diver from Penang.">
 
-<BaseLayout title="Gosvindraj | About" hideFooter={true}>
-
-  <!-- Section Nav removed — HTML preserved in style/script comments below -->
-
-  <div id="about-layout">
-
-  <!-- ── Intro ───────────────────────────────────── -->
+  <!-- ── intro ─────────────────────────────────── -->
   <section id="about-intro">
-
-    <!-- default view: hi, i'm gosh -->
-    <div id="intro-default">
-      <div class="intro-inner">
-        <p class="section-label" id="intro-label">about me</p>
-        <h1 class="intro-heading" id="intro-heading">
-          <span class="char-wrap"><span class="char-line">hi, i'm</span></span>
-          <span class="char-wrap accent-word"><span class="char-line">gosvindraj.</span></span>
-        </h1>
-        <div class="intro-bio" id="intro-bio">
-          <p>
-            i make it my business to understand what's coming before it arrives: AI, blockchain, whatever's next.
-            i build to stay sharp, not just to ship.
-            some of it works. all of it teaches.
-            all of it teaches me something.
-          </p>
-          <p>
-            click one of the <span style="font-family: monospace;">›</span> card to explore. or don't. your call.
-          </p>
-        </div>
-      </div>
+    <div class="intro-top">
+      <span class="m-label"><span class="lb">[</span> about <span class="lb">/</span> the human <span class="lb">]</span></span>
+      <span class="m-label">last updated: always</span>
     </div>
 
-    <!-- panel view: card content (swaps in on card select) -->
-    <div id="intro-panel">
+    <h1 class="intro-display display">
+      <span class="line-mask"><span class="line">curious</span></span>
+      <span class="line-mask"><span class="line">by <span class="serif acid">default.</span></span></span>
+    </h1>
 
-      <!-- journey panel (timeline) -->
-      <div class="ep-content" data-panel="journey">
-        <div class="ep-header">
-          <span class="ep-tag">origin story</span>
-          <h3 class="ep-title">how i got here</h3>
-          <p class="ep-desc">in chronological order, because i respect your time</p>
-        </div>
-        <div class="tl-list">
-          {timeline.map((entry, i) => (
-            <div class="tl-row" data-tl-index={i}>
-              <div class="tl-left-col">
-                <span class="tl-year">{entry.year}</span>
-                <div class="tl-vline"></div>
-              </div>
-              <div class="tl-card">
-                <div class="tl-title-row">
-                  <h4 class="tl-title">{entry.title}</h4>
-                  <span class="tl-range">{entry.range}</span>
-                </div>
-                <p class="tl-place">{entry.place}</p>
-                <p class="tl-desc">{entry.desc}</p>
-                <div class="tl-tags">
-                  {entry.tags.map(t => <span class="tl-tag">{t}</span>)}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <!-- skills panel -->
-      <div class="ep-content" data-panel="tried" style="display:none">
-        <div class="ep-header">
-          <span class="ep-tag">stack</span>
-          <h3 class="ep-title">tech stack</h3>
-          <p class="ep-desc">languages, tools, frameworks. some daily drivers, some experiments.</p>
-        </div>
-        <div class="skills-grid">
-          <div class="skills-group">
-            <span class="skills-group-label">languages</span>
-            <div class="skills-tags">
-              <span class="skill-tag">JavaScript</span>
-              <span class="skill-tag">TypeScript</span>
-              <span class="skill-tag">Python</span>
-              <span class="skill-tag">HTML</span>
-              <span class="skill-tag">CSS</span>
-            </div>
-          </div>
-          <div class="skills-group">
-            <span class="skills-group-label">frameworks & libraries</span>
-            <div class="skills-tags">
-              <span class="skill-tag">Astro</span>
-              <span class="skill-tag">React</span>
-              <span class="skill-tag">GSAP</span>
-              <span class="skill-tag">Django</span>
-            </div>
-          </div>
-          <div class="skills-group">
-            <span class="skills-group-label">tools & infra</span>
-            <div class="skills-tags">
-              <span class="skill-tag">Git</span>
-              <span class="skill-tag">Node.js</span>
-              <span class="skill-tag">AWS</span>
-              <span class="skill-tag">Heroku</span>
-              <span class="skill-tag">Cloudflare</span>
-              <span class="skill-tag">Supabase</span>
-            </div>
-          </div>
-          <div class="skills-group">
-            <span class="skills-group-label">ai & llms</span>
-            <div class="skills-tags">
-              <span class="skill-tag">RAG</span>
-              <span class="skill-tag">xAI Grok</span>
-              <span class="skill-tag">Claude</span>
-              <span class="skill-tag">OpenAI Codex</span>
-              <span class="skill-tag">MCP</span>
-            </div>
-          </div>
-          <div class="skills-group">
-            <span class="skills-group-label">blockchain</span>
-            <div class="skills-tags">
-              <span class="skill-tag">Solidity</span>
-              <span class="skill-tag">Remix IDE</span>
-              <span class="skill-tag">EVM</span>
-              <span class="skill-tag">x402</span>
-              <span class="skill-tag">Avalanche</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- personality panel -->
-      <div class="ep-content" data-panel="facts" style="display:none">
-        <div class="ep-header">
-          <span class="ep-tag">personality</span>
-          <h3 class="ep-title">how i'm wired</h3>
-          <p class="ep-desc">yellow, with range.</p>
-        </div>
-        <div class="facts-prose">
-          <p class="facts-lead"><span class="c-yellow">yellow</span>, according to surrounded by idiots. enthusiastic, talks too much, gets excited about everything, and absolutely hates sitting still.</p>
-          <p>ideas come fast because i'm always scanning the frontier. execution follows. every project, finished or not, is how i stay ahead.</p>
-          <p>can shift into <span class="c-blue">blue</span> when the work needs precision, <span class="c-red">red</span> when something needs to get done, <span class="c-green">green</span> when someone just needs to be heard. still <span class="c-yellow">yellow</span> underneath. always.</p>
-          <p>naturally optimistic, probably to a fault. high energy in person, surprisingly focused when alone. the two modes don't always look like the same person.</p>
-          <button class="facts-ref-btn" id="facts-diagram-btn">
-            not sure what the colours mean? <span class="facts-ref-arrow">↗</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- all other panels -->
-      {cards.filter(c => c.id !== "journey" && c.id !== "tried" && c.id !== "facts").map((c) => (
-        <div class="ep-content" data-panel={c.id} style="display:none">
-          <div class="ep-header">
-            <span class="ep-tag">{c.tag}</span>
-            <h3 class="ep-title">{c.title}</h3>
-            <p class="ep-desc">{c.preview}</p>
-          </div>
-          <ul class="ep-list">
-            {(c.body ?? []).map(item => (
-              <li class="ep-item">
-                <span class="ep-bullet">·</span>
-                <span>{item}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-
-    </div><!-- /intro-panel -->
-
+    <div class="intro-bio">
+      <p>
+        i'm gosvindraj. gosh for short. i make it my business to understand
+        what's coming before it arrives: AI, blockchain, whatever's next.
+        i build to stay sharp, not just to ship.
+      </p>
+      <p>
+        some of it works. all of it teaches me something.
+      </p>
+    </div>
   </section>
 
-  <!-- ── Explore ─────────────────────────────────── -->
-  <section id="about-explore">
+  <!-- ── timeline ──────────────────────────────── -->
+  <section class="sec" id="about-journey">
+    <div class="sec-head" data-reveal>
+      <span class="m-label"><span class="lb">[</span> 01 <span class="lb">/</span> how i got here <span class="lb">]</span></span>
+      <span class="m-label">chronological, because i respect your time</span>
+    </div>
 
-    <!-- selector cards -->
-    <div class="explore-cards" id="explore-cards">
-      <div class="ec-center-hint" id="ec-center-hint">
-        <span class="ec-center-ring"></span>
-        <span class="ec-center-text">pick<br/>one</span>
-      </div>
-      {cards.map((c) => (
-        <div class="ec-card-wrap">
-          <button class="ec-card" data-card={c.id} aria-label={c.title}>
-            <div class="ec-icon">
-              <i class={c.icon}></i>
+    <div class="tl-list">
+      {timeline.map((entry) => (
+        <div class="tl-row" data-reveal>
+          <div class="tl-year-col">
+            <span class="tl-year">{entry.year}</span>
+            <span class="tl-range">{entry.range}</span>
+          </div>
+          <div class="tl-main">
+            <h2 class="tl-title">{entry.title}</h2>
+            <p class="tl-place">{entry.place}</p>
+            <p class="tl-desc">{entry.desc}</p>
+            <div class="tl-tags">
+              {entry.tags.map((t) => <span class="tl-tag">{t}</span>)}
             </div>
-            <div class="ec-meta">
-              <span class="ec-tag">{c.tag}</span>
-            </div>
-          </button>
+          </div>
         </div>
       ))}
     </div>
-
   </section>
 
-  </div><!-- /about-layout -->
+  <!-- ── stack ─────────────────────────────────── -->
+  <section class="sec" id="about-stack">
+    <div class="sec-head" data-reveal>
+      <span class="m-label"><span class="lb">[</span> 02 <span class="lb">/</span> the stack <span class="lb">]</span></span>
+      <span class="m-label">daily drivers & experiments</span>
+    </div>
 
-  <!-- ── Personality model modal ───────────────────── -->
-  <div id="diagram-modal" aria-modal="true" role="dialog" aria-label="Personality model">
-    <div class="dm-backdrop" id="dm-backdrop"></div>
-    <div class="dm-box">
-      <button class="dm-close" id="dm-close" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
-      <a class="dm-title" href="https://www.surroundedbyidiots.com" target="_blank" rel="noopener noreferrer">surrounded by idiots ↗</a>
-      <div class="q-diagram">
-        <p class="q-label q-top">Task-Oriented &amp; Issue-Oriented</p>
-        <div class="q-middle">
-          <div class="q-side-label q-left-label">Introvert, Passive &amp; Reserved</div>
-          <div class="q-cells">
-            <div class="q-cell q-blue">Blue</div>
-            <div class="q-cell q-red">Red</div>
-            <div class="q-cell q-green">Green</div>
-            <div class="q-cell q-yellow">Yellow</div>
+    <div class="stack-grid">
+      {stack.map((group) => (
+        <div class="stack-cell" data-reveal>
+          <span class="stack-label">{group.label}</span>
+          <div class="stack-tags">
+            {group.items.map((item) => <span class="stack-tag">{item}</span>)}
           </div>
-          <div class="q-side-label q-right-label">Extrovert, Active &amp; Implementor</div>
         </div>
-        <p class="q-label q-bottom">Relation-Oriented</p>
+      ))}
+    </div>
+  </section>
+
+  <!-- ── wiring ────────────────────────────────── -->
+  <section class="sec" id="about-wiring">
+    <div class="sec-head" data-reveal>
+      <span class="m-label"><span class="lb">[</span> 03 <span class="lb">/</span> how i'm wired <span class="lb">]</span></span>
+      <span class="m-label">yellow, with range</span>
+    </div>
+
+    <div class="wiring-wrap" data-reveal>
+      <p class="wiring-lead">
+        <span class="c-yellow">yellow</span>, according to
+        <a href="https://www.surroundedbyidiots.com" target="_blank" rel="noopener noreferrer" class="wiring-ref">surrounded by idiots <span aria-hidden="true">&#8599;</span></a>.
+        enthusiastic, talks too much, gets excited about everything,
+        and absolutely hates sitting still.
+      </p>
+      <div class="wiring-body">
+        <p>
+          ideas come fast because i'm always scanning the frontier.
+          execution follows. every project, finished or not, is how
+          i stay ahead.
+        </p>
+        <p>
+          can shift into <span class="c-blue">blue</span> when the work needs precision,
+          <span class="c-red">red</span> when something needs to get done,
+          <span class="c-green">green</span> when someone just needs to be heard.
+          still <span class="c-yellow">yellow</span> underneath. always.
+        </p>
+        <p>
+          naturally optimistic, probably to a fault. high energy in person,
+          surprisingly focused when alone. the two modes don't always look
+          like the same person.
+        </p>
       </div>
     </div>
-  </div>
+  </section>
+
+  <!-- ── offline ───────────────────────────────── -->
+  <section class="sec" id="about-offline">
+    <div class="sec-head" data-reveal>
+      <span class="m-label"><span class="lb">[</span> 04 <span class="lb">/</span> away from the keyboard <span class="lb">]</span></span>
+      <span class="m-label">allegedly i have a life</span>
+    </div>
+
+    <div class="off-list">
+      {offline.map((item) => (
+        <div class="off-row" data-reveal>
+          <span class="off-key">{item.k}</span>
+          <span class="off-val">{item.v}</span>
+        </div>
+      ))}
+    </div>
+  </section>
 
 </BaseLayout>
 
 <style>
-  /* ── Shared ──────────────────────────────────── */
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0;
-  }
-
-  /* ── Intro section ───────────────────────────── */
+  /* ── intro ────────────────────────────────── */
   #about-intro {
-    /* base: just a container; children handle layout */
-  }
-
-  #intro-default {
-    min-height: calc(100vh - var(--nav-height));
-    display: flex;
-    align-items: center;
-    padding: 5rem 8%;
-  }
-
-  /* panel view: hidden until card selected */
-  #intro-panel {
-    display: none;
-  }
-
-  .intro-inner {
-    max-width: 780px;
-    width: 100%;
+    padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(3rem, 8vh, 5rem);
     display: flex;
     flex-direction: column;
-    gap: 2.5rem;
+    gap: clamp(1.75rem, 5vh, 3rem);
   }
 
-  .intro-heading {
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(3rem, 7vw, 6rem);
-    font-weight: 300;
-    color: var(--text);
-    line-height: 1.1;
-    letter-spacing: 0.02em;
+  .intro-top {
     display: flex;
-    flex-direction: column;
-    gap: 0.1em;
+    justify-content: space-between;
+    gap: 1rem;
   }
 
-  .char-wrap  { display: block; overflow: hidden; padding-bottom: 0.2em; margin-bottom: -0.2em; }
-  .char-line  { display: block; transform: translateY(110%); padding-bottom: 0.05em; }
-  .accent-word .char-line { color: var(--accent); }
+  .intro-display {
+    font-size: clamp(2.8rem, 10vw, 8.5rem);
+  }
+
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+
+  .line { display: block; }
 
   .intro-bio {
+    max-width: 58ch;
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    opacity: 0;
   }
 
   .intro-bio p {
-    font-size: clamp(0.95rem, 1.8vw, 1.1rem);
-    font-weight: 400;
-    color: var(--muted);
+    font-size: clamp(0.95rem, 1.7vw, 1.1rem);
+    color: var(--dim);
     line-height: 1.85;
-    max-width: 620px;
   }
 
-  /* ── Explore section ─────────────────────────── */
-  #about-explore {
-    padding: 4rem 8% 3rem;
-  }
-
-  /* ── Card circle ─────────────────────────────── */
-  /*   Positions managed by GSAP — no nth-child rules */
-  .explore-cards {
-    position: relative;
-    min-height: 500px;
-    margin-bottom: 0;
-    overflow: visible;
-  }
-
-  /* ── Orbit centre hint ───────────────────────── */
-  .ec-center-hint {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 76px;
-    height: 76px;
-    pointer-events: none;
-    z-index: 2;
-  }
-
-  .ec-center-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 1px solid rgba(155, 109, 206, 0.25);
-    animation: ec-ring-pulse 3s ease-in-out infinite;
-  }
-
-  @keyframes ec-ring-pulse {
-    0%, 100% { transform: scale(1);    opacity: 0.5; }
-    50%       { transform: scale(1.12); opacity: 1;   }
-  }
-
-  .ec-center-text {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.55;
-    text-align: center;
-    line-height: 1.5;
-  }
-
-  @media (max-width: 900px) {
-    .ec-center-hint { display: none; }
-  }
-
-  .ec-card-wrap {
-    position: absolute;
-    width: 145px;
-    left: 50%;
-    top: 50%;
-  }
-
-  .ec-card {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.9rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    cursor: none;
-    text-align: left;
-    box-shadow: 0 3px 14px rgba(0, 0, 0, 0.45);
-    transition: background var(--transition), border-color var(--transition),
-                box-shadow var(--transition);
-    opacity: 0;
-    position: relative;
-  }
-
-  .ec-card::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 2px;
-    border-radius: 4px 0 0 4px;
-    background: var(--accent);
-    transform: scaleY(0);
-    transform-origin: bottom;
-    transition: transform 0.25s ease;
-  }
-
-  .ec-card:hover {
-    background: var(--surface);
-    border-color: var(--border-hover);
-    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.55);
-  }
-  .ec-card.active {
-    background: var(--surface);
-    border-color: var(--accent);
-    box-shadow: 0 4px 20px rgba(155, 109, 206, 0.18);
-  }
-  .ec-card.active::before { transform: scaleY(1); }
-
-  .ec-icon {
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--accent);
-    font-size: 12px;
-    flex-shrink: 0;
-    transition: border-color var(--transition), background var(--transition);
-  }
-
-  .ec-card:hover .ec-icon,
-  .ec-card.active .ec-icon {
-    border-color: var(--border-hover);
-    background: var(--accent-dim);
-  }
-
-  .ec-meta {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .ec-tag {
-    font-size: 9px;
-    font-weight: 500;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--accent);
-    opacity: 0.7;
-  }
-
-  .ec-title {
-    font-size: 0.85rem;
-    font-weight: 400;
-    color: var(--text);
-    letter-spacing: 0.01em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-
-  /* ── Intro panel (left-column card content) ─── */
-  #intro-panel {
-    flex-direction: column;
-  }
-
-  /* ── Custom scrollbar for left column ───────── */
-  #about-intro {
-    scrollbar-width: thin;
-    scrollbar-color: rgba(155, 109, 206, 0.25) transparent;
-  }
-
-  #about-intro::-webkit-scrollbar {
-    width: 3px;
-  }
-
-  #about-intro::-webkit-scrollbar-track {
-    background: transparent;
-  }
-
-  #about-intro::-webkit-scrollbar-thumb {
-    background: rgba(155, 109, 206, 0.25);
-    border-radius: 2px;
-  }
-
-  #about-intro::-webkit-scrollbar-thumb:hover {
-    background: rgba(155, 109, 206, 0.55);
-  }
-
-  .ep-content {
-    padding: 2.5rem;
-  }
-
-  .ep-header {
-    margin-bottom: 2rem;
-    padding-bottom: 1.25rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .ep-tag {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    display: block;
-    margin-bottom: 0.4rem;
-  }
-
-  .ep-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(1.5rem, 3vw, 2.2rem);
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.03em;
-    margin-bottom: 0.35rem;
-  }
-
-  .ep-desc {
-    font-size: 0.82rem;
-    color: var(--muted);
-    line-height: 1.7;
-    font-style: italic;
-  }
-
-  /* generic list panel */
-  .ep-list {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .ep-item {
-    display: flex;
-    gap: 0.75rem;
-    font-size: 0.85rem;
-    color: var(--muted);
-    line-height: 1.7;
-  }
-
-  .ep-bullet {
-    color: var(--accent);
-    flex-shrink: 0;
-    font-weight: 600;
-  }
-
-  /* ── Timeline inside panel ───────────────────── */
+  /* ── timeline ─────────────────────────────── */
   .tl-list {
     display: flex;
     flex-direction: column;
-    gap: 0;
+    border-top: 1px solid var(--line);
   }
 
   .tl-row {
-    display: flex;
-    gap: 1.5rem;
-    align-items: stretch;
+    display: grid;
+    grid-template-columns: minmax(7rem, 14rem) 1fr;
+    gap: 2rem;
+    padding: clamp(1.75rem, 4vw, 2.75rem) 0.5rem;
+    border-bottom: 1px solid var(--line);
   }
 
-  .tl-left-col {
+  .tl-year-col {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-    width: 48px;
+    gap: 0.4rem;
   }
 
   .tl-year {
-    font-family: "JetBrains Mono", monospace;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    color: var(--accent);
-    white-space: nowrap;
-    padding-top: 0.1rem;
-    text-align: center;
-  }
-
-  .tl-vline {
-    width: 1px;
-    flex: 1;
-    background: var(--border);
-    margin-top: 0.5rem;
-    min-height: 1.5rem;
-  }
-
-  .tl-row:last-child .tl-vline { display: none; }
-
-  .tl-card {
-    flex: 1;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1.1rem 1.25rem;
-    margin-bottom: 1rem;
-    transition: border-color var(--transition), background var(--transition);
-  }
-
-  .tl-card:hover {
-    border-color: var(--border-hover);
-    background: rgba(155,109,206,0.03);
-  }
-
-  .tl-title-row {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-bottom: 0.2rem;
-  }
-
-  .tl-title {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text);
-    letter-spacing: 0.01em;
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 740;
+    font-size: clamp(1.6rem, 3.5vw, 2.6rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    color: var(--acid);
+    text-transform: lowercase;
   }
 
   .tl-range {
+    font-family: var(--font-mono);
     font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    white-space: nowrap;
-    flex-shrink: 0;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  .tl-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 62ch;
+  }
+
+  .tl-title {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: clamp(1.2rem, 2.6vw, 1.7rem);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1.1;
   }
 
   .tl-place {
-    font-size: 11px;
-    color: var(--muted);
-    letter-spacing: 0.07em;
-    margin-bottom: 0.6rem;
+    font-family: var(--font-serif);
     font-style: italic;
+    font-size: 0.95rem;
+    color: var(--dim);
   }
 
   .tl-desc {
-    font-size: 0.8rem;
-    color: var(--muted);
-    line-height: 1.75;
-    margin-bottom: 0.85rem;
+    font-size: 0.9rem;
+    color: var(--dim);
+    line-height: 1.85;
+    margin-top: 0.35rem;
   }
 
   .tl-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.35rem;
+    gap: 0.4rem;
+    margin-top: 0.75rem;
   }
 
   .tl-tag {
-    font-size: 10px;
+    font-family: var(--font-mono);
+    font-size: 9px;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--accent);
-    background: var(--accent-dim);
-    border: 1px solid rgba(155,109,206,0.2);
-    padding: 0.15rem 0.5rem;
-    border-radius: 2px;
+    color: var(--dim);
+    border: 1px solid var(--line);
+    padding: 0.25rem 0.6rem;
   }
 
-  /* ── Section Nav (removed — kept for reference) ─────────────────────
-  HTML:
-    <nav id="about-nav" aria-label="Page sections">
-      <div id="about-nav-track"><div id="about-nav-pill"></div></div>
-      <button class="anav-btn" data-target="about-intro"   data-index="0" aria-label="intro">
-        <span class="anav-dot"></span><span class="anav-label">intro</span>
-      </button>
-      <button class="anav-btn" data-target="about-explore" data-index="1" aria-label="explore">
-        <span class="anav-dot"></span><span class="anav-label">explore</span>
-      </button>
-    </nav>
-
-  #about-nav {
-    position: fixed; right: 2rem; top: 50%; transform: translateY(-50%);
-    z-index: 50; display: flex; flex-direction: column;
-    align-items: center; gap: 1.8rem; opacity: 0;
-  }
-  #about-nav-track {
-    position: absolute; left: 50%; top: 0; bottom: 0; width: 1px;
-    transform: translateX(-50%); background: rgba(255,255,255,0.06);
-    pointer-events: none;
-  }
-  #about-nav-pill {
-    position: absolute; left: 50%; transform: translateX(-50%);
-    width: 1px; height: 14px; top: 0; will-change: top; filter: blur(0.3px);
-    background: linear-gradient(to bottom, transparent, var(--accent), transparent);
-  }
-  .anav-btn {
-    position: relative; display: flex; align-items: center;
-    background: none; border: none; cursor: none; padding: 3px; z-index: 1;
-  }
-  .anav-label {
-    position: absolute; right: calc(100% + 0.7rem); font-size: 10px;
-    font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
-    color: var(--muted); opacity: 0.22; white-space: nowrap; pointer-events: none;
-    transition: opacity 0.25s ease, color 0.25s ease, transform 0.25s ease;
-    transform: translateX(4px);
-  }
-  .anav-dot {
-    width: 5px; height: 5px; border-radius: 50%; background: rgba(155,109,206,0.3);
-    flex-shrink: 0; display: block;
-    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-  }
-  .anav-btn.active .anav-dot { background: var(--accent); transform: scale(1.5); box-shadow: 0 0 6px rgba(155,109,206,0.7); }
-  .anav-btn.active .anav-label { opacity: 0.7; color: var(--text); }
-  #about-nav:hover .anav-label { opacity: 0.9; transform: translateX(0); }
-  #about-nav:hover .anav-btn.active .anav-label { opacity: 1; color: var(--text); }
-  #about-nav:hover .anav-dot { background: rgba(155,109,206,0.55); }
-  #about-nav:hover .anav-btn.active .anav-dot { background: var(--accent); }
-  ── end Section Nav ── */
-
-  /* ── Two-column desktop layout ──────────────── */
-  @media (min-width: 701px) {
-    #about-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: start;
-    }
-
-    /* left col: fixed height, scrollable when panel content is long */
-    #about-intro {
-      overflow-y: auto;
-      height: calc(100vh - var(--nav-height));
-      min-height: unset;
-      position: sticky;
-      top: var(--nav-height);
-    }
-
-    /* default view fills the column height and centres content */
-    #intro-default {
-      height: 100%;
-      min-height: unset;
-      padding: 5rem 3rem 5rem 8%;
-    }
-
-    .intro-inner { max-width: 100%; }
-
-    /* panel view: fills column */
-    #intro-panel {
-      min-height: 100%;
-    }
-
-    .ep-content {
-      padding: 2.5rem 3rem 2.5rem 8%;
-    }
-
-    /* right col: orbit, vertically centred */
-    #about-explore {
-      padding: 2rem 8% 2rem 3.5rem;
-      border-left: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      min-height: calc(100vh - var(--nav-height));
-    }
-
-    .explore-cards { width: 100%; }
-
+  @media (max-width: 700px) {
+    .tl-row { grid-template-columns: 1fr; gap: 1rem; }
+    .tl-year-col { flex-direction: row; align-items: baseline; gap: 0.9rem; }
   }
 
-  /* ── Skills panel ───────────────────────────── */
-  .skills-grid {
+  /* ── stack ────────────────────────────────── */
+  .stack-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+
+  .stack-cell {
+    background: var(--bg);
+    padding: 1.75rem 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.75rem;
-    padding: 0 0 1.5rem;
+    gap: 1rem;
+    transition: background 0.25s ease;
   }
 
-  .skills-group-label {
+  .stack-cell:hover { background: var(--surface); }
+
+  .stack-label {
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--muted);
-    display: block;
-    margin-bottom: 0.6rem;
+    color: var(--acid);
   }
 
-  .skills-tags {
+  .stack-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem;
   }
 
-  .skill-tag {
+  .stack-tag {
+    font-family: var(--font-mono);
     font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: var(--text);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    padding: 0.3rem 0.7rem;
-    border-radius: 2px;
+    color: var(--ink);
+    border: 1px solid var(--line);
+    padding: 0.3rem 0.65rem;
     transition: border-color var(--transition), color var(--transition), background var(--transition);
   }
 
-  .skill-tag:hover {
-    border-color: rgba(155, 109, 206, 0.5);
-    color: var(--accent);
-    background: var(--accent-dim);
+  .stack-tag:hover {
+    border-color: var(--acid);
+    color: var(--acid);
+    background: var(--acid-dim);
   }
 
+  /* ── wiring ───────────────────────────────── */
+  .wiring-wrap {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
 
-  /* ── Personality prose panel ────────────────── */
-  .facts-prose {
-    padding: 0 0 1.5rem;
+  .wiring-lead {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.4rem, 3vw, 2.1rem);
+    color: var(--ink);
+    line-height: 1.45;
+  }
+
+  .wiring-ref {
+    color: var(--acid);
+    border-bottom: 1px solid rgba(155, 109, 206, 0.4);
+    transition: border-color var(--transition);
+  }
+
+  .wiring-ref:hover { border-color: var(--acid); }
+
+  .wiring-body {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1.1rem;
   }
 
-  .facts-prose p {
-    font-size: 0.875rem;
-    color: var(--muted);
-    line-height: 1.85;
+  .wiring-body p {
+    font-size: 0.92rem;
+    color: var(--dim);
+    line-height: 1.9;
   }
 
-  .c-yellow { color: #d4b832; font-weight: 600; }
+  .c-yellow { color: #e8cc4a; font-weight: 600; }
   .c-blue   { color: #7ec8e8; font-weight: 600; }
   .c-red    { color: #e88888; font-weight: 600; }
   .c-green  { color: #80cc85; font-weight: 600; }
 
-  .facts-lead {
-    font-size: 0.95rem !important;
-    color: var(--text) !important;
-    font-style: italic;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
+  @media (max-width: 780px) {
+    .wiring-wrap { grid-template-columns: 1fr; }
   }
 
-
-  /* ── Facts diagram button ───────────────────── */
-  .facts-ref-btn {
-    align-self: flex-start;
-    background: none;
-    border: none;
-    padding: 0;
-    margin-top: 0.75rem;
-    font-family: inherit;
-    font-size: 0.78rem;
-    font-style: italic;
-    color: var(--accent);
-    opacity: 0.85;
-    cursor: none;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-color: rgba(155, 109, 206, 0.35);
-    transition: opacity var(--transition), text-decoration-color var(--transition);
-  }
-
-  .facts-ref-btn:hover {
-    opacity: 1;
-    text-decoration-color: rgba(155, 109, 206, 0.8);
-  }
-
-  .facts-ref-arrow {
-    font-style: normal;
-    font-size: 0.7rem;
-  }
-
-  /* ── Diagram modal ───────────────────────────── */
-  #diagram-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .dm-backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(11, 11, 13, 0.85);
-    backdrop-filter: blur(6px);
-  }
-
-  .dm-box {
-    position: relative;
-    z-index: 1;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 2rem;
-    width: min(480px, 90vw);
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.6);
-  }
-
-  .dm-close {
-    position: absolute;
-    top: 0.85rem;
-    right: 0.85rem;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    color: var(--muted);
-    width: 26px;
-    height: 26px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    cursor: none;
-    transition: color var(--transition), border-color var(--transition), background var(--transition);
-  }
-
-  .dm-close:hover {
-    color: var(--text);
-    border-color: var(--border-hover);
-    background: var(--accent-dim);
-  }
-
-  .dm-title {
-    display: block;
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-    text-align: center;
-    text-decoration: none;
-    transition: opacity var(--transition);
-  }
-
-  .dm-title:hover { opacity: 0.75; }
-
-  /* ── Quadrant diagram ────────────────────────── */
-  .q-diagram {
+  /* ── offline ──────────────────────────────── */
+  .off-list {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
+    border-top: 1px solid var(--line);
   }
 
-  .q-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    text-align: center;
-  }
-
-  .q-middle {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    width: 100%;
-  }
-
-  .q-side-label {
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.06em;
-    color: var(--muted);
-    line-height: 1.7;
-    flex-shrink: 0;
-    width: 56px;
-  }
-
-  .q-left-label { text-align: right; }
-  .q-right-label { text-align: left; }
-
-  .q-cells {
-    flex: 1;
+  .off-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 4px;
-    aspect-ratio: 1;
-    position: relative;
+    grid-template-columns: minmax(9rem, 18rem) 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+    transition: background 0.25s ease, padding-left 0.25s ease;
   }
 
-  /* axis cross lines */
-  .q-cells::before,
-  .q-cells::after {
-    content: '';
-    position: absolute;
-    background: rgba(255, 255, 255, 0.12);
-    pointer-events: none;
-    z-index: 1;
-  }
-  .q-cells::before { left: 50%; top: -6px; bottom: -6px; width: 1px; transform: translateX(-50%); }
-  .q-cells::after  { top: 50%; left: -6px; right: -6px; height: 1px; transform: translateY(-50%); }
+  .off-row:hover { background: var(--surface); padding-left: 1.25rem; }
 
-  .q-cell {
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    font-weight: 600;
-    position: relative;
-    min-height: 80px;
-    border: 1px solid;
+  .off-key {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: clamp(1rem, 2.2vw, 1.35rem);
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    color: var(--ink);
   }
 
-  .q-blue  { background: rgba(58, 159, 212, 0.1);  border-color: rgba(58, 159, 212, 0.3);  color: #7ec8e8; }
-  .q-red   { background: rgba(212, 64, 64, 0.1);   border-color: rgba(212, 64, 64, 0.3);   color: #e88888; }
-  .q-green { background: rgba(74, 173, 82, 0.1);   border-color: rgba(74, 173, 82, 0.3);   color: #80cc85; }
-  .q-yellow {
-    background: rgba(212, 184, 50, 0.1);
-    border-color: rgba(212, 184, 50, 0.3);
-    color: #d4b832;
+  .off-val {
+    font-size: 0.88rem;
+    color: var(--dim);
+    line-height: 1.7;
   }
 
-  /* ── Mobile ──────────────────────────────────── */
-  @media (max-width: 700px) {
-    #intro-default { padding: 4rem 6%; min-height: unset; }
-    #about-explore { padding: 4rem 6% 2rem; }
-    /* #about-nav  { display: none; } */
-    .explore-cards { position: static; min-height: unset; display: flex; flex-direction: column; gap: 0.75rem; }
-    .ec-card-wrap  { position: static; width: auto; transform: none !important; }
-    .ec-card       { opacity: 1; transform: none !important; }
-    .ep-content    { padding: 1.5rem; }
-    .tl-left-col   { width: 38px; }
-
-    /* ── Tech stack ── */
-    .skills-grid     { gap: 1.1rem; }
-    .skill-tag       { font-size: 10px; padding: 0.25rem 0.55rem; }
-
-    /* ── Personality prose ── */
-    .facts-lead      { font-size: 0.875rem !important; }
-    .facts-ref-btn   { margin-top: 0.5rem; }
-
-    /* ── Personality modal ── */
-    .dm-box          { padding: 1.25rem; }
-    .dm-title        { margin-bottom: 1rem; }
-    .q-side-label    { width: auto; writing-mode: vertical-rl; font-size: 10px; letter-spacing: 0.04em; }
-    .q-left-label    { transform: rotate(180deg); text-align: right; }
-    .q-middle        { gap: 0.35rem; justify-content: center; }
-    .q-cells         { flex: 1; }
-    .q-cell          { min-height: 64px; font-size: 0.78rem; }
+  @media (max-width: 600px) {
+    .off-row { grid-template-columns: 1fr; gap: 0.4rem; }
   }
 </style>
 
 <script>
   import gsap from "gsap";
-  import { ScrollTrigger } from "gsap/ScrollTrigger";
-  import { ScrollToPlugin }  from "gsap/ScrollToPlugin";
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-  /* ── Glitch reveal ───────────────────────────── */
-  const GLITCH = "!<>-_\\/[]{}—=+*^?#@$%&";
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  function glitchReveal(el: HTMLElement, finalText: string, duration = 780) {
-    const frames = 18;
-    const ms = Math.round(duration / frames);
-    let frame = 0;
-    el.style.opacity = "1";
-
-    const iv = setInterval(() => {
-      const progress = frame / frames;
-      const revealed = Math.floor(progress * finalText.length);
-      let display = "";
-      for (let i = 0; i < finalText.length; i++) {
-        if (i < revealed) {
-          display += Math.random() < 0.07 * (1 - progress)
-            ? GLITCH[Math.floor(Math.random() * GLITCH.length)]
-            : finalText[i];
-        } else {
-          display += finalText[i] === " " ? "\u00a0"
-            : GLITCH[Math.floor(Math.random() * GLITCH.length)];
-        }
-      }
-      el.textContent = display;
-      if (frame < frames - 2 && Math.random() < 0.4) {
-        el.style.textShadow = `${+(Math.random()*4-2).toFixed(1)}px 0 rgba(255,0,200,0.6),`
-                            + `${+(Math.random()*-4+2).toFixed(1)}px 0 rgba(0,255,255,0.6)`;
-      } else {
-        el.style.textShadow = "";
-      }
-      frame++;
-      if (frame > frames) {
-        clearInterval(iv);
-        el.textContent = finalText;
-        el.style.textShadow = "";
-      }
-    }, ms);
-  }
-
-  /* ── Intro animations ────────────────────────── */
   function initAbout() {
-    const label = document.getElementById("intro-label");
-    if (!label) return;
+    const intro = document.getElementById("about-intro");
+    if (!intro || reduced) return;
 
-    // Intro section is always above-fold — animate directly, no ScrollTrigger
-    gsap.to(label, { opacity: 1, duration: 0.5, ease: "power3.out", delay: 0.2 });
+    const lines = intro.querySelectorAll<HTMLElement>(".line");
+    const top   = intro.querySelector<HTMLElement>(".intro-top");
+    const bio   = intro.querySelector<HTMLElement>(".intro-bio");
 
-    const lines     = Array.from(document.querySelectorAll<HTMLElement>(".char-line"));
-    const lineTexts = lines.map(el => el.textContent ?? "");
-    lines.forEach((el, i) => {
-      setTimeout(() => {
-        gsap.set(el, { y: "0%" });
-        glitchReveal(el, lineTexts[i], 780);
-      }, 300 + i * 200);
-    });
+    gsap.set(top, { opacity: 0 });
+    gsap.set(bio, { opacity: 0, y: 20 });
+    gsap.set(lines, { yPercent: 110 });
 
-    const bio = document.getElementById("intro-bio");
-    if (bio) {
-      const paras = bio.querySelectorAll("p");
-      gsap.timeline({ delay: 0.65 })
-        .to(bio, { opacity: 1, duration: 0.01 })
-        .fromTo(paras,
-          { opacity: 0, y: 18 },
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.15, ease: "power3.out" }
-        );
-    }
-  }
-
-  /* ── Explore section ─────────────────────────── */
-  function initExplore() {
-    const ecCards     = Array.from(document.querySelectorAll<HTMLElement>(".ec-card"));
-    const ecWraps     = Array.from(document.querySelectorAll<HTMLElement>(".ec-card-wrap"));
-    const introDefault = document.getElementById("intro-default")!;
-    const introPanel   = document.getElementById("intro-panel")!;
-    if (!ecCards.length || !introPanel) return;
-
-    /* ── Constants ──────────────────────────────── */
-    const N      = ecWraps.length;      // 7
-    const RX     = 205, RY = 140;       // ellipse radii
-    const HALF_W = 73;                  // half of 145px card width
-    const HALF_H = 30;                  // approx half card height
-    const ROTATIONS = [-2.5, 1.8, -1.2, 2.8, -2, 1.5, -3];
-
-    const CENTER  = { x: -HALF_W, y: -HALF_H };
-
-    /* ── Continuous orbit ticker ────────────────── */
-    let orbitDeg     = -90;                      // leading angle in degrees (starts at top)
-    const DEG_PER_MS = 360 / (30 * 1000);        // one full revolution per 30 s
-    let lastTick     = performance.now();
-    const returningSet = new Set<number>();       // cards mid-transition, skip ticker
-    let orbitingCards  = Array.from({ length: N }, (_, i) => i); // indices of orbiting cards
-
-    function slotPos(slotIdx: number, total: number, deg: number) {
-      const rad = ((deg + (slotIdx / total) * 360) * Math.PI) / 180;
-      return { x: RX * Math.cos(rad) - HALF_W, y: RY * Math.sin(rad) - HALF_H };
-    }
-
-    // Smoothly redistribute orbiting cards to their new evenly-spaced slots
-    function redistributeOrbit(dur = 0.55) {
-      const n = orbitingCards.length;
-      const ahead = orbitDeg + DEG_PER_MS * dur * 1000; // anticipate where orbit will be
-      orbitingCards.forEach((cardIdx, slotIdx) => {
-        returningSet.add(cardIdx);
-        const { x, y } = slotPos(slotIdx, n, ahead);
-        gsap.to(ecWraps[cardIdx], {
-          x, y, duration: dur, ease: "power3.inOut",
-          onComplete: () => returningSet.delete(cardIdx),
-        });
-      });
-    }
-
-    function orbitTick() {
-      const now = performance.now();
-      orbitDeg += DEG_PER_MS * (now - lastTick);
-      lastTick = now;
-      const n = orbitingCards.length;
-      orbitingCards.forEach((cardIdx, slotIdx) => {
-        if (returningSet.has(cardIdx)) return;
-        const { x, y } = slotPos(slotIdx, n, orbitDeg);
-        gsap.set(ecWraps[cardIdx], { x, y });
-      });
-    }
-    gsap.ticker.add(orbitTick);
-
-    /* ── Mobile: simple reveal + click, skip orbit ─ */
-    if (window.matchMedia("(max-width: 700px)").matches) {
-      introPanel.style.display = "none";
-      let mobPanelOpen = false, mobActiveId = "";
-      ScrollTrigger.create({
-        trigger: "#explore-cards", start: "top 85%", once: true,
-        onEnter: () => gsap.to(ecCards, { opacity: 1, duration: 0.5, stagger: 0.08, ease: "power3.out" }),
-      });
-
-      function mobClosePanel() {
-        gsap.to(introPanel, { opacity: 0, duration: 0.2, ease: "power2.in", onComplete: () => {
-          introPanel.style.display = "none";
-          introDefault.style.display = "";
-          gsap.fromTo(introDefault, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power3.out" });
-          ecCards.forEach(c => c.classList.remove("active"));
-          mobPanelOpen = false; mobActiveId = "";
-        }});
-      }
-
-      ecCards.forEach((card, i) => {
-        card.addEventListener("click", () => {
-          const id = card.dataset.card; if (!id) return;
-          // tap active card again → close panel
-          if (mobPanelOpen && id === mobActiveId) { mobClosePanel(); return; }
-          ecCards.forEach(c => c.classList.toggle("active", c === card));
-          if (!mobPanelOpen) {
-            introPanel.querySelectorAll<HTMLElement>(".ep-content").forEach(el => (el.style.display = "none"));
-            const first = introPanel.querySelector<HTMLElement>(`[data-panel="${id}"]`);
-            if (first) first.style.display = "block";
-            introDefault.style.display = "none";
-            introPanel.style.display = "flex";
-            gsap.fromTo(introPanel, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: "power3.out" });
-            mobPanelOpen = true; mobActiveId = id;
-          } else {
-            const cur = introPanel.querySelector<HTMLElement>(`[data-panel="${mobActiveId}"]`);
-            const nxt = introPanel.querySelector<HTMLElement>(`[data-panel="${id}"]`);
-            if (cur && nxt) {
-              gsap.to(cur, { opacity: 0, duration: 0.15, onComplete: () => { cur.style.display = "none"; nxt.style.display = "block"; gsap.to(nxt, { opacity: 1, duration: 0.3 }); } });
-            }
-            mobActiveId = id;
-          }
-          gsap.to(window, { scrollTo: { y: 0 }, duration: 0.6, ease: "power3.inOut" });
-        });
-      });
-      return;
-    }
-
-    /* ── Desktop: orbit placement ───────────────── */
-    ecWraps.forEach((wrap, i) => {
-      const { x, y } = slotPos(i, N, orbitDeg);
-      gsap.set(wrap, { x, y });
-      gsap.set(ecCards[i], { opacity: 0, rotation: ROTATIONS[i] });
-    });
-    introPanel.style.display = "none";
-
-    // Fade cards in — orbit ticker already running
-    gsap.to(ecCards, {
-      opacity: 1, duration: 0.5, delay: 0.3,
-      stagger: { amount: 0.45, from: "start" },
-      ease: "power3.out",
-    });
-
-    /* ── Hover: scale up while orbiting ────────── */
-    ecCards.forEach((card, i) => {
-      card.addEventListener("mouseenter", () => {
-        if (i === centerIdx) return;
-        gsap.to(card, { scale: 1.1, duration: 0.15, ease: "power3.out" });
-      });
-      card.addEventListener("mouseleave", () => {
-        if (i === centerIdx) return;
-        gsap.to(card, { scale: 1, duration: 0.2, ease: "power3.in" });
-      });
-    });
-
-    /* ── Panel helpers ──────────────────────────── */
-    let panelOpen = false;
-    let activeId  = "";
-
-    function animateTimelineIn() {
-      gsap.fromTo(introPanel.querySelectorAll<HTMLElement>(".tl-row"),
-        { opacity: 0, x: -18 },
-        { opacity: 1, x: 0, duration: 0.45, stagger: 0.07, ease: "power3.out", delay: 0.1 }
-      );
-    }
-    function animateListIn() {
-      gsap.fromTo(introPanel.querySelectorAll<HTMLElement>(".ep-item"),
-        { opacity: 0, x: -14 },
-        { opacity: 1, x: 0, duration: 0.4, stagger: 0.08, ease: "power3.out", delay: 0.1 }
-      );
-    }
-    function animateSkillsIn() {
-      gsap.fromTo(introPanel.querySelectorAll<HTMLElement>(".skills-group"),
-        { opacity: 0, y: 12 },
-        { opacity: 1, y: 0, duration: 0.4, stagger: 0.09, ease: "power3.out", delay: 0.1 }
-      );
-    }
-    function animateFactsIn() {
-      gsap.fromTo(introPanel.querySelectorAll<HTMLElement>(".facts-prose > *"),
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.45, stagger: 0.1, ease: "power3.out", delay: 0.1 }
-      );
-    }
-    function animateForCard(id: string) {
-      if (id === "journey") animateTimelineIn();
-      else if (id === "tried") animateSkillsIn();
-      else if (id === "facts") animateFactsIn();
-      else animateListIn();
-    }
-
-    function openPanel(cardId: string) {
-      const next = introPanel.querySelector<HTMLElement>(`[data-panel="${cardId}"]`);
-      if (!next) return;
-
-      if (!panelOpen) {
-        introPanel.querySelectorAll<HTMLElement>(".ep-content").forEach(el => (el.style.display = "none"));
-        next.style.display = "block";
-        // pre-hide panel and its animated children BEFORE it becomes visible
-        gsap.set(introPanel, { opacity: 0 });
-        if (cardId === "journey") {
-          gsap.set(introPanel.querySelectorAll(".tl-row"), { opacity: 0, x: -18 });
-        } else if (cardId === "tried") {
-          gsap.set(introPanel.querySelectorAll(".skills-group"), { opacity: 0, y: 12 });
-        } else if (cardId === "facts") {
-          gsap.set(introPanel.querySelectorAll(".facts-prose > *"), { opacity: 0, y: 14 });
-        } else {
-          gsap.set(introPanel.querySelectorAll(".ep-item"), { opacity: 0, x: -14 });
-        }
-        // swap intro default → panel view
-        gsap.to(introDefault, { opacity: 0, duration: 0.2, ease: "power2.in",
-          onComplete: () => {
-            introDefault.style.display = "none";
-            introPanel.style.display = "flex";
-            document.getElementById("about-intro")?.scrollTo({ top: 0, behavior: "instant" });
-            gsap.to(introPanel, {
-              opacity: 1, duration: 0.35, ease: "power3.out",
-              onComplete: () => animateForCard(cardId),
-            });
-          },
-        });
-        panelOpen = true;
-        activeId  = cardId;
-        return;
-      }
-
-      if (cardId === activeId) return;
-
-      const current = introPanel.querySelector<HTMLElement>(`[data-panel="${activeId}"]`);
-      activeId = cardId;
-      // scroll left column to top when switching panels
-      document.getElementById("about-intro")?.scrollTo({ top: 0, behavior: "smooth" });
-      if (current) {
-        gsap.to(current, {
-          opacity: 0, y: -10, duration: 0.2, ease: "power2.in",
-          onComplete: () => {
-            current.style.display = "none";
-            // pre-hide animated children before the panel becomes visible
-            if (cardId === "journey") {
-              gsap.set(next.querySelectorAll(".tl-row"), { opacity: 0, x: -18 });
-            } else if (cardId === "tried") {
-              gsap.set(next.querySelectorAll(".skills-group"), { opacity: 0, y: 12 });
-            } else {
-              gsap.set(next.querySelectorAll(".ep-item"), { opacity: 0, x: -14 });
-            }
-            next.style.display = "block";
-            gsap.fromTo(next, { opacity: 0, y: 12 }, {
-              opacity: 1, y: 0, duration: 0.35, ease: "power3.out",
-              onComplete: () => animateForCard(cardId),
-            });
-          },
-        });
-      }
-    }
-
-    /* ── Center-swap logic ──────────────────────── */
-    let centerIdx = -1;
-
-    function selectCard(clickedIdx: number) {
-      if (clickedIdx === centerIdx) { resetToOrbit(); return; }
-
-      const prevCenter = centerIdx;
-      centerIdx = clickedIdx;
-
-      ecCards.forEach((c, i) => c.classList.toggle("active", i === clickedIdx));
-      gsap.to("#ec-center-hint", { opacity: 0, scale: 0.8, duration: 0.3, ease: "power2.in" });
-
-      /* pull selected card to center */
-      returningSet.add(clickedIdx);
-      gsap.to(ecWraps[clickedIdx], {
-        x: CENTER.x, y: CENTER.y, duration: 0.55, ease: "power3.inOut",
-        onComplete: () => returningSet.delete(clickedIdx),
-      });
-      gsap.to(ecCards[clickedIdx], { rotation: 0, scale: 1.1, duration: 0.55, ease: "power3.inOut" });
-
-      /* rebuild orbiting list: remove clicked, re-add previous center if any */
-      orbitingCards = orbitingCards.filter(idx => idx !== clickedIdx);
-      if (prevCenter !== -1 && !orbitingCards.includes(prevCenter)) {
-        orbitingCards.push(prevCenter);
-        gsap.to(ecCards[prevCenter], { rotation: ROTATIONS[prevCenter], scale: 1, duration: 0.55, ease: "power3.inOut" });
-      }
-
-      /* re-space remaining cards evenly */
-      redistributeOrbit(0.55);
-
-      const cardId = ecCards[clickedIdx].dataset.card;
-      if (cardId) openPanel(cardId);
-    }
-
-    ecCards.forEach((card, i) => card.addEventListener("click", () => selectCard(i)));
-
-    /* ── Reset: return center card to orbit ─────── */
-    function resetToOrbit() {
-      if (centerIdx === -1) return;
-      const prev = centerIdx;
-      centerIdx = -1;
-
-      ecCards.forEach(c => c.classList.remove("active"));
-      gsap.to(ecCards[prev], { rotation: ROTATIONS[prev], scale: 1, duration: 0.55, ease: "power3.inOut" });
-
-      /* add back and re-space all 7 evenly */
-      if (!orbitingCards.includes(prev)) orbitingCards.push(prev);
-      redistributeOrbit(0.55);
-
-      gsap.to("#ec-center-hint", { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out", delay: 0.25 });
-
-      if (panelOpen) {
-        gsap.to(introPanel, { opacity: 0, duration: 0.25, ease: "power2.in",
-          onComplete: () => {
-            introPanel.style.display = "none";
-            introDefault.style.display = "";
-            gsap.fromTo(introDefault, { opacity: 0 }, { opacity: 1, duration: 0.35, ease: "power3.out" });
-          },
-        });
-        panelOpen = false;
-        activeId = "";
-      }
-    }
-
-    document.getElementById("about-explore")?.addEventListener("click", (e) => {
-      if (centerIdx === -1) return;
-      if ((e.target as HTMLElement).closest(".ec-card")) return;
-      resetToOrbit();
-    });
-
-  }
-
-  /* ── Section Nav (removed — kept for reference) ─────────────────────
-  function initAboutNav() {
-    const nav  = document.getElementById("about-nav");
-    const pill = document.getElementById("about-nav-pill");
-    const btns = Array.from(document.querySelectorAll<HTMLElement>(".anav-btn"));
-    if (!nav || !pill || !btns.length) return;
-
-    const sections = btns.map(b => document.getElementById(b.dataset.target!)!);
-
-    gsap.to(nav, { opacity: 1, duration: 0.6, delay: 0.8, ease: "power2.out" });
-
-    function setPill(i: number) {
-      const navRect = nav.getBoundingClientRect();
-      const btnRect = btns[i].getBoundingClientRect();
-      const cy = btnRect.top + btnRect.height / 2 - navRect.top;
-      gsap.to(pill, { top: cy - 7, duration: 0.45, ease: "power3.inOut" });
-    }
-
-    function setActive(i: number) {
-      btns.forEach((b, j) => b.classList.toggle("active", j === i));
-      setPill(i);
-    }
-
-    let scrolling = false;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (scrolling) return;
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const i = sections.indexOf(entry.target as HTMLElement);
-            if (i !== -1) setActive(i);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-    sections.forEach(s => s && observer.observe(s));
-
-    requestAnimationFrame(() => setPill(0));
-    setActive(0);
-
-    btns.forEach((btn, i) => {
-      btn.addEventListener("click", () => {
-        const target = sections[i];
-        if (!target) return;
-        scrolling = true;
-        setActive(i);
-        const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue("--nav-height") || "72");
-        gsap.to(window, {
-          scrollTo: target.getBoundingClientRect().top + window.scrollY - navH - 24,
-          duration: 0.9,
-          ease: "power3.inOut",
-          onComplete: () => { scrolling = false; },
-        });
-        // glitch flash on heading
-        const heading = target.querySelector<HTMLElement>("h1, h2");
-        if (heading) {
-          const orig = heading.textContent ?? "";
-          const G = "!<>-_\\/[]{}—=+*^?#@$%&";
-          let f = 0;
-          const iv = setInterval(() => {
-            heading.textContent = orig.split("").map(c =>
-              c === " " ? " " : Math.random() < 0.45 ? G[Math.floor(Math.random()*G.length)] : c
-            ).join("");
-            heading.style.textShadow = Math.random() < 0.5
-              ? `${(Math.random()*3-1.5).toFixed(1)}px 0 rgba(255,0,200,0.55),${(Math.random()*-3+1.5).toFixed(1)}px 0 rgba(0,255,255,0.55)`
-              : "";
-            if (++f > 7) {
-              clearInterval(iv);
-              heading.textContent = orig;
-              heading.style.textShadow = "";
-            }
-          }, 55);
-        }
-      });
-    });
-
-    return () => observer.disconnect();
-  }
-  ── end Section Nav ── */
-
-  function initFactsModal() {
-    const btn      = document.getElementById("facts-diagram-btn");
-    const modal    = document.getElementById("diagram-modal");
-    const closeBtn = document.getElementById("dm-close");
-    const backdrop = document.getElementById("dm-backdrop");
-    if (!btn || !modal) return;
-
-    function openModal() {
-      modal.style.display = "flex";
-      gsap.fromTo(modal,     { opacity: 0 }, { opacity: 1, duration: 0.2, ease: "power2.out" });
-      gsap.fromTo(".dm-box", { scale: 0.93, y: 12 }, { scale: 1, y: 0, duration: 0.3, ease: "back.out(1.8)" });
-    }
-
-    function closeModal() {
-      gsap.to(".dm-box", { scale: 0.95, y: 8, duration: 0.18, ease: "power2.in" });
-      gsap.to(modal, { opacity: 0, duration: 0.2, ease: "power2.in",
-        onComplete: () => { modal.style.display = "none"; }
-      });
-    }
-
-    btn.addEventListener("click", openModal);
-    closeBtn?.addEventListener("click", closeModal);
-    backdrop?.addEventListener("click", closeModal);
-
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && modal.style.display === "flex") closeModal();
-    });
+    gsap.timeline({ delay: 0.15 })
+      .to(lines, { yPercent: 0, duration: 0.85, stagger: 0.12, ease: "power4.out" })
+      .to(bio, { opacity: 1, y: 0, duration: 0.55, ease: "power3.out" }, "-=0.4")
+      .to(top, { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.3");
   }
 
   document.addEventListener("astro:page-load", initAbout);
-  document.addEventListener("astro:page-load", initExplore);
-  document.addEventListener("astro:page-load", initFactsModal);
-  // document.addEventListener("astro:page-load", initAboutNav);
 </script>

@@ -1,127 +1,126 @@
 ---
-const path = Astro.url.pathname;
 const links = [
-  { href: "/about",    label: "About" },
-  { href: "/projects", label: "Projects" },
-  { href: "/blog",     label: "Blog" },
-  { href: "/contact",  label: "Contact" },
+  { href: "/about",    label: "about",    index: "01" },
+  { href: "/projects", label: "projects", index: "02" },
+  { href: "/blog",     label: "blog",     index: "03" },
+  { href: "/contact",  label: "contact",  index: "04" },
 ];
 ---
 
-<header>
-  <a href="/"><img src="/logos/purple-text/mark-gosh-ligature-heavy-purple-text.svg" id="logo-img" alt="Gosvindraj" /></a>
-  <nav>
-    <ul class="nav_links">
+<header id="site-nav" transition:persist>
+  <a href="/" class="nav-brand" aria-label="Home">gosh<span class="tick">.</span></a>
+
+  <nav aria-label="Primary">
+    <ul class="nav-links">
       {links.map((link) => (
         <li>
-          <a
-            href={link.href}
-            class={path.startsWith(link.href) ? "active" : ""}
-          >
-            <span class="nav-roll">
-              <span class="nav-roll-inner">
-                <span class="nav-roll-text">{link.label}</span>
-                <span class="nav-roll-text" aria-hidden="true">{link.label}</span>
-              </span>
-            </span>
+          <a href={link.href} data-nav-link>
+            <sup>{link.index}</sup>{link.label}
           </a>
         </li>
       ))}
     </ul>
   </nav>
-  <div class="toggle_btn" aria-label="Toggle menu">
-    <i class="fa-solid fa-bars"></i>
-  </div>
-  <ul class="dropdown_menu">
+
+  <button class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="nav-overlay">menu</button>
+</header>
+
+<!-- full-screen menu: sibling of the header because its backdrop-filter
+     would otherwise become the containing block for position: fixed -->
+<div id="nav-overlay" aria-hidden="true" transition:persist="nav-overlay">
+  <ul class="ov-links">
     {links.map((link) => (
-      <li><a href={link.href}>{link.label}</a></li>
+      <li>
+        <a href={link.href} data-nav-link>
+          <sup>{link.index}</sup>{link.label}
+        </a>
+      </li>
     ))}
   </ul>
-</header>
+  <div class="ov-foot">
+    <a href="mailto:gosh@gosvindraj.com">gosh@gosvindraj.com</a>
+    <a href="https://github.com/Gosvindraj" target="_blank" rel="noopener">github &#8599;</a>
+  </div>
+</div>
 
 <script>
   import gsap from "gsap";
 
-  function initNavbar() {
-    /* ── Translucent nav on homepage ─────────── */
-    const isHome = window.location.pathname === "/" || window.location.pathname === "/index.html";
-    document.querySelector("header")?.classList.toggle("nav-translucent", isHome);
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    /* ── Mobile toggle ───────────────────────── */
-    const toggleBtn    = document.querySelector(".toggle_btn");
-    const dropdownMenu = document.querySelector(".dropdown_menu");
+  /* header persists across navigations, so bind once at module init
+     and only refresh per-page state on astro:page-load */
 
-    const toggleIcon = toggleBtn?.querySelector("i");
-
-    const closeMenu = () => {
-      dropdownMenu?.classList.remove("open");
-      toggleIcon?.classList.replace("fa-xmark", "fa-bars");
-    };
-
-    toggleBtn?.addEventListener("click", () => {
-      const isOpen = dropdownMenu?.classList.toggle("open");
-      if (isOpen) {
-        toggleIcon?.classList.replace("fa-bars", "fa-xmark");
-      } else {
-        toggleIcon?.classList.replace("fa-xmark", "fa-bars");
-      }
+  /* ── active link state ─────────────────────── */
+  function syncActiveLinks() {
+    const path = window.location.pathname;
+    document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]").forEach((a) => {
+      const href = a.getAttribute("href") ?? "";
+      a.classList.toggle("active", href !== "/" && path.startsWith(href));
     });
-
-    dropdownMenu?.querySelectorAll("a").forEach((a) => {
-      a.addEventListener("click", closeMenu);
-    });
-
-    document.addEventListener("click", (e) => {
-      if (dropdownMenu?.classList.contains("open") &&
-          !dropdownMenu.contains(e.target as Node) &&
-          !toggleBtn?.contains(e.target as Node)) {
-        closeMenu();
-      }
-    });
-
-    /* ── Nav text roll ───────────────────────── */
-    document.querySelectorAll(".nav_links a").forEach((link) => {
-      const inner = link.querySelector<HTMLElement>(".nav-roll-inner");
-      if (!inner) return;
-
-      gsap.set(inner, { y: "0%" });
-
-      link.addEventListener("mouseenter", () => {
-        gsap.to(inner, { y: "-50%", duration: 0.28, ease: "power2.inOut" });
-      });
-
-      link.addEventListener("mouseleave", () => {
-        gsap.set(inner, { y: "50%" });
-        gsap.to(inner, { y: "0%", duration: 0.22, ease: "power2.out" });
-      });
-    });
-
-    /* ── Logo magnetic + glitch ─────────────── */
-    const logoWrap = document.querySelector<HTMLElement>("header > a");
-    const logoImg  = document.getElementById("logo-img") as HTMLImageElement | null;
-
-    if (logoWrap && logoImg) {
-      logoWrap.addEventListener("mousemove", (e) => {
-        const rect = logoWrap.getBoundingClientRect();
-        const dx = (e.clientX - (rect.left + rect.width  / 2)) * 0.3;
-        const dy = (e.clientY - (rect.top  + rect.height / 2)) * 0.3;
-        gsap.to(logoImg, { x: dx, y: dy, duration: 0.35, ease: "power2.out" });
-      });
-
-      logoWrap.addEventListener("mouseleave", () => {
-        gsap.to(logoImg, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.4)" });
-      });
-
-      logoWrap.addEventListener("mouseenter", () => {
-        const tl = gsap.timeline();
-        tl.to(logoImg, { skewX: 6,  opacity: 0.7, duration: 0.06, ease: "none" })
-          .to(logoImg, { skewX: -5, opacity: 1,   duration: 0.06, ease: "none" })
-          .to(logoImg, { skewX: 3,  opacity: 0.8, duration: 0.05, ease: "none" })
-          .to(logoImg, { skewX: 0,  opacity: 1,   duration: 0.08, ease: "none" });
-      });
-    }
-
   }
 
-  document.addEventListener("astro:page-load", initNavbar);
+  /* ── overlay menu ──────────────────────────── */
+  const toggle  = document.getElementById("nav-toggle");
+  const overlay = document.getElementById("nav-overlay");
+  let menuOpen  = false;
+
+  function openMenu() {
+    if (!overlay || !toggle) return;
+    menuOpen = true;
+    overlay.style.display = "flex";
+    overlay.setAttribute("aria-hidden", "false");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.textContent = "close";
+    document.body.style.overflow = "hidden";
+    const items = overlay.querySelectorAll(".ov-links a");
+    if (reduced) {
+      gsap.set(items, { y: "0%" });
+      return;
+    }
+    gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" });
+    gsap.fromTo(items,
+      { y: "110%" },
+      { y: "0%", duration: 0.55, stagger: 0.06, ease: "power4.out", delay: 0.08 }
+    );
+  }
+
+  function closeMenu() {
+    if (!overlay || !toggle || !menuOpen) return;
+    menuOpen = false;
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.textContent = "menu";
+    document.body.style.overflow = "";
+    overlay.setAttribute("aria-hidden", "true");
+    if (reduced) {
+      overlay.style.display = "none";
+      return;
+    }
+    gsap.to(overlay, {
+      opacity: 0, duration: 0.22, ease: "power2.in",
+      onComplete: () => { overlay.style.display = "none"; gsap.set(overlay, { opacity: 1 }); },
+    });
+  }
+
+  toggle?.addEventListener("click", () => (menuOpen ? closeMenu() : openMenu()));
+
+  overlay?.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && menuOpen) closeMenu();
+  });
+
+  /* ── desktop link roll hover ───────────────── */
+  document.querySelectorAll<HTMLElement>(".nav-links a").forEach((link) => {
+    link.addEventListener("mouseenter", () => {
+      if (reduced) return;
+      gsap.fromTo(link, { y: 0 }, { y: -2, duration: 0.18, yoyo: true, repeat: 1, ease: "power2.out" });
+    });
+  });
+
+  syncActiveLinks();
+  document.addEventListener("astro:page-load", () => {
+    syncActiveLinks();
+    closeMenu();
+  });
 </script>

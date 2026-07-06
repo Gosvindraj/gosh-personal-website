@@ -12,15 +12,18 @@ const STORAGE_MSGS = "chatbot_msgs";
 const STORAGE_CNT  = "chatbot_count";
 
 const T = {
-  bg:          "#0b0b0d",
-  surface:     "#111116",
-  border:      "rgba(255,255,255,0.07)",
-  borderHover: "rgba(155,109,206,0.5)",
-  text:        "#e4e4e8",
-  muted:       "#55556a",
+  bg:          "#0c0c0a",
+  surface:     "#141412",
+  border:      "rgba(234,231,222,0.11)",
+  borderHover: "rgba(155, 109, 206,0.5)",
+  text:        "#eae7de",
+  muted:       "#8f8c80",
   accent:      "#9b6dce",
-  accentDim:   "rgba(155,109,206,0.12)",
+  accentDim:   "rgba(155, 109, 206,0.1)",
 } as const;
+
+const FONT_SANS = "'Archivo', system-ui, sans-serif";
+const FONT_MONO = "'JetBrains Mono', ui-monospace, monospace";
 
 export default function ChatBot() {
   const [open, setOpen]          = useState(false);
@@ -36,49 +39,13 @@ export default function ChatBot() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef  = useRef<HTMLTextAreaElement>(null);
 
-  // ── FIX 1 & 3: visibility logic ────────────────────────────────────────
+  // fade in shortly after mount so it doesn't fight the preloader
   useEffect(() => {
-    function updateVisibility() {
-      const foundMe = document.querySelector<HTMLElement>("#found-me-screen");
-
-      if (!foundMe) {
-        // Not on the home page — always show immediately
-        setVisible(true);
-        return;
-      }
-
-      // FIX 3: defer so initHero() (also an astro:page-load listener) runs first.
-      // When foundMeSeen=true, initHero() sets display:"none" synchronously —
-      // by the time setTimeout(0) fires, that has already happened.
-      setTimeout(() => {
-        const hidden = window.getComputedStyle(foundMe).display === "none";
-        if (hidden) {
-          // User has already dismissed the found-me screen this session
-          setVisible(true);
-        } else {
-          // First visit — hide until the user clicks "enter"
-          setVisible(false);
-          document
-            .querySelector("#found-me-btn")
-            ?.addEventListener(
-              "click",
-              () => {
-                // FIX 2: delay appearance so it doesn't clash with the
-                // found-me exit animation (chars scatter ~0.8s)
-                setTimeout(() => setVisible(true), 1100);
-              },
-              { once: true }
-            );
-        }
-      }, 0);
-    }
-
-    updateVisibility();
-    document.addEventListener("astro:page-load", updateVisibility);
-    return () => document.removeEventListener("astro:page-load", updateVisibility);
+    const t = setTimeout(() => setVisible(true), 600);
+    return () => clearTimeout(t);
   }, []);
 
-  // Mobile breakpoint
+  // mobile breakpoint
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 520);
     check();
@@ -86,7 +53,7 @@ export default function ChatBot() {
     return () => window.removeEventListener("resize", check);
   }, []);
 
-  // Ctrl+/ to toggle chatbot
+  // ctrl+/ to toggle chatbot
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (!visible) return;
@@ -99,7 +66,7 @@ export default function ChatBot() {
     return () => document.removeEventListener("keydown", onKey);
   }, [visible]);
 
-  // Restore session from localStorage
+  // restore session from localStorage
   useEffect(() => {
     try {
       const msgs  = localStorage.getItem(STORAGE_MSGS);
@@ -109,12 +76,12 @@ export default function ChatBot() {
     } catch { /* ignore */ }
   }, []);
 
-  // Auto-scroll to latest message
+  // auto-scroll to latest message
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
-  // Focus input when panel opens
+  // focus input when panel opens
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
@@ -200,7 +167,7 @@ export default function ChatBot() {
 
   return (
     <>
-      {/* ── Chat panel ─────────────────────────────────────────────────── */}
+      {/* ── chat panel ─────────────────────────────────────────────────── */}
       <div
         aria-hidden={!open}
         style={{
@@ -211,12 +178,12 @@ export default function ChatBot() {
           height:         panelHeight,
           background:     T.surface,
           border:         `1px solid ${open ? T.borderHover : T.border}`,
-          borderRadius:   "8px",
+          borderTop:      `1px solid ${T.accent}`,
           display:        "flex",
           flexDirection:  "column",
           zIndex:         9000,
-          boxShadow:      "0 16px 48px rgba(0,0,0,0.7), 0 0 0 1px rgba(155,109,206,0.08)",
-          fontFamily:     "'Montserrat', sans-serif",
+          boxShadow:      "0 16px 48px rgba(0,0,0,0.7)",
+          fontFamily:     FONT_SANS,
           overflow:       "hidden",
           opacity:        open && visible ? 1 : 0,
           pointerEvents:  open && visible ? "auto" : "none",
@@ -225,7 +192,7 @@ export default function ChatBot() {
           transformOrigin:"bottom right",
         }}
       >
-        {/* Header */}
+        {/* header */}
         <div style={{
           padding:        "13px 16px",
           borderBottom:   `1px solid ${T.border}`,
@@ -239,39 +206,36 @@ export default function ChatBot() {
               width:          "28px",
               height:         "28px",
               background:     T.accentDim,
-              border:         "1px solid rgba(155,109,206,0.3)",
-              borderRadius:   "4px",
+              border:         "1px solid rgba(155, 109, 206,0.35)",
               display:        "flex",
               alignItems:     "center",
               justifyContent: "center",
               flexShrink:     0,
             }}>
-              <span style={{ fontSize: "12px", fontWeight: 600, color: T.accent }}>G</span>
+              <span style={{ fontSize: "12px", fontWeight: 700, color: T.accent }}>G</span>
             </div>
             <div>
-              <div style={{ fontSize: "12px", fontWeight: 500, color: T.text, lineHeight: 1.3 }}>
-                Ask Gosh
+              <div style={{ fontSize: "13px", fontWeight: 600, color: T.text, lineHeight: 1.3, letterSpacing: "-0.01em" }}>
+                ask gosh
               </div>
-              <div style={{ fontSize: "10px", color: T.muted, letterSpacing: "0.06em", textTransform: "uppercase" }}>
+              <div style={{ fontSize: "9px", color: T.muted, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: FONT_MONO }}>
                 portfolio assistant
               </div>
             </div>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-            <span style={{ fontSize: "10px", color: T.muted, letterSpacing: "0.04em" }}>
+            <span style={{ fontSize: "10px", color: T.muted, letterSpacing: "0.06em", fontFamily: FONT_MONO }}>
               {remaining} / {MAX_SESSION}
             </span>
 
-            {/* FIX 1 — bigger, more prominent close button */}
             <button
               onClick={() => setOpen(false)}
               aria-label="Close chat"
               className="chatbot-close-btn"
               style={{
-                background:     "rgba(255,255,255,0.05)",
+                background:     "rgba(234,231,222,0.05)",
                 border:         `1px solid ${T.border}`,
-                borderRadius:   "6px",
                 width:          "30px",
                 height:         "30px",
                 display:        "flex",
@@ -290,7 +254,7 @@ export default function ChatBot() {
           </div>
         </div>
 
-        {/* Messages */}
+        {/* messages */}
         <div
           className="chatbot-messages"
           style={{
@@ -301,7 +265,7 @@ export default function ChatBot() {
             flexDirection: "column",
             gap:           "12px",
             scrollbarWidth:"thin",
-            scrollbarColor:`rgba(155,109,206,0.2) transparent`,
+            scrollbarColor:`rgba(155, 109, 206,0.25) transparent`,
           }}>
           {messages.length === 0 && (
             <div style={{
@@ -316,8 +280,7 @@ export default function ChatBot() {
                 width:          "36px",
                 height:         "36px",
                 background:     T.accentDim,
-                border:         "1px solid rgba(155,109,206,0.2)",
-                borderRadius:   "50%",
+                border:         "1px solid rgba(155, 109, 206,0.25)",
                 display:        "flex",
                 alignItems:     "center",
                 justifyContent: "center",
@@ -327,7 +290,7 @@ export default function ChatBot() {
                   <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
               </div>
-              Ask me anything about Gosh: his projects, skills, background, or how to get in touch.
+              ask me anything about gosh: his projects, skills, background, or how to get in touch.
             </div>
           )}
 
@@ -339,12 +302,9 @@ export default function ChatBot() {
               <div style={{
                 maxWidth:     "82%",
                 padding:      "9px 13px",
-                borderRadius: m.role === "user"
-                  ? "12px 12px 2px 12px"
-                  : "12px 12px 12px 2px",
                 background:   m.role === "user" ? T.accent : T.bg,
                 border:       m.role === "user" ? "none" : `1px solid ${T.border}`,
-                color:        m.role === "user" ? "#fff" : T.text,
+                color:        m.role === "user" ? "#0c0c0a" : T.text,
                 fontSize:     "13px",
                 lineHeight:   1.65,
                 wordBreak:    "break-word",
@@ -358,22 +318,20 @@ export default function ChatBot() {
           {loading && (
             <div style={{ display: "flex", justifyContent: "flex-start" }}>
               <div style={{
-                padding:      "10px 14px",
-                borderRadius: "12px 12px 12px 2px",
-                background:   T.bg,
-                border:       `1px solid ${T.border}`,
-                display:      "flex",
-                gap:          "5px",
-                alignItems:   "center",
+                padding:    "10px 14px",
+                background: T.bg,
+                border:     `1px solid ${T.border}`,
+                display:    "flex",
+                gap:        "5px",
+                alignItems: "center",
               }}>
                 {[0, 1, 2].map((i) => (
                   <span key={i} style={{
-                    width:        "5px",
-                    height:       "5px",
-                    borderRadius: "50%",
-                    background:   T.muted,
-                    display:      "inline-block",
-                    animation:    `chatbotDot 1.2s ${i * 0.16}s ease-in-out infinite`,
+                    width:      "5px",
+                    height:     "5px",
+                    background: T.accent,
+                    display:    "inline-block",
+                    animation:  `chatbotDot 1.2s ${i * 0.16}s ease-in-out infinite`,
                   }} />
                 ))}
               </div>
@@ -387,6 +345,7 @@ export default function ChatBot() {
               textAlign:  "center",
               padding:    "4px 8px",
               lineHeight: 1.5,
+              fontFamily: FONT_MONO,
             }}>
               {error}
             </div>
@@ -395,7 +354,7 @@ export default function ChatBot() {
           <div ref={bottomRef} />
         </div>
 
-        {/* Input area */}
+        {/* input area */}
         <div style={{
           padding:    "10px 12px",
           borderTop:  `1px solid ${T.border}`,
@@ -411,7 +370,7 @@ export default function ChatBot() {
             value={input}
             onChange={handleInput}
             onKeyDown={handleKeyDown}
-            placeholder={isExhausted ? "Session limit reached. Reload to continue." : "Ask about Gosh…"}
+            placeholder={isExhausted ? "session limit reached. reload to continue." : "ask about gosh..."}
             disabled={isExhausted || loading}
             rows={1}
             maxLength={MAX_CHARS}
@@ -419,12 +378,11 @@ export default function ChatBot() {
               flex:           1,
               background:     T.bg,
               border:         `1px solid ${T.border}`,
-              borderRadius:   "6px",
               color:          T.text,
               fontSize:       "13px",
               padding:        "9px 12px",
               resize:         "none",
-              fontFamily:     "'Montserrat', sans-serif",
+              fontFamily:     FONT_SANS,
               lineHeight:     1.5,
               outline:        "none",
               opacity:        isExhausted ? 0.45 : 1,
@@ -442,9 +400,8 @@ export default function ChatBot() {
             aria-label="Send message"
             className="chatbot-send-btn"
             style={{
-              background:     canSend ? T.accent : "rgba(155,109,206,0.2)",
+              background:     canSend ? T.accent : "rgba(155, 109, 206,0.2)",
               border:         "none",
-              borderRadius:   "6px",
               width:          "36px",
               height:         "36px",
               display:        "flex",
@@ -453,7 +410,7 @@ export default function ChatBot() {
               opacity:        canSend ? 1 : 0.5,
               flexShrink:     0,
               transition:     "background 0.2s ease, opacity 0.2s ease",
-              color:          "#fff",
+              color:          "#0c0c0a",
             }}
           >
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -464,7 +421,7 @@ export default function ChatBot() {
         </div>
       </div>
 
-      {/* Pulse ring — sits behind FAB, hidden when open */}
+      {/* pulse ring behind FAB, hidden when open */}
       {!open && visible && (
         <span
           aria-hidden
@@ -475,14 +432,13 @@ export default function ChatBot() {
             right:         fabRight,
             width:         "52px",
             height:        "52px",
-            borderRadius:  "50%",
             zIndex:        9000,
             pointerEvents: "none",
           }}
         />
       )}
 
-      {/* ── Floating action button ──────────────────────────────────────── */}
+      {/* ── floating action button ──────────────────────────────────────── */}
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Open chat"}
@@ -493,7 +449,6 @@ export default function ChatBot() {
           right:          fabRight,
           width:          "52px",
           height:         "52px",
-          borderRadius:   "50%",
           background:     open ? T.surface : T.accent,
           border:         `1px solid ${open ? T.borderHover : "transparent"}`,
           display:        "flex",
@@ -501,11 +456,10 @@ export default function ChatBot() {
           justifyContent: "center",
           zIndex:         9001,
           boxShadow:      open
-            ? `0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px ${T.borderHover}`
-            : "0 4px 20px rgba(155,109,206,0.4)",
-          // FIX 2: slow fade-in (1s) so it doesn't snap in abruptly
+            ? `0 4px 20px rgba(0,0,0,0.5)`
+            : "0 4px 20px rgba(155, 109, 206,0.3)",
           transition:     "background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 1s ease",
-          color:          open ? T.accent : "#fff",
+          color:          open ? T.accent : "#0c0c0a",
           opacity:        visible ? 1 : 0,
           pointerEvents:  visible ? "auto" : "none",
         }}
@@ -523,50 +477,50 @@ export default function ChatBot() {
       </button>
 
       <style>{`
-        /* Purple text selection — input field and message bubbles */
+        /* acid text selection inside the chatbot */
         .chatbot-input::selection,
         .chatbot-messages *::selection {
-          background: rgba(155, 109, 206, 0.35);
-          color: #fff;
+          background: rgba(155, 109, 206, 0.85);
+          color: #0c0c0a;
         }
 
-        /* Textarea — hide scrollbar (webkit + firefox) */
+        /* textarea: hide scrollbar (webkit + firefox) */
         .chatbot-input::-webkit-scrollbar { display: none; }
 
-        /* Force custom cursor on all chatbot buttons */
+        /* force custom cursor on all chatbot controls */
         .chatbot-messages, .chatbot-input,
         .chatbot-close-btn, .chatbot-send-btn, .chatbot-fab { cursor: none !important; }
 
-        /* Message list — slim styled scrollbar */
+        /* message list: slim styled scrollbar */
         .chatbot-messages::-webkit-scrollbar        { width: 4px; }
         .chatbot-messages::-webkit-scrollbar-track  { background: transparent; }
         .chatbot-messages::-webkit-scrollbar-thumb  {
-          background: rgba(155, 109, 206, 0.25);
-          border-radius: 2px;
+          background: rgba(155, 109, 206, 0.3);
         }
         .chatbot-messages::-webkit-scrollbar-thumb:hover {
-          background: rgba(155, 109, 206, 0.45);
+          background: rgba(155, 109, 206, 0.5);
         }
 
-        /* FIX 1 — close button hover state */
         .chatbot-close-btn:hover {
-          background: rgba(155, 109, 206, 0.12) !important;
+          background: rgba(155, 109, 206, 0.1) !important;
           border-color: rgba(155, 109, 206, 0.4) !important;
-          color: #e4e4e8 !important;
+          color: #eae7de !important;
         }
 
-        /* Pulse ring animation */
         @keyframes chatbotPulse {
-          0%   { box-shadow: 0 0 0 0    rgba(155, 109, 206, 0.45); }
-          70%  { box-shadow: 0 0 0 14px rgba(155, 109, 206, 0);    }
-          100% { box-shadow: 0 0 0 0    rgba(155, 109, 206, 0);    }
+          0%   { box-shadow: 0 0 0 0    rgba(155, 109, 206, 0.4); }
+          70%  { box-shadow: 0 0 0 14px rgba(155, 109, 206, 0);   }
+          100% { box-shadow: 0 0 0 0    rgba(155, 109, 206, 0);   }
         }
         .chatbot-pulse-ring { animation: chatbotPulse 2.8s ease-out infinite; }
 
-        /* Typing dots */
         @keyframes chatbotDot {
           0%, 80%, 100% { transform: scale(0.55); opacity: 0.35; }
-          40%            { transform: scale(1);    opacity: 1;    }
+          40%           { transform: scale(1);    opacity: 1;    }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          .chatbot-pulse-ring { animation: none; }
         }
       `}</style>
     </>

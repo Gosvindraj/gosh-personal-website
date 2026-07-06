@@ -1,28 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Gosvindraj | Snake Game">
+<BaseLayout title="Gosvindraj | Snake Game" description="Classic 2D snake built with vanilla JS and a canvas. Arrow keys, swipe, or d-pad.">
   <section id="project-snake">
     <div class="project-inner">
 
       <div class="project-header">
-        <p class="section-label">project 01</p>
-        <h1 class="project-title">2D Snake Game</h1>
+        <span class="m-label"><span class="lb">[</span> project <span class="hl">01</span> <span class="lb">]</span></span>
+        <h1 class="project-title display">snake<br />game<span class="serif acid">.</span></h1>
         <p class="project-desc">
-          classic snake, built with vanilla JS and a canvas. use arrow keys or swipe to move,
-          eat the food, don't hit the walls (or yourself).
+          classic snake, built with vanilla JS and a canvas. use arrow keys
+          or swipe to move, eat the food, don't hit the walls (or yourself).
         </p>
-        <a href="/projects" class="back-link">
-          <i class="fa-solid fa-arrow-left"></i>
-          <span>back to projects</span>
-        </a>
+        <a href="/projects" class="btn-line">&larr; all projects</a>
       </div>
 
       <div class="game-wrap">
-        <div class="game-meta">
-          <span id="score-label">score <span id="score-val">0</span></span>
-          <span class="meta-sep">·</span>
-          <span id="hi-label">best <span id="hi-val">0</span></span>
+        <div class="game-meta m-label">
+          <span>score <span class="hl" id="score-val">0</span></span>
+          <span class="lb">/</span>
+          <span>best <span class="hl" id="hi-val">0</span></span>
         </div>
         <canvas id="gameCanvas" width="400" height="400" tabindex="0"></canvas>
         <p class="game-hint" id="game-hint">press <kbd>enter</kbd> to start</p>
@@ -46,68 +43,36 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     min-height: calc(100vh - var(--nav-height));
     display: flex;
     align-items: center;
-    padding: 4rem 8%;
+    padding: clamp(2.5rem, 6vh, 4rem) var(--gutter);
   }
 
   .project-inner {
     width: 100%;
     display: flex;
     align-items: flex-start;
-    gap: 6rem;
+    gap: clamp(3rem, 7vw, 6rem);
   }
 
   /* left column */
   .project-header {
-    flex: 0 0 300px;
+    flex: 0 0 320px;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.75rem;
     opacity: 0;
   }
 
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
   .project-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.03em;
-    line-height: 1.1;
+    font-size: clamp(2.3rem, 5.2vw, 4rem);
   }
 
   .project-desc {
-    font-size: 0.85rem;
-    color: var(--muted);
+    font-size: 0.9rem;
+    color: var(--dim);
     line-height: 1.85;
   }
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 0.55rem 1.1rem;
-    border-radius: 2px;
-    cursor: none;
-    transition: color var(--transition), border-color var(--transition), background var(--transition);
-    align-self: flex-start;
-  }
-
-  .back-link i { font-size: 10px; transition: transform var(--transition); }
-  .back-link:hover { color: var(--text); border-color: var(--border-hover); background: var(--accent-dim); }
-  .back-link:hover i { transform: translateX(-3px); }
+  .project-header .btn-line { align-self: flex-start; }
 
   /* right column */
   .game-wrap {
@@ -115,51 +80,41 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 0.75rem;
+    gap: 0.9rem;
     opacity: 0;
   }
 
   .game-meta {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-family: "Courier New", monospace;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
+    gap: 0.75rem;
   }
 
-  .meta-sep { opacity: 0.35; }
-
-  #score-val, #hi-val { color: var(--accent); }
-
   canvas {
-    background: #000;
-    border: 1px solid var(--border);
+    background: #060605;
+    border: 1px solid var(--line-strong);
     outline: none;
     display: block;
     max-width: 100%;
   }
 
   .game-hint {
+    font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--muted);
+    color: var(--dim);
     letter-spacing: 0.08em;
   }
 
   kbd {
-    font-family: "Courier New", monospace;
+    font-family: var(--font-mono);
     font-size: 10px;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 2px;
+    border: 1px solid var(--line);
     padding: 0.1rem 0.35rem;
-    color: var(--text);
+    color: var(--ink);
   }
 
-  /* D-pad */
+  /* d-pad */
   .dpad {
     display: none;
     flex-direction: column;
@@ -183,9 +138,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     width: 44px;
     height: 44px;
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--muted);
+    border: 1px solid var(--line);
+    color: var(--dim);
     font-size: 13px;
     display: flex;
     align-items: center;
@@ -197,8 +151,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .dpad-btn:active {
-    background: var(--accent-dim);
-    color: var(--accent);
+    background: var(--acid-dim);
+    color: var(--acid);
   }
 
   @media (hover: none), (pointer: coarse) {
@@ -213,9 +167,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   @media (max-width: 500px) {
-    #project-snake { padding: 3rem 6%; }
     canvas { width: 100% !important; height: auto !important; }
-    .game-wrap { align-items: center; }
+    .game-wrap { align-items: center; width: 100%; }
   }
 </style>
 
@@ -226,17 +179,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const canvas = document.getElementById("gameCanvas") as HTMLCanvasElement;
     if (!canvas) return;
     const ctx = canvas.getContext("2d")!;
-    const hintEl    = document.getElementById("game-hint");
-    const scoreEl   = document.getElementById("score-val");
-    const hiEl      = document.getElementById("hi-val");
-    const header    = document.querySelector<HTMLElement>(".project-header");
-    const gameWrap  = document.querySelector<HTMLElement>(".game-wrap");
+    const hintEl   = document.getElementById("game-hint");
+    const scoreEl  = document.getElementById("score-val");
+    const hiEl     = document.getElementById("hi-val");
+    const header   = document.querySelector<HTMLElement>(".project-header");
+    const gameWrap = document.querySelector<HTMLElement>(".game-wrap");
 
     // entrance
-    gsap.to(header,   { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.1 });
-    gsap.fromTo(header, { y: 20 }, { y: 0, duration: 0.6, ease: "power3.out", delay: 0.1 });
-    gsap.to(gameWrap, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.25 });
-    gsap.fromTo(gameWrap, { y: 20 }, { y: 0, duration: 0.6, ease: "power3.out", delay: 0.25 });
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      gsap.set([header, gameWrap], { opacity: 1 });
+    } else {
+      gsap.fromTo(header,   { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.1 });
+      gsap.fromTo(gameWrap, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.25 });
+    }
 
     const isTouchDevice = () => window.matchMedia("(hover: none), (pointer: coarse)").matches;
 
@@ -320,54 +276,54 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       if (gameState === "start") {
-        ctx.fillStyle = "rgba(155,109,206,0.08)";
+        ctx.fillStyle = "rgba(155, 109, 206,0.05)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(255,255,255,0.12)";
+        ctx.fillStyle = "rgba(234,231,222,0.16)";
         ctx.font = "bold 18px 'JetBrains Mono', monospace";
         ctx.textAlign = "center";
         ctx.fillText("SNAKE", canvas.width / 2, canvas.height / 2 - 10);
-        ctx.fillStyle = "rgba(155,109,206,0.5)";
+        ctx.fillStyle = "rgba(155, 109, 206,0.6)";
         ctx.font = "11px 'JetBrains Mono', monospace";
         ctx.fillText(isTouchDevice() ? "TAP TO START" : "PRESS ENTER TO START", canvas.width / 2, canvas.height / 2 + 18);
         return;
       }
 
       // grid dots
-      ctx.fillStyle = "rgba(255,255,255,0.03)";
+      ctx.fillStyle = "rgba(234,231,222,0.04)";
       for (let x = 0; x < 20; x++) {
         for (let y = 0; y < 20; y++) {
           ctx.fillRect(x * BOX + BOX / 2 - 1, y * BOX + BOX / 2 - 1, 2, 2);
         }
       }
 
-      // food — favicon with glow
-      ctx.shadowColor = "rgba(155,109,206,0.9)";
+      // food, drawn as the favicon with a glow
+      ctx.shadowColor = "rgba(155, 109, 206,0.9)";
       ctx.shadowBlur  = 10;
       if (foodImg.complete && foodImg.naturalWidth > 0) {
         ctx.drawImage(foodImg, food.x + 1, food.y + 1, BOX - 2, BOX - 2);
       } else {
-        ctx.fillStyle = "rgba(155,109,206,0.9)";
+        ctx.fillStyle = "rgba(155, 109, 206,0.9)";
         ctx.fillRect(food.x + 3, food.y + 3, BOX - 6, BOX - 6);
       }
-      ctx.shadowBlur  = 0;
+      ctx.shadowBlur = 0;
 
       // snake
       snake.forEach((seg, idx) => {
         const alpha = idx === 0 ? 1 : Math.max(0.3, 1 - idx * 0.04);
-        ctx.fillStyle = idx === 0 ? `rgba(220,210,255,${alpha})` : `rgba(155,109,206,${alpha})`;
+        ctx.fillStyle = idx === 0 ? `rgba(234,231,222,${alpha})` : `rgba(155, 109, 206,${alpha})`;
         ctx.fillRect(seg.x + 1, seg.y + 1, BOX - 2, BOX - 2);
       });
 
       if (gameState === "gameover") {
-        ctx.fillStyle = "rgba(0,0,0,0.75)";
+        ctx.fillStyle = "rgba(6,6,5,0.78)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "rgba(255,255,255,0.85)";
+        ctx.fillStyle = "rgba(234,231,222,0.9)";
         ctx.font      = "bold 16px 'JetBrains Mono', monospace";
         ctx.textAlign = "center";
         ctx.fillText("GAME OVER", canvas.width / 2, canvas.height / 2 - 24);
-        ctx.fillStyle = "rgba(155,109,206,0.8)";
+        ctx.fillStyle = "rgba(155, 109, 206,0.85)";
         ctx.font      = "12px 'JetBrains Mono', monospace";
-        ctx.fillText(`score: ${score}  ·  best: ${highScore}`, canvas.width / 2, canvas.height / 2 + 4);
+        ctx.fillText(`score: ${score}  /  best: ${highScore}`, canvas.width / 2, canvas.height / 2 + 4);
       }
     }
 

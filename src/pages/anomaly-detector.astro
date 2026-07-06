@@ -1,14 +1,14 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Gosvindraj | Avalanche Anomaly Detector">
+<BaseLayout title="Gosvindraj | Avalanche Anomaly Detector" description="Paste an Avalanche C-Chain wallet and an Isolation Forest model flags anomalous transactions by value, gas, and timing.">
   <section id="project-anomaly">
     <div class="project-inner">
 
-      <!-- ── Left panel ── -->
+      <!-- ── left panel ── -->
       <div class="project-header">
-        <p class="section-label">project 03</p>
-        <h1 class="project-title">Avalanche<br>Anomaly<br>Detector</h1>
+        <span class="m-label"><span class="lb">[</span> project <span class="hl">03</span> <span class="lb">]</span></span>
+        <h1 class="project-title display">anomaly<br />detector<span class="serif acid">.</span></h1>
         <p class="project-desc">
           paste an Avalanche C-Chain wallet address to analyze its recent
           transactions for anomalous behaviour. detection runs server-side
@@ -21,13 +21,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <div class="legend-item"><span class="dot dot-anomalous"></span>anomalous</div>
         </div>
 
-        <a href="/projects" class="back-link">
-          <i class="fa-solid fa-arrow-left"></i>
-          <span>back to projects</span>
-        </a>
+        <a href="/projects" class="btn-line">&larr; all projects</a>
       </div>
 
-      <!-- ── Right panel ── -->
+      <!-- ── right panel ── -->
       <div class="anomaly-wrap">
 
         <div class="input-row">
@@ -40,7 +37,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             maxlength="42"
           />
           <button id="analyze-btn" type="button" data-magnetic>
-            <span id="btn-text">Analyze</span>
+            <span id="btn-text">analyze</span>
             <i class="fa-solid fa-arrow-right"></i>
           </button>
         </div>
@@ -71,7 +68,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <!-- ── Modal ── -->
+  <!-- ── modal ── -->
   <div id="tx-modal" class="modal-backdrop hidden" aria-modal="true" role="dialog">
     <div class="modal-panel" id="modal-panel">
       <button class="modal-close" id="modal-close" aria-label="Close">
@@ -112,49 +109,36 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     min-height: calc(100vh - var(--nav-height));
     display: flex;
     align-items: flex-start;
-    padding: 4rem 8%;
+    padding: clamp(2.5rem, 6vh, 4rem) var(--gutter);
   }
 
-  .project-inner {
+  #project-anomaly .project-inner {
     width: 100%;
     display: flex;
     align-items: flex-start;
-    gap: 5rem;
+    gap: clamp(2.5rem, 6vw, 5rem);
   }
 
-  /* ── Left panel ── */
-  .project-header {
-    flex: 0 0 260px;
+  /* ── left panel ── */
+  #project-anomaly .project-header {
+    flex: 0 0 300px;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.75rem;
     opacity: 0;
     position: sticky;
     top: calc(var(--nav-height) + 2rem);
   }
 
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
+  #project-anomaly .project-title { font-size: clamp(2rem, 4.4vw, 3.4rem); }
 
-  .project-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.03em;
-    line-height: 1.1;
-  }
-
-  .project-desc {
-    font-size: 0.82rem;
-    color: var(--muted);
+  #project-anomaly .project-desc {
+    font-size: 0.88rem;
+    color: var(--dim);
     line-height: 1.9;
   }
+
+  #project-anomaly .btn-line { align-self: flex-start; }
 
   .legend {
     display: flex;
@@ -166,46 +150,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    font-size: 11px;
+    font-family: var(--font-mono);
+    font-size: 10px;
     font-weight: 500;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--dim);
   }
 
   .dot {
     width: 7px;
     height: 7px;
-    border-radius: 50%;
     flex-shrink: 0;
   }
 
-  .dot-normal    { background: #6fcf97; }
-  .dot-suspicious{ background: #f2994a; }
-  .dot-anomalous { background: #eb5757; }
+  .dot-normal     { background: #6fcf97; }
+  .dot-suspicious { background: #f2994a; }
+  .dot-anomalous  { background: #eb5757; }
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 0.55rem 1.1rem;
-    border-radius: 2px;
-    cursor: none;
-    transition: color var(--transition), border-color var(--transition), background var(--transition);
-    align-self: flex-start;
-  }
-
-  .back-link i { font-size: 10px; transition: transform var(--transition); }
-  .back-link:hover { color: var(--text); border-color: var(--border-hover); background: var(--accent-dim); }
-  .back-link:hover i { transform: translateX(-3px); }
-
-  /* ── Right panel ── */
+  /* ── right panel ── */
   .anomaly-wrap {
     flex: 1;
     min-width: 0;
@@ -218,107 +181,107 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .input-row {
     display: flex;
     gap: 0;
-    border: 1px solid var(--border);
-    border-radius: 2px;
+    border: 1px solid var(--line);
     overflow: hidden;
     transition: border-color var(--transition);
   }
 
-  .input-row:focus-within { border-color: var(--border-hover); }
+  .input-row:focus-within { border-color: var(--acid); }
 
   #address-input {
     flex: 1;
     background: var(--surface);
     border: none;
     outline: none;
-    padding: 0.85rem 1.1rem;
-    font-family: "JetBrains Mono", monospace;
+    padding: 0.9rem 1.1rem;
+    font-family: var(--font-mono);
     font-size: 0.82rem;
-    color: var(--text);
+    color: var(--ink);
     letter-spacing: 0.04em;
     min-width: 0;
+    cursor: none;
   }
 
-  #address-input::placeholder { color: var(--muted); font-family: "Montserrat", sans-serif; font-size: 0.8rem; letter-spacing: 0.02em; }
-
-  #address-input::selection {
-    background: rgba(155, 109, 206, 0.35);
-    color: #fff;
+  #address-input::placeholder {
+    color: var(--faint);
+    font-size: 0.78rem;
+    letter-spacing: 0.02em;
   }
 
   #analyze-btn {
     display: flex;
     align-items: center;
     gap: 0.6rem;
-    background: none;
+    background: var(--acid);
     border: none;
-    border-left: 1px solid var(--border);
-    color: var(--muted);
-    font-family: "Montserrat", sans-serif;
+    color: #0c0c0a;
+    font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    padding: 0.85rem 1.4rem;
-    cursor: none;
-    transition: color var(--transition), background var(--transition), border-color var(--transition);
+    padding: 0.9rem 1.5rem;
+    transition: background var(--transition);
     white-space: nowrap;
     will-change: transform;
   }
 
   #analyze-btn i { font-size: 10px; transition: transform var(--transition); }
-  #analyze-btn:hover { color: var(--text); background: var(--accent-dim); border-color: var(--border-hover); }
+  #analyze-btn:hover { background: #d9fb70; }
   #analyze-btn:hover i { transform: translateX(3px); }
   #analyze-btn:disabled { opacity: 0.4; pointer-events: none; }
 
   .info-msg {
-    font-size: 0.8rem;
-    color: var(--muted);
-    letter-spacing: 0.03em;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--dim);
+    letter-spacing: 0.04em;
     min-height: 1.2em;
   }
 
   .info-msg.error { color: #eb5757; }
 
-  /* ── Summary ── */
+  /* ── summary ── */
   .summary {
     display: flex;
     gap: 2.5rem;
     padding: 1.1rem 0 1.4rem;
-    border-top: 1px solid rgba(155, 109, 206, 0.2);
+    border-top: 1px solid var(--line-strong);
     flex-wrap: wrap;
   }
 
   .stat {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.3rem;
   }
 
   .stat-label {
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--dim);
   }
 
   .stat-val {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.6rem;
-    font-weight: 300;
-    color: var(--text);
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 740;
+    font-size: 1.8rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
     line-height: 1;
   }
 
   .stat-val.has-anomalies  { color: #eb5757; }
   .stat-val.has-suspicious { color: #f2994a; }
 
-  /* ── Table ── */
+  /* ── table ── */
   .table-wrap {
     overflow-x: auto;
-    border: 1px solid rgba(155, 109, 206, 0.22);
-    border-radius: 3px;
+    border: 1px solid var(--line-strong);
   }
 
   #tx-table {
@@ -328,52 +291,51 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   #tx-table th {
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--dim);
     text-align: left;
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid rgba(155, 109, 206, 0.3);
+    border-bottom: 1px solid var(--line-strong);
     white-space: nowrap;
-    background: rgba(155, 109, 206, 0.06);
+    background: var(--surface);
   }
 
   #tx-table th:last-child { width: 32px; }
 
   .tx-row {
     cursor: none;
-    transition: background var(--transition), box-shadow var(--transition);
+    transition: background var(--transition);
     position: relative;
   }
 
   .tx-row td {
-    padding: 1.4rem 1.5rem;
-    border-bottom: 1px solid rgba(155, 109, 206, 0.14);
-    color: var(--muted);
+    padding: 1.3rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--dim);
     vertical-align: middle;
     white-space: nowrap;
     transition: background var(--transition), color var(--transition);
   }
 
-  .tx-row:first-child td { border-top: 1px solid rgba(155, 109, 206, 0.14); }
-
   .tx-row:hover td {
-    background: rgba(155, 109, 206, 0.07);
-    color: var(--text);
+    background: var(--acid-dim);
+    color: var(--ink);
   }
 
   .tx-row:hover td:first-child {
-    box-shadow: inset 2px 0 0 rgba(155, 109, 206, 0.6);
+    box-shadow: inset 2px 0 0 var(--acid);
   }
 
   .tx-row:hover .row-arrow { opacity: 1; transform: translateX(2px); }
 
   .td-hash a {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.78rem;
-    color: var(--accent);
+    color: var(--acid);
     letter-spacing: 0.03em;
     cursor: none;
     transition: opacity var(--transition);
@@ -381,7 +343,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   .td-hash a:hover { opacity: 0.7; }
 
-  .td-value { font-family: "JetBrains Mono", monospace; color: var(--text); }
+  .td-value { font-family: var(--font-mono); color: var(--ink); }
 
   /* score bar */
   .score-wrap { display: flex; align-items: center; gap: 0.5rem; }
@@ -389,18 +351,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .score-bar-bg {
     width: 60px;
     height: 4px;
-    background: var(--border);
-    border-radius: 2px;
+    background: var(--line);
     overflow: hidden;
     flex-shrink: 0;
   }
 
-  .score-bar-fill { height: 100%; border-radius: 2px; }
+  .score-bar-fill { height: 100%; }
 
   .score-num {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--muted);
+    color: var(--dim);
     min-width: 36px;
   }
 
@@ -409,15 +370,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 0.25rem 0.55rem;
-    border-radius: 2px;
   }
 
-  .badge-dot { width: 5px; height: 5px; border-radius: 50%; }
+  .badge-dot { width: 5px; height: 5px; }
 
   .badge-normal     { background: rgba(111,207,151,0.1); color: #6fcf97; }
   .badge-normal     .badge-dot { background: #6fcf97; }
@@ -428,7 +389,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   /* row arrow hint */
   .row-arrow {
-    color: var(--muted);
+    color: var(--dim);
     font-size: 10px;
     opacity: 0;
     transition: opacity var(--transition), transform var(--transition);
@@ -436,12 +397,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   .hidden { display: none !important; }
 
-  /* ── Modal ── */
+  /* ── modal ── */
   .modal-backdrop {
     position: fixed;
     inset: 0;
     z-index: 900;
-    background: rgba(0, 0, 0, 0.65);
+    background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
@@ -452,8 +413,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .modal-panel {
     position: relative;
     background: var(--bg);
-    border: 1px solid var(--border-hover);
-    border-radius: 3px;
+    border: 1px solid var(--line-strong);
+    border-top: 1px solid var(--acid);
     width: 100%;
     max-width: 540px;
     max-height: 88vh;
@@ -474,15 +435,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     align-items: center;
     justify-content: center;
     background: none;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    color: var(--muted);
+    border: 1px solid var(--line);
+    color: var(--dim);
     font-size: 12px;
     cursor: none;
     transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
-  .modal-close:hover { color: var(--text); border-color: var(--border-hover); background: var(--surface); }
+  .modal-close:hover { color: var(--ink); border-color: var(--line-strong); background: var(--surface); }
 
   /* modal header */
   .modal-header { display: flex; flex-direction: column; gap: 0.6rem; }
@@ -493,18 +453,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.12em;
     text-transform: uppercase;
     padding: 0.3rem 0.65rem;
-    border-radius: 2px;
   }
 
   .modal-score {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: var(--muted);
+    color: var(--dim);
   }
 
   .modal-hash-row {
@@ -515,9 +475,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .modal-hash-val {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.78rem;
-    color: var(--text);
+    color: var(--ink);
     letter-spacing: 0.03em;
     word-break: break-all;
     flex: 1;
@@ -533,16 +493,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     align-items: center;
     justify-content: center;
     background: none;
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    color: var(--muted);
+    border: 1px solid var(--line);
+    color: var(--dim);
     font-size: 11px;
     cursor: none;
     transition: color var(--transition), border-color var(--transition), background var(--transition);
     text-decoration: none;
   }
 
-  .icon-btn:hover { color: var(--text); border-color: var(--border-hover); background: var(--surface); }
+  .icon-btn:hover { color: var(--ink); border-color: var(--line-strong); background: var(--surface); }
 
   /* modal meta */
   .modal-meta {
@@ -554,31 +513,32 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .meta-item { display: flex; flex-direction: column; gap: 0.3rem; }
 
   .meta-label {
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--dim);
   }
 
   .meta-val {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.78rem;
-    color: var(--text);
+    color: var(--ink);
     word-break: break-all;
   }
 
   .modal-divider {
     height: 1px;
-    background: rgba(155, 109, 206, 0.15);
+    background: var(--line);
   }
 
   /* verdict */
   .modal-verdict {
-    font-size: 0.82rem;
-    color: var(--muted);
+    font-size: 0.85rem;
+    color: var(--dim);
     line-height: 1.9;
-    border-left: 2px solid rgba(155, 109, 206, 0.4);
+    border-left: 2px solid var(--acid);
     padding-left: 1rem;
   }
 
@@ -590,11 +550,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .features-heading {
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--dim);
     opacity: 0.6;
   }
 
@@ -607,42 +568,40 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .feature-label {
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--dim);
   }
 
   .feature-pct {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 11px;
-    color: var(--text);
+    color: var(--ink);
     opacity: 0.7;
   }
 
   .feature-track {
     width: 100%;
     height: 5px;
-    background: rgba(255, 255, 255, 0.06);
-    border-radius: 3px;
+    background: var(--line);
     overflow: hidden;
   }
 
   .feature-fill {
     height: 100%;
-    border-radius: 3px;
-    opacity: 0.75;
+    opacity: 0.8;
     transition: width 0.5s ease;
   }
 
   @media (max-width: 960px) {
-    .project-inner { flex-direction: column; gap: 3rem; }
-    .project-header { flex: none; position: static; }
+    #project-anomaly .project-inner { flex-direction: column; gap: 3rem; }
+    #project-anomaly .project-header { flex: none; position: static; }
   }
 
   @media (max-width: 600px) {
-    #project-anomaly { padding: 3rem 6%; }
     .modal-meta { grid-template-columns: 1fr; }
   }
 </style>
@@ -684,8 +643,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   function fmtAvax(v: number): string {
-    if (v === 0)       return "0 AVAX";
-    if (v < 0.0001)    return "<0.0001 AVAX";
+    if (v === 0)    return "0 AVAX";
+    if (v < 0.0001) return "<0.0001 AVAX";
     return `${v.toLocaleString("en-US", { maximumFractionDigits: 4 })} AVAX`;
   }
 
@@ -739,7 +698,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     return lines.join(" ");
   }
 
-  // ── Modal ──────────────────────────────────────────────────────────────────
+  // ── modal ──────────────────────────────────────────────────────────────────
 
   let modalOpen = false;
 
@@ -838,7 +797,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     });
   }
 
-  // ── Results render ─────────────────────────────────────────────────────────
+  // ── results render ─────────────────────────────────────────────────────────
 
   function renderResults(txs: TxResult[]) {
     const results = document.getElementById("results")!;
@@ -910,15 +869,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     gsap.fromTo(results, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" });
   }
 
-  // ── Init ───────────────────────────────────────────────────────────────────
+  // ── init ───────────────────────────────────────────────────────────────────
 
   function initAnomaly() {
-    const header  = document.querySelector<HTMLElement>(".project-header");
-    const wrap    = document.querySelector<HTMLElement>(".anomaly-wrap");
+    const header = document.querySelector<HTMLElement>("#project-anomaly .project-header");
+    const wrap   = document.querySelector<HTMLElement>(".anomaly-wrap");
     if (!header) return;
 
-    gsap.fromTo(header, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.1 });
-    gsap.fromTo(wrap,   { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.25 });
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      gsap.set([header, wrap], { opacity: 1 });
+    } else {
+      gsap.fromTo(header, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.1 });
+      gsap.fromTo(wrap,   { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.25 });
+    }
 
     const input   = document.getElementById("address-input") as HTMLInputElement;
     const btn     = document.getElementById("analyze-btn")   as HTMLButtonElement;
@@ -948,13 +912,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         return;
       }
 
-      btn.disabled  = true;
-      btnText.textContent = "Analyzing...";
+      btn.disabled = true;
+      btnText.textContent = "analyzing...";
       results.classList.add("hidden");
       setInfo("fetching transactions from Glacier API...");
 
       try {
-        const res  = await fetch("/api/anomaly", {
+        const res = await fetch("/api/anomaly", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
           body:    JSON.stringify({ address }),
@@ -983,7 +947,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         setInfo("Network error. Please try again.", true);
       } finally {
         btn.disabled = false;
-        btnText.textContent = "Analyze";
+        btnText.textContent = "analyze";
       }
     });
 

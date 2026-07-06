@@ -1,56 +1,53 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Gosvindraj | BTC Price in MYR">
+<BaseLayout title="Gosvindraj | BTC Price in MYR" description="Live bitcoin price in ringgit: BTC/USD plus the USD/MYR rate, converted on the spot with a 7-day sparkline.">
   <section id="project-crypto">
     <div class="project-inner">
 
       <div class="project-header">
-        <p class="section-label">project 02</p>
-        <h1 class="project-title">BTC Price in MYR</h1>
+        <span class="m-label"><span class="lb">[</span> project <span class="hl">02</span> <span class="lb">]</span></span>
+        <h1 class="project-title display">btc /<br />myr<span class="serif acid">.</span></h1>
         <p class="project-desc">
           fetches the live bitcoin price in USD from CoinGecko and the
           USD/MYR exchange rate, then converts. real-time, no cache.
         </p>
-        <a href="/projects" class="back-link">
-          <i class="fa-solid fa-arrow-left"></i>
-          <span>back to projects</span>
-        </a>
+        <a href="/projects" class="btn-line">&larr; all projects</a>
       </div>
 
       <div class="crypto-wrap">
         <div class="crypto-card" id="crypto-card">
 
           <div class="card-idle" id="card-idle">
-            <span class="idle-symbol">₿</span>
-            <p class="idle-title">Bitcoin Live Price</p>
-            <p class="idle-hint">price · MYR conversion · 24h range · 7d chart</p>
+            <span class="idle-symbol">&#8383;</span>
+            <p class="idle-title">bitcoin live price</p>
+            <p class="idle-hint m-label">price / myr conversion / 24h range / 7d chart</p>
           </div>
 
           <div class="card-body" id="data-rows">
             <div class="card-left">
               <div class="rate-row" id="row-myr">
                 <span class="rate-label">USD / MYR</span>
-                <span class="rate-val" id="rate-myr">—</span>
+                <span class="rate-val" id="rate-myr">--</span>
               </div>
               <div class="rate-row" id="row-btc">
                 <span class="rate-label">BTC / USD</span>
                 <div class="rate-val-group">
-                  <span class="rate-val" id="btc-usd">—</span>
+                  <span class="rate-val" id="btc-usd">--</span>
                   <span class="change-badge" id="btc-change"></span>
                 </div>
               </div>
               <div class="rate-row">
                 <span class="rate-label">BTC / MYR</span>
-                <span class="rate-val" id="btc-myr">—</span>
+                <span class="rate-val" id="btc-myr">--</span>
               </div>
               <div class="rate-row">
                 <span class="rate-label">24H HIGH</span>
-                <span class="rate-val val-high" id="btc-high">—</span>
+                <span class="rate-val val-high" id="btc-high">--</span>
               </div>
               <div class="rate-row">
                 <span class="rate-label">24H LOW</span>
-                <span class="rate-val val-low" id="btc-low">—</span>
+                <span class="rate-val val-low" id="btc-low">--</span>
               </div>
             </div>
 
@@ -71,7 +68,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
           <div class="card-actions" id="card-actions">
             <button id="fetch-btn" type="button">
-              <span id="btn-text">Fetch live price</span>
+              <span id="btn-text">fetch live price</span>
               <i class="fa-solid fa-arrow-right" id="btn-icon"></i>
             </button>
           </div>
@@ -90,68 +87,34 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     min-height: calc(100vh - var(--nav-height));
     display: flex;
     align-items: center;
-    padding: 4rem 8%;
+    padding: clamp(2.5rem, 6vh, 4rem) var(--gutter);
   }
 
   .project-inner {
     width: 100%;
     display: flex;
     align-items: flex-start;
-    gap: 6rem;
+    gap: clamp(3rem, 7vw, 6rem);
   }
 
   /* left */
   .project-header {
-    flex: 0 0 300px;
+    flex: 0 0 320px;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.75rem;
     opacity: 0;
   }
 
-  .section-label {
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.25em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-
-  .project-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.03em;
-    line-height: 1.1;
-  }
+  .project-title { font-size: clamp(2.3rem, 5.2vw, 4rem); }
 
   .project-desc {
-    font-size: 0.85rem;
-    color: var(--muted);
+    font-size: 0.9rem;
+    color: var(--dim);
     line-height: 1.85;
   }
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-    border: 1px solid var(--border);
-    padding: 0.55rem 1.1rem;
-    border-radius: 2px;
-    cursor: none;
-    transition: color var(--transition), border-color var(--transition), background var(--transition);
-    align-self: flex-start;
-  }
-
-  .back-link i { font-size: 10px; transition: transform var(--transition); }
-  .back-link:hover { color: var(--text); border-color: var(--border-hover); background: var(--accent-dim); }
-  .back-link:hover i { transform: translateX(-3px); }
+  .project-header .btn-line { align-self: flex-start; }
 
   /* right */
   .crypto-wrap {
@@ -163,16 +126,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   .crypto-card {
     background: var(--surface);
-    border: 1px solid var(--border);
-    border-top-color: var(--border-hover);
+    border: 1px solid var(--line);
+    border-top: 1px solid var(--acid);
     padding: 2rem 2.25rem;
     display: flex;
     flex-direction: column;
-    gap: 0;
     width: 100%;
   }
 
-  /* two-column body: data rows left, sparkline right */
   .card-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -180,20 +141,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     overflow: hidden;
     max-height: 0;
     opacity: 0;
-    margin-bottom: 0;
-    transition: max-height 0.5s ease, opacity 0.4s ease, margin-bottom 0.4s ease;
+    transition: max-height 0.5s ease, opacity 0.4s ease;
   }
 
   .card-body.visible {
     max-height: 500px;
     opacity: 1;
-    margin-bottom: 0;
   }
 
   .card-left {
     display: flex;
     flex-direction: column;
-    border-right: 1px solid var(--border);
+    border-right: 1px solid var(--line);
     padding-right: 2rem;
   }
 
@@ -208,22 +167,23 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     align-items: center;
     justify-content: space-between;
     padding: 0.9rem 0;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--line);
   }
 
   .rate-label {
+    font-family: var(--font-mono);
     font-size: 10px;
     font-weight: 500;
     letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--dim);
   }
 
   .rate-val {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.9rem;
     font-weight: 500;
-    color: var(--text);
+    color: var(--ink);
     letter-spacing: 0.04em;
   }
 
@@ -232,49 +192,39 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 2.5rem 1rem 1.25rem;
-    gap: 0.6rem;
-    transition: opacity 0.3s ease, max-height 0.4s ease;
+    padding: 2.5rem 1rem 1.5rem;
+    gap: 0.7rem;
   }
 
-  .card-idle.hidden {
-    display: none;
-  }
+  .card-idle.hidden { display: none; }
 
   .idle-symbol {
-    font-family: "Cormorant Garamond", serif;
     font-size: 3rem;
-    font-weight: 300;
-    color: rgba(247, 147, 26, 0.75);
-    text-shadow: 0 0 32px rgba(247, 147, 26, 0.2);
+    font-weight: 400;
+    color: rgba(247, 147, 26, 0.85);
+    text-shadow: 0 0 32px rgba(247, 147, 26, 0.25);
     line-height: 1;
-    margin-bottom: 0.25rem;
   }
 
   .idle-title {
-    font-family: "Cormorant Garamond", serif;
-    font-size: 1.25rem;
-    font-weight: 300;
-    color: var(--text);
-    letter-spacing: 0.04em;
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
   }
 
-  .idle-hint {
-    font-size: 0.72rem;
-    color: var(--muted);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
+  .idle-hint { text-align: center; }
 
   .card-actions {
     display: flex;
     justify-content: center;
-    padding-top: 0;
   }
 
   .card-actions.fetched {
     padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--line);
   }
 
   #fetch-btn {
@@ -284,25 +234,21 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     gap: 0.6rem;
     width: 100%;
     background: none;
-    border: 1px solid rgba(247, 147, 26, 0.3);
-    color: rgba(247, 147, 26, 0.7);
-    font-family: "Montserrat", sans-serif;
-    font-size: 12px;
+    border: 1px solid rgba(247, 147, 26, 0.35);
+    color: rgba(247, 147, 26, 0.85);
+    font-family: var(--font-mono);
+    font-size: 11px;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
     padding: 0.9rem 1.5rem;
-    border-radius: 2px;
-    cursor: none;
     transition: color var(--transition), border-color var(--transition), background var(--transition);
-    will-change: transform;
   }
 
   #fetch-btn i { font-size: 11px; transition: transform var(--transition); }
-  #fetch-btn:hover { color: rgba(247, 147, 26, 1); border-color: rgba(247, 147, 26, 0.6); background: rgba(247, 147, 26, 0.07); }
+  #fetch-btn:hover { color: #f7931a; border-color: rgba(247, 147, 26, 0.7); background: rgba(247, 147, 26, 0.07); }
   #fetch-btn:hover i { transform: translateX(4px); }
-  #fetch-btn:hover i { transform: translateX(4px); }
-  #fetch-btn:disabled { opacity: 0.45; cursor: default; }
+  #fetch-btn:disabled { opacity: 0.45; }
 
   .val-high { color: #4ade80; }
   .val-low  { color: #f87171; }
@@ -330,9 +276,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .spark-label {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.62rem;
-    color: var(--muted);
+    color: var(--dim);
     letter-spacing: 0.05em;
   }
 
@@ -349,12 +295,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .change-badge {
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.04em;
     padding: 0.18rem 0.45rem;
-    border-radius: 2px;
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -376,9 +321,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .last-updated {
     margin-top: 0.6rem;
     text-align: center;
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     font-size: 0.68rem;
-    color: var(--muted);
+    color: var(--dim);
     letter-spacing: 0.06em;
     opacity: 0;
     transition: opacity 0.4s ease;
@@ -390,49 +335,30 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .error-msg {
     display: none;
     margin-top: 1rem;
-    font-size: 0.8rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
     color: #eb5757;
     letter-spacing: 0.04em;
+    text-align: center;
   }
 
   .error-msg.visible { display: block; }
 
   @media (max-width: 900px) {
     #project-crypto { align-items: flex-start; }
-    .project-inner { flex-direction: column; gap: 2rem; align-items: center; }
-    .project-header { flex: none; text-align: center; align-items: center; }
-    .back-link { align-self: center; }
-    .crypto-wrap { width: 100%; max-width: 480px; justify-content: center; }
+    .project-inner { flex-direction: column; gap: 2.5rem; }
+    .project-header { flex: none; }
+    .crypto-wrap { width: 100%; max-width: 520px; }
     .card-body { grid-template-columns: 1fr; }
-    .card-left { border-right: none; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 1rem; margin-bottom: 0; }
+    .card-left { border-right: none; padding-right: 0; border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
     .card-right { padding-top: 1rem; }
     .sparkline-svg { height: 70px; }
   }
 
   @media (max-width: 500px) {
-    #project-crypto { padding: 2.5rem 5%; }
     .crypto-card { padding: 1.5rem; }
     .card-idle { padding: 2rem 1rem 1rem; }
   }
-</style>
-
-<style is:global>
-  body.btc-mode #cursor-dot {
-    background: rgba(247, 147, 26, 0.9);
-  }
-  body.btc-mode #cursor-ring {
-    border-color: rgba(247, 147, 26, 0.35);
-  }
-  body.btc-mode.cursor-hover #cursor-dot {
-    background: rgba(247, 147, 26, 1);
-  }
-  body.btc-mode.cursor-hover #cursor-ring {
-    border-color: rgba(247, 147, 26, 0.65);
-  }
-  body.btc-mode .cursor-trail   { background: rgba(247, 147, 26, 0.5); }
-  body.btc-mode .cursor-spark   { background: rgba(247, 147, 26, 0.9); }
-  body.btc-mode .cursor-ripple  { border-color: rgba(247, 147, 26, 0.6); }
-  body.btc-mode .cursor-streak  { background: linear-gradient(90deg, transparent, rgba(247, 147, 26, 0.85)); }
 </style>
 
 <script>
@@ -443,8 +369,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const cryptoWrap = document.querySelector<HTMLElement>(".crypto-wrap");
     if (!header || !cryptoWrap) return;
 
-    gsap.fromTo(header,     { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.1 });
-    gsap.fromTo(cryptoWrap, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.25 });
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      gsap.set([header, cryptoWrap], { opacity: 1 });
+    } else {
+      gsap.fromTo(header,     { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.1 });
+      gsap.fromTo(cryptoWrap, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", delay: 0.25 });
+    }
 
     const btn         = document.getElementById("fetch-btn")    as HTMLButtonElement;
     const btnText     = document.getElementById("btn-text")     as HTMLElement;
@@ -456,9 +387,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const changeBadge = document.getElementById("btc-change")   as HTMLElement;
     const lastUpdEl   = document.getElementById("last-updated") as HTMLElement;
     const errorMsg    = document.getElementById("error-msg")    as HTMLElement;
-    const dataRows    = document.getElementById("data-rows")     as HTMLElement;
-    const cardIdle    = document.getElementById("card-idle")     as HTMLElement;
-    const cardActions = document.getElementById("card-actions")  as HTMLElement;
+    const dataRows    = document.getElementById("data-rows")    as HTMLElement;
+    const cardIdle    = document.getElementById("card-idle")    as HTMLElement;
+    const cardActions = document.getElementById("card-actions") as HTMLElement;
     const sparkStart  = document.getElementById("spark-label-start") as HTMLElement;
     const sparkEnd    = document.getElementById("spark-label-end")   as HTMLElement;
     if (!btn) return;
@@ -481,7 +412,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         onComplete() { el.textContent = prefix + fmt(to, decimals); },
       });
       if (!keepColor) {
-        gsap.fromTo(el, { color: "var(--accent)" }, { color: "", duration: 1.2, ease: "power2.out" });
+        gsap.fromTo(el, { color: "var(--acid)" }, { color: "", duration: 1.2, ease: "power2.out" });
       }
     }
 
@@ -573,7 +504,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       sparkStart.textContent = `$${fmt(prices[0], 0)}`;
       sparkEnd.textContent   = `$${fmt(prices[prices.length - 1], 0)}`;
       const midEl = document.querySelector<HTMLElement>(".spark-label-mid");
-      if (midEl) midEl.textContent = `${sign}${change7d.toFixed(1)}% · 7d`;
+      if (midEl) midEl.textContent = `${sign}${change7d.toFixed(1)}% / 7d`;
     }
 
     function startTick() {
@@ -589,7 +520,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     btn.addEventListener("click", async () => {
       btn.disabled = true;
-      btnText.textContent = "Fetching...";
+      btnText.textContent = "fetching...";
       errorMsg.classList.remove("visible");
 
       try {
@@ -635,19 +566,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         errorMsg.classList.add("visible");
       } finally {
         btn.disabled = false;
-        btnText.textContent = "Fetch live price";
+        btnText.textContent = "fetch live price";
       }
     });
 
-    // clean up ticker + cursor on page navigation
+    // clean up ticker on page navigation
     document.addEventListener("astro:before-swap", () => {
       if (tickInterval) clearInterval(tickInterval);
-      document.body.classList.remove("btc-mode");
     }, { once: true });
   }
 
-  document.addEventListener("astro:page-load", () => {
-    document.body.classList.add("btc-mode");
-    initCrypto();
-  });
+  document.addEventListener("astro:page-load", initCrypto);
 </script>
