@@ -335,11 +335,6 @@ header#site-nav {
 .nav-links a:hover::after,
 .nav-links a.active::after { width: 100%; }
 
-@keyframes pulse-acid {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(155, 109, 206, 0.45); }
-  50%      { box-shadow: 0 0 0 5px rgba(155, 109, 206, 0); }
-}
-
 /* menu toggle (mobile) */
 .nav-toggle {
   display: none;

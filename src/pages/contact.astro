@@ -7,7 +7,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <div class="contact-head">
       <div class="ch-top">
         <span class="m-label"><span class="lb">[</span> contact <span class="lb">/</span> open channel <span class="lb">]</span></span>
-        <span class="m-label"><span class="dot-live" aria-hidden="true"></span> open to collabs</span>
+        <span class="m-label">open to collabs</span>
       </div>
       <h1 class="ch-display display">
         <span class="line-mask"><span class="line">say <span class="serif acid">hi.</span></span></span>
@@ -105,15 +105,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
-  }
-
-  .ch-top .dot-live {
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    background: var(--acid);
-    margin-right: 0.4rem;
-    animation: pulse-acid 2.2s ease-in-out infinite;
   }
 
   .ch-display { font-size: clamp(2.6rem, min(9vw, 13vh), 7rem); }

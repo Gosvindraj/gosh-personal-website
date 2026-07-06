@@ -8,10 +8,11 @@ interface Props {
   title: string;
   description?: string;
   hideFooter?: boolean;
+  hideFootCta?: boolean;
   pageClass?: string;
 }
 
-const { title, description = "Gosvindraj's space on the internet. Projects, things I'm working on, and everything else that doesn't fit anywhere else.", hideFooter = false, pageClass = "" } = Astro.props;
+const { title, description = "Gosvindraj's space on the internet. Projects, things I'm working on, and everything else that doesn't fit anywhere else.", hideFooter = false, hideFootCta = false, pageClass = "" } = Astro.props;
 
 const siteUrl = "https://gosvindraj.com";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
@@ -100,10 +101,12 @@ const jsonLd = [
 
     {!hideFooter && (
     <footer id="site-footer">
+      {!hideFootCta && (
       <a href="/contact" class="foot-cta">
         <span class="m-label"><span class="lb">[</span> next step <span class="lb">]</span></span>
         <span class="foot-cta-line">got an idea? say hi <span class="arrow">&#8599;</span></span>
       </a>
+      )}
       <div class="foot-bottom">
         <span>&copy; {new Date().getFullYear()} gosvindraj</span>
         <span>penang, malaysia / 5.4141&deg; n, 100.3288&deg; e</span>
