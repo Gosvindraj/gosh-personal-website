@@ -103,7 +103,7 @@ const jsonLd = [
     <footer id="site-footer">
       {!hideFootCta && (
       <a href="/contact" class="foot-cta">
-        <span class="m-label"><span class="lb">[</span> next step <span class="lb">]</span></span>
+        <span class="m-label"><span class="lb">[</span> the inbox is open <span class="lb">]</span></span>
         <span class="foot-cta-line">got an idea? say hi <span class="arrow">&#8599;</span></span>
       </a>
       )}
@@ -156,6 +156,29 @@ const jsonLd = [
         });
       }
       document.addEventListener("astro:page-load", initReveals);
+
+      /* ── shared ghost helper ──────────────────────
+         any .sec-ghost inside a .sec-ghosted section drifts
+         sideways on scroll-scrub. purely decorative. */
+      function initGhosts() {
+        if (reduced) return;
+        document.querySelectorAll<HTMLElement>(".sec-ghost").forEach((ghost) => {
+          gsap.fromTo(ghost,
+            { xPercent: 6 },
+            {
+              xPercent: -12,
+              ease: "none",
+              scrollTrigger: {
+                trigger: ghost.parentElement,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: 0.6,
+              },
+            }
+          );
+        });
+      }
+      document.addEventListener("astro:page-load", initGhosts);
 
       /* ── preloader ──────────────────────────────── */
       const preloader = document.getElementById("preloader");

@@ -9,6 +9,11 @@ const posts = (await getCollection("blog")).sort(
 function formatDate(date: Date) {
   return date.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
 }
+
+function readMinutes(body: string | undefined) {
+  const words = (body ?? "").trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 200));
+}
 ---
 <BaseLayout title="Gosvindraj | Blog" description="Opinions, observations, and things I'm working through. Written by hand, no AI." hideFootCta={true}>
 
@@ -17,22 +22,27 @@ function formatDate(date: Date) {
       <span class="m-label"><span class="lb">[</span> writing <span class="lb">/</span> unfiltered <span class="lb">]</span></span>
       <span class="m-label">{posts.length} {posts.length === 1 ? "entry" : "entries"}</span>
     </div>
-    <h1 class="bh-display display">
-      <span class="line-mask"><span class="line">brain</span></span>
-      <span class="line-mask"><span class="line"><span class="serif acid">dump.</span></span></span>
-    </h1>
+    <div class="bh-title-row">
+      <h1 class="bh-display display">
+        <span class="line-mask"><span class="line">blog<span class="acid">.</span></span></span>
+      </h1>
+      <p class="bh-aside m-note">brain dumps, unfiltered.</p>
+    </div>
     <p class="bh-sub">
       opinions, observations, things i'm figuring out. written by me,
       not AI, so expect imperfections. that's the point.
     </p>
   </section>
 
-  <section class="sec" id="blog-list">
+  <section class="sec sec-ghosted" id="blog-list">
+    <span class="sec-ghost display" aria-hidden="true">entries</span>
     <div class="post-list">
-      {posts.map((post) => (
+      {posts.map((post, i) => (
         <a href={`/blog/${post.id}`} class="post-row" data-reveal>
           <div class="post-meta">
+            <span class="post-num">{String(posts.length - i).padStart(2, "0")}</span>
             <span class="post-date">{formatDate(post.data.date)}</span>
+            <span class="post-read">{readMinutes(post.body)} min read</span>
             {(post.data.tags ?? []).filter(Boolean).map((tag: string) => (
               <span class="post-tag">{tag}</span>
             ))}
@@ -44,6 +54,11 @@ function formatDate(date: Date) {
           <span class="post-arrow" aria-hidden="true">&#8599;</span>
         </a>
       ))}
+
+      <div class="post-coming" data-reveal>
+        <span class="m-label"><span class="lb">[</span> {String(posts.length + 1).padStart(2, "0")} <span class="lb">/</span> compiling <span class="lb">]</span></span>
+        <span class="post-coming-note m-note">the next brain dump has no ETA. that's the charm.</span>
+      </div>
     </div>
   </section>
 
@@ -51,10 +66,10 @@ function formatDate(date: Date) {
 
 <style>
   #blog-head {
-    padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(3rem, 8vh, 5rem);
+    padding: clamp(2rem, 6vh, 3.5rem) var(--gutter) clamp(2rem, 5vh, 3rem);
     display: flex;
     flex-direction: column;
-    gap: clamp(1.75rem, 5vh, 3rem);
+    gap: clamp(1.25rem, 3.5vh, 2rem);
   }
 
   .bh-top {
@@ -63,7 +78,18 @@ function formatDate(date: Date) {
     gap: 1rem;
   }
 
-  .bh-display { font-size: clamp(2.8rem, 10vw, 8.5rem); }
+  /* title + margin-note pair: the page name at a human scale with a
+     serif aside beside it, instead of a full-width tagline */
+  .bh-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    flex-wrap: wrap;
+  }
+
+  .bh-display { font-size: clamp(2.4rem, 5.5vw, 4.2rem); }
+
+  /* typography comes from the shared .m-note code-comment utility */
 
   .line-mask {
     display: block;
@@ -110,7 +136,16 @@ function formatDate(date: Date) {
     padding-top: 0.35em;
   }
 
-  .post-date {
+  .post-num {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--acid);
+    transition: color 0.25s ease;
+  }
+
+  .post-date,
+  .post-read {
     font-family: var(--font-mono);
     font-size: 10px;
     letter-spacing: 0.14em;
@@ -166,8 +201,22 @@ function formatDate(date: Date) {
   .post-row:hover .post-title,
   .post-row:hover .post-desc,
   .post-row:hover .post-date,
+  .post-row:hover .post-read,
+  .post-row:hover .post-num,
   .post-row:hover .post-tag { color: #0c0c0a; }
   .post-row:hover .post-arrow { color: #0c0c0a; transform: translate(3px, -3px); }
+
+  /* non-interactive trailing row acknowledging the queue */
+  .post-coming {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+    padding: clamp(1.4rem, 3.5vw, 2rem) 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .post-coming-note { color: var(--faint); }
 
   @media (max-width: 700px) {
     .post-row { grid-template-columns: 1fr 2.5rem; }
@@ -193,7 +242,7 @@ function formatDate(date: Date) {
 
     const lines = head.querySelectorAll<HTMLElement>(".line");
     const top   = head.querySelector<HTMLElement>(".bh-top");
-    const sub   = head.querySelector<HTMLElement>(".bh-sub");
+    const sub   = head.querySelectorAll<HTMLElement>(".bh-aside, .bh-sub");
 
     gsap.set(top, { opacity: 0 });
     gsap.set(sub, { opacity: 0, y: 20 });

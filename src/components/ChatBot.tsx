@@ -219,14 +219,14 @@ export default function ChatBot() {
                 ask gosh
               </div>
               <div style={{ fontSize: "9px", color: T.muted, letterSpacing: "0.14em", textTransform: "uppercase", fontFamily: FONT_MONO }}>
-                portfolio assistant
+                the automated me
               </div>
             </div>
           </div>
 
           <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <span style={{ fontSize: "10px", color: T.muted, letterSpacing: "0.06em", fontFamily: FONT_MONO }}>
-              {remaining} / {MAX_SESSION}
+              [ {remaining} / {MAX_SESSION} ]
             </span>
 
             <button
@@ -277,38 +277,45 @@ export default function ChatBot() {
               padding:    "0 12px",
             }}>
               <div style={{
-                width:          "36px",
-                height:         "36px",
-                background:     T.accentDim,
-                border:         "1px solid rgba(155, 109, 206,0.25)",
-                display:        "flex",
-                alignItems:     "center",
-                justifyContent: "center",
-                margin:         "0 auto 12px",
+                fontFamily:    FONT_MONO,
+                fontSize:      "9px",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color:         T.accent,
+                marginBottom:  "10px",
               }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={T.accent} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-                </svg>
+                [ transcript empty ]
               </div>
-              ask me anything about gosh: his projects, skills, background, or how to get in touch.
+              the bot version of gosh. ask about the projects, the human behind them, or where to say hi.
             </div>
           )}
 
+          {/* transcript entries, not chat bubbles: mono speaker label
+              over the text, hairline between turns */}
           {messages.map((m, i) => (
             <div key={i} style={{
-              display:        "flex",
-              justifyContent: m.role === "user" ? "flex-end" : "flex-start",
+              display:       "flex",
+              flexDirection: "column",
+              gap:           "5px",
+              paddingBottom: "12px",
+              borderBottom:  `1px solid ${T.border}`,
             }}>
+              <span style={{
+                fontFamily:    FONT_MONO,
+                fontSize:      "9px",
+                fontWeight:    500,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color:         m.role === "user" ? T.muted : T.accent,
+              }}>
+                {m.role === "user" ? "you" : "gosh.bot"}
+              </span>
               <div style={{
-                maxWidth:     "82%",
-                padding:      "9px 13px",
-                background:   m.role === "user" ? T.accent : T.bg,
-                border:       m.role === "user" ? "none" : `1px solid ${T.border}`,
-                color:        m.role === "user" ? "#0c0c0a" : T.text,
-                fontSize:     "13px",
-                lineHeight:   1.65,
-                wordBreak:    "break-word",
-                whiteSpace:   "pre-wrap",
+                color:      m.role === "user" ? T.muted : T.text,
+                fontSize:   "13px",
+                lineHeight: 1.65,
+                wordBreak:  "break-word",
+                whiteSpace: "pre-wrap",
               }}>
                 {m.content}
               </div>
@@ -316,15 +323,18 @@ export default function ChatBot() {
           ))}
 
           {loading && (
-            <div style={{ display: "flex", justifyContent: "flex-start" }}>
-              <div style={{
-                padding:    "10px 14px",
-                background: T.bg,
-                border:     `1px solid ${T.border}`,
-                display:    "flex",
-                gap:        "5px",
-                alignItems: "center",
+            <div style={{ display: "flex", flexDirection: "column", gap: "7px" }}>
+              <span style={{
+                fontFamily:    FONT_MONO,
+                fontSize:      "9px",
+                fontWeight:    500,
+                letterSpacing: "0.16em",
+                textTransform: "uppercase",
+                color:         T.accent,
               }}>
+                gosh.bot
+              </span>
+              <div style={{ display: "flex", gap: "5px", alignItems: "center" }}>
                 {[0, 1, 2].map((i) => (
                   <span key={i} style={{
                     width:      "5px",
@@ -354,12 +364,13 @@ export default function ChatBot() {
           <div ref={bottomRef} />
         </div>
 
-        {/* input area */}
+        {/* input area: underline field like the contact form, mono
+            text send instead of a messenger icon */}
         <div style={{
-          padding:    "10px 12px",
+          padding:    "12px 16px 14px",
           borderTop:  `1px solid ${T.border}`,
           display:    "flex",
-          gap:        "8px",
+          gap:        "12px",
           alignItems: "flex-end",
           flexShrink: 0,
           background: T.surface,
@@ -374,13 +385,22 @@ export default function ChatBot() {
             disabled={isExhausted || loading}
             rows={1}
             maxLength={MAX_CHARS}
+            autoComplete="off"
+            autoCorrect="off"
+            spellCheck={false}
+            data-gramm="false"
+            data-gramm_editor="false"
+            data-enable-grammarly="false"
+            data-lpignore="true"
+            data-1p-ignore="true"
             style={{
               flex:           1,
-              background:     T.bg,
-              border:         `1px solid ${T.border}`,
+              background:     "transparent",
+              border:         "none",
+              borderBottom:   `1px solid ${T.border}`,
               color:          T.text,
               fontSize:       "13px",
-              padding:        "9px 12px",
+              padding:        "4px 0 8px",
               resize:         "none",
               fontFamily:     FONT_SANS,
               lineHeight:     1.5,
@@ -391,8 +411,8 @@ export default function ChatBot() {
               scrollbarWidth: "none",
               transition:     "border-color 0.2s ease",
             }}
-            onFocus={e => { e.currentTarget.style.borderColor = T.borderHover; }}
-            onBlur={e  => { e.currentTarget.style.borderColor = T.border; }}
+            onFocus={e => { e.currentTarget.style.borderBottomColor = T.accent; }}
+            onBlur={e  => { e.currentTarget.style.borderBottomColor = T.border; }}
           />
           <button
             onClick={send}
@@ -400,23 +420,21 @@ export default function ChatBot() {
             aria-label="Send message"
             className="chatbot-send-btn"
             style={{
-              background:     canSend ? T.accent : "rgba(155, 109, 206,0.2)",
+              background:     "none",
               border:         "none",
-              width:          "36px",
-              height:         "36px",
-              display:        "flex",
-              alignItems:     "center",
-              justifyContent: "center",
-              opacity:        canSend ? 1 : 0.5,
+              padding:        "0 0 8px",
+              fontFamily:     FONT_MONO,
+              fontSize:       "10px",
+              fontWeight:     600,
+              letterSpacing:  "0.14em",
+              textTransform:  "uppercase",
+              color:          canSend ? T.accent : T.muted,
+              opacity:        canSend ? 1 : 0.45,
               flexShrink:     0,
-              transition:     "background 0.2s ease, opacity 0.2s ease",
-              color:          "#0c0c0a",
+              transition:     "color 0.2s ease, opacity 0.2s ease",
             }}
           >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
+            send &rarr;
           </button>
         </div>
       </div>
@@ -470,9 +488,13 @@ export default function ChatBot() {
             <line x1="6" y1="6" x2="18" y2="18"/>
           </svg>
         ) : (
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
+          <span style={{
+            fontFamily:    FONT_MONO,
+            fontSize:      "11px",
+            fontWeight:    600,
+            letterSpacing: "0.14em",
+            textTransform: "uppercase",
+          }}>ask</span>
         )}
       </button>
 

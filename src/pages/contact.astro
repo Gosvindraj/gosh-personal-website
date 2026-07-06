@@ -9,9 +9,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <span class="m-label"><span class="lb">[</span> contact <span class="lb">/</span> open channel <span class="lb">]</span></span>
         <span class="m-label">open to collabs</span>
       </div>
-      <h1 class="ch-display display">
-        <span class="line-mask"><span class="line">say <span class="serif acid">hi.</span></span></span>
-      </h1>
+      <div class="ch-title-row">
+        <h1 class="ch-display display">
+          <span class="line-mask"><span class="line">say hi<span class="acid">.</span></span></span>
+        </h1>
+        <p class="ch-aside m-note">i read everything, and i actually reply.</p>
+      </div>
     </div>
 
     <div class="contact-body">
@@ -29,7 +32,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </div>
           <div class="field">
             <label for="message" class="field-label m-label">03 <span class="lb">/</span> message</label>
-            <textarea id="message" name="message" rows="5" placeholder="what's on your mind?" required></textarea>
+            <textarea id="message" name="message" rows="4" placeholder="what's on your mind?" required></textarea>
           </div>
           <button type="submit" class="btn-solid" data-magnetic>
             send it <span aria-hidden="true">&rarr;</span>
@@ -39,7 +42,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
 
       <aside class="contact-aside">
-        <p class="aside-note">
+        <p class="aside-note m-note">
           collab idea, weird question, or just want to argue about
           whether AI agents need wallets? all valid reasons.
         </p>
@@ -52,16 +55,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <div class="aside-block">
           <span class="m-label">elsewhere</span>
           <ul class="aside-links">
-            <li><a href="https://www.linkedin.com/in/gosvindraj-m-3306b9280/" target="_blank" rel="noopener">linkedin <span aria-hidden="true">&#8599;</span></a></li>
-            <li><a href="https://www.instagram.com/gosv7ndraj/" target="_blank" rel="noopener">instagram <span aria-hidden="true">&#8599;</span></a></li>
-            <li><a href="https://www.facebook.com/gosvindraj.fuzz/" target="_blank" rel="noopener">facebook <span aria-hidden="true">&#8599;</span></a></li>
-            <li><a href="https://github.com/Gosvindraj" target="_blank" rel="noopener">github <span aria-hidden="true">&#8599;</span></a></li>
+            <li><a href="https://www.linkedin.com/in/gosvindraj-m-3306b9280/" target="_blank" rel="noopener">linkedin <span class="al-handle">gosvindraj-m <span aria-hidden="true">&#8599;</span></span></a></li>
+            <li><a href="https://www.instagram.com/gosv7ndraj/" target="_blank" rel="noopener">instagram <span class="al-handle">@gosv7ndraj <span aria-hidden="true">&#8599;</span></span></a></li>
+            <li><a href="https://www.facebook.com/gosvindraj.fuzz/" target="_blank" rel="noopener">facebook <span class="al-handle">gosvindraj.fuzz <span aria-hidden="true">&#8599;</span></span></a></li>
+            <li><a href="https://github.com/Gosvindraj" target="_blank" rel="noopener">github <span class="al-handle">@Gosvindraj <span aria-hidden="true">&#8599;</span></span></a></li>
           </ul>
         </div>
 
         <div class="aside-block">
           <span class="m-label">location</span>
-          <span class="aside-plain">penang, malaysia (gmt+8)</span>
+          <span class="aside-plain">penang, malaysia (gmt+8) <span class="lb">/</span> <span id="contact-clock">--:--:--</span></span>
         </div>
       </aside>
 
@@ -107,7 +110,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     gap: 1rem;
   }
 
-  .ch-display { font-size: clamp(2.6rem, min(9vw, 13vh), 7rem); }
+  /* title + margin-note pair: the page name at a human scale with a
+     serif aside beside it, instead of a full-width tagline */
+  .ch-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    flex-wrap: wrap;
+  }
+
+  .ch-display { font-size: clamp(2.4rem, min(5.5vw, 8vh), 4.2rem); }
+
+  /* typography comes from the shared .m-note code-comment utility */
 
   .line-mask {
     display: block;
@@ -179,8 +193,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     font-weight: 400;
   }
 
+  /* full-width ledger-row send bar instead of a small button
+     floating in the empty bottom-left corner */
   #contact-form button[type="submit"] {
-    align-self: flex-start;
+    width: 100%;
+    justify-content: space-between;
+    padding: 1.1rem 1.5rem;
     will-change: transform;
   }
 
@@ -226,13 +244,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     gap: clamp(1.1rem, 2.6vh, 1.75rem);
   }
 
-  .aside-note {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: clamp(1rem, min(1.8vw, 2.4vh), 1.2rem);
-    color: var(--dim);
-    line-height: 1.55;
+  @media (min-width: 781px) {
+    .contact-aside {
+      border-left: 1px solid var(--line);
+      padding-left: clamp(2rem, 4vw, 3.5rem);
+    }
   }
+
+  /* typography comes from the shared .m-note code-comment utility */
 
   .aside-block {
     display: flex;
@@ -263,17 +282,32 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 0.4rem 0;
+    gap: 1rem;
+    padding: 0.5rem 0.4rem;
     border-bottom: 1px solid var(--line);
     font-family: var(--font-mono);
     font-size: 11px;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--dim);
-    transition: color var(--transition), padding-left var(--transition);
+    transition: background var(--transition), color var(--transition), padding-left var(--transition);
   }
 
-  .aside-links a:hover { color: var(--acid); padding-left: 0.5rem; }
+  .al-handle {
+    color: var(--faint);
+    letter-spacing: 0.08em;
+    text-transform: none;
+    transition: color var(--transition);
+  }
+
+  /* the site's row-invert move, at ledger-row scale */
+  .aside-links a:hover {
+    background: var(--acid);
+    color: #0c0c0a;
+    padding-left: 0.9rem;
+  }
+
+  .aside-links a:hover .al-handle { color: #0c0c0a; }
 
   .aside-plain {
     font-family: var(--font-mono);
@@ -282,6 +316,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     text-transform: uppercase;
     color: var(--dim);
   }
+
+  .aside-plain .lb { color: var(--faint); }
+
+  #contact-clock { color: var(--acid); font-variant-numeric: tabular-nums; }
 
   @media (max-width: 780px) {
     .contact-body { grid-template-columns: 1fr; }
@@ -302,14 +340,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     if (!reduced) {
       const lines = head.querySelectorAll<HTMLElement>(".line");
       const top   = head.querySelector<HTMLElement>(".ch-top");
+      const aside = head.querySelector<HTMLElement>(".ch-aside");
 
       gsap.set(top, { opacity: 0 });
+      gsap.set(aside, { opacity: 0, y: 12 });
       gsap.set(body, { opacity: 0, y: 24 });
       gsap.set(lines, { yPercent: 110 });
 
       gsap.timeline({ delay: 0.15 })
         .to(lines, { yPercent: 0, duration: 0.85, stagger: 0.12, ease: "power4.out" })
-        .to(body, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.4")
+        .to(aside, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, "-=0.5")
+        .to(body, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.35")
         .to(top, { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.3");
     }
 
@@ -370,6 +411,22 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     });
   }
 
+  /* ── live MYT clock in the location line ──── */
+  function initClock() {
+    const el = document.getElementById("contact-clock");
+    if (!el) return;
+    const fmt = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Asia/Kuala_Lumpur",
+      hour: "2-digit", minute: "2-digit", second: "2-digit",
+      hour12: false,
+    });
+    const tick = () => { el.textContent = fmt.format(new Date()); };
+    tick();
+    const timer = setInterval(tick, 1000);
+    document.addEventListener("astro:before-swap", () => clearInterval(timer), { once: true });
+  }
+
   document.addEventListener("astro:page-load", initContact);
   document.addEventListener("astro:page-load", initForm);
+  document.addEventListener("astro:page-load", initClock);
 </script>

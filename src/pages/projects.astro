@@ -51,17 +51,20 @@ const projects = [
       <span class="m-label"><span class="lb">[</span> work <span class="lb">/</span> index <span class="lb">]</span></span>
       <span class="m-label">{projects.length} entries, more compiling</span>
     </div>
-    <h1 class="ph-display display">
-      <span class="line-mask"><span class="line">built to</span></span>
-      <span class="line-mask"><span class="line"><span class="serif acid">learn.</span></span></span>
-    </h1>
+    <div class="ph-title-row">
+      <h1 class="ph-display display">
+        <span class="line-mask"><span class="line">projects<span class="acid">.</span></span></span>
+      </h1>
+      <p class="ph-aside m-note">built to learn, not to impress.</p>
+    </div>
     <p class="ph-sub">
-      nothing here was made to pad a resume. each one exists because
-      i wanted to know how something worked.
+      each one exists because i wanted to know how something worked.
+      nothing here was made to pad a resume.
     </p>
   </section>
 
-  <section class="sec" id="projects-list">
+  <section class="sec sec-ghosted" id="projects-list">
+    <span class="sec-ghost display" aria-hidden="true">built</span>
     <div class="proj-list">
       {projects.map((p) => (
         <a href={p.href} class="proj-row" data-reveal>
@@ -80,15 +83,16 @@ const projects = [
   </section>
 
   <!-- ── instagram feed ────────────────────────── -->
-  <section class="sec" id="instagram-feed">
+  <section class="sec sec-ghosted" id="instagram-feed">
+    <span class="sec-ghost display" aria-hidden="true">daily</span>
     <div class="sec-head" data-reveal>
       <span class="m-label" id="insta-label"><span class="lb">[</span> live <span class="lb">/</span> ai daily roundup <span class="lb">]</span></span>
       <a href="https://www.instagram.com/agentgosh/" target="_blank" rel="noopener noreferrer" class="m-label insta-follow">@agentgosh <span class="hl">follow &#8599;</span></a>
     </div>
-    <p class="insta-desc" data-reveal>
+    <p class="insta-desc m-note" data-reveal>
       posted daily by the news bot above. zero human hands involved.
     </p>
-    <div class="insta-grid" id="insta-grid" data-reveal></div>
+    <div id="insta-wrap"></div>
   </section>
 
 </BaseLayout>
@@ -96,10 +100,10 @@ const projects = [
 <style>
   /* ── header ───────────────────────────────── */
   #projects-head {
-    padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(3rem, 8vh, 5rem);
+    padding: clamp(2rem, 6vh, 3.5rem) var(--gutter) clamp(2rem, 5vh, 3rem);
     display: flex;
     flex-direction: column;
-    gap: clamp(1.75rem, 5vh, 3rem);
+    gap: clamp(1.25rem, 3.5vh, 2rem);
   }
 
   .ph-top {
@@ -108,7 +112,18 @@ const projects = [
     gap: 1rem;
   }
 
-  .ph-display { font-size: clamp(2.8rem, 10vw, 8.5rem); }
+  /* title + margin-note pair: the page name at a human scale with a
+     serif aside beside it, instead of a full-width tagline */
+  .ph-title-row {
+    display: flex;
+    align-items: baseline;
+    gap: clamp(1rem, 2.5vw, 2rem);
+    flex-wrap: wrap;
+  }
+
+  .ph-display { font-size: clamp(2.4rem, 5.5vw, 4.2rem); }
+
+  /* typography comes from the shared .m-note code-comment utility */
 
   .line-mask {
     display: block;
@@ -222,67 +237,49 @@ const projects = [
   .insta-follow { transition: color var(--transition); }
   .insta-follow:hover { color: var(--ink); }
 
-  .insta-desc {
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    color: var(--dim);
-    margin-bottom: 2rem;
-  }
-
-  .insta-grid {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 1px;
-    background: var(--line);
-    border: 1px solid var(--line);
-  }
-
-  @media (max-width: 1100px) {
-    .insta-grid { grid-template-columns: repeat(4, 1fr); }
-  }
-
-  @media (max-width: 700px) {
-    .insta-grid { grid-template-columns: repeat(3, 1fr); }
-  }
+  .insta-desc { margin-bottom: 2rem; }
 </style>
 
 <style is:global>
-  /* instagram cards are injected via JS, so styles must be global */
-  .insta-card {
+  /* the feed is injected via JS, so its styles must be global.
+     layout: the latest post gets a feature treatment (image + meta
+     column with the date as the hero, since the date is the only
+     thing that changes between these daily posters), the rest sit
+     below as a compact dated archive. */
+
+  /* ── feature: latest drop ── */
+  .insta-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    border: 1px solid var(--line);
+  }
+
+  .if-img {
     position: relative;
-    overflow: hidden;
     display: block;
-    background: var(--bg);
-  }
-
-  .insta-thumb {
-    position: relative;
-    width: 100%;
-    padding-bottom: 100%;
+    aspect-ratio: 1;
     overflow: hidden;
+    background: var(--surface);
   }
 
-  .insta-thumb img {
-    position: absolute;
-    inset: 0;
+  /* the posters are dark art already: show them at full colour and
+     let the hover overlay do the dimming, not the resting state */
+  .if-img img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
-    filter: grayscale(35%);
-    transition: transform 0.4s ease, filter 0.4s ease;
+    transition: transform 0.4s ease;
   }
 
-  .insta-card:hover .insta-thumb img {
-    transform: scale(1.05);
-    filter: grayscale(0%);
+  .if-img:hover img {
+    transform: scale(1.04);
   }
 
   .insta-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(12, 12, 10, 0.25);
+    background: transparent;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -292,17 +289,17 @@ const projects = [
     z-index: 1;
   }
 
-  .insta-card:hover .insta-overlay { background: rgba(12, 12, 10, 0.78); }
+  .if-img:hover .insta-overlay { background: rgba(12, 12, 10, 0.78); }
 
   .insta-view,
   .insta-type-badge {
     opacity: 0;
     transition: opacity 0.25s ease;
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
   }
 
-  .insta-card:hover .insta-view,
-  .insta-card:hover .insta-type-badge { opacity: 1; }
+  .if-img:hover .insta-view,
+  .if-img:hover .insta-type-badge { opacity: 1; }
 
   .insta-view {
     font-size: 10px;
@@ -318,15 +315,142 @@ const projects = [
     letter-spacing: 0.08em;
   }
 
+  .if-meta {
+    border-left: 1px solid var(--line);
+    padding: clamp(1.5rem, 3.5vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.1rem;
+    min-width: 0;
+  }
+
+  .if-date {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 740;
+    font-size: clamp(1.9rem, 4.5vw, 3.4rem);
+    letter-spacing: -0.03em;
+    line-height: 1;
+    text-transform: lowercase;
+    color: var(--ink);
+  }
+
+  .if-date .tick { color: var(--acid); }
+
+  .if-caption {
+    max-width: 52ch;
+    font-size: 0.88rem;
+    color: var(--dim);
+    line-height: 1.8;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .if-meta .btn-line { align-self: flex-start; }
+
+  /* ── archive: the rest, as a dated contact sheet ── */
+  .insta-archive {
+    border: 1px solid var(--line);
+    border-top: none;
+  }
+
+  .ia-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ia-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--line);
+  }
+
+  .ia-tile {
+    display: block;
+    background: var(--bg);
+    min-width: 0;
+  }
+
+  .ia-thumb {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+  }
+
+  /* light desaturation only, so the feature still reads as "the one
+     in colour" but the archive no longer sinks into the background */
+  .ia-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(30%);
+    transition: transform 0.4s ease, filter 0.4s ease;
+  }
+
+  .ia-tile:hover .ia-thumb img {
+    transform: scale(1.05);
+    filter: grayscale(0%);
+  }
+
+  /* the tag bar carries the tile's actual information (index + date)
+     and inverts to acid on hover, echoing the site's row-invert move */
+  .ia-tag {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 0.5rem 0.65rem;
+    border-top: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--faint);
+    transition: background 0.25s ease, color 0.25s ease;
+  }
+
+  .ia-tag .ia-date { color: var(--dim); transition: color 0.25s ease; }
+
+  .ia-tile:hover .ia-tag,
+  .ia-tile:hover .ia-tag .ia-date {
+    background: var(--acid);
+    color: #0c0c0a;
+  }
+
   .insta-status {
-    grid-column: 1 / -1;
     padding: 3rem;
     text-align: center;
     font-size: 0.75rem;
     color: var(--dim);
-    font-family: "JetBrains Mono", monospace;
+    font-family: var(--font-mono);
     letter-spacing: 0.14em;
     text-transform: uppercase;
+    border: 1px solid var(--line);
+  }
+
+  @media (max-width: 1100px) {
+    .ia-grid { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  @media (max-width: 780px) {
+    .insta-feature { grid-template-columns: 1fr; }
+    .if-meta { border-left: none; border-top: 1px solid var(--line); }
+    .ia-grid { grid-template-columns: repeat(3, 1fr); }
+    .ia-head .m-label:last-child { display: none; }
+  }
+
+  @media (max-width: 480px) {
+    .ia-grid { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 
@@ -343,7 +467,7 @@ const projects = [
 
     const lines = head.querySelectorAll<HTMLElement>(".line");
     const top   = head.querySelector<HTMLElement>(".ph-top");
-    const sub   = head.querySelector<HTMLElement>(".ph-sub");
+    const sub   = head.querySelectorAll<HTMLElement>(".ph-aside, .ph-sub");
 
     gsap.set(top, { opacity: 0 });
     gsap.set(sub, { opacity: 0, y: 20 });
@@ -365,50 +489,113 @@ const projects = [
     timestamp: string;
   }
 
-  async function initInstagramFeed() {
-    const grid = document.getElementById("insta-grid");
-    if (!grid) return;
+  function esc(s: string) {
+    return s.replace(/[&<>"']/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c] ?? c));
+  }
 
-    grid.innerHTML = `<p class="insta-status">loading feed...</p>`;
+  function cleanCaption(c: string) {
+    const text = (c ?? "").replace(/#\w+/g, "").replace(/\s+/g, " ").trim();
+    return text.length > 200 ? text.slice(0, 200).trimEnd() + "..." : text;
+  }
+
+  function fmtLong(ts: string) {
+    return new Date(ts)
+      .toLocaleDateString("en-GB", { day: "2-digit", month: "long", year: "numeric" })
+      .toLowerCase();
+  }
+
+  function fmtShort(ts: string) {
+    return new Date(ts)
+      .toLocaleDateString("en-GB", { day: "2-digit", month: "short" })
+      .toLowerCase();
+  }
+
+  function srcOf(p: InstaPost) {
+    return p.media_type === "VIDEO" ? (p.thumbnail_url ?? "") : p.media_url;
+  }
+
+  async function initInstagramFeed() {
+    const wrap = document.getElementById("insta-wrap");
+    if (!wrap) return;
+
+    wrap.innerHTML = `<p class="insta-status">loading feed...</p>`;
 
     try {
       const res = await fetch("https://marketing-automation-api.gosvind.workers.dev/api/public/instagram-feed");
       if (!res.ok) throw new Error("api error");
       const data = await res.json() as { posts: InstaPost[] };
-      const posts = (data.posts ?? []).slice(0, 12);
+      const posts = (data.posts ?? []).slice(0, 11);
 
       if (!posts.length) {
-        grid.innerHTML = `<p class="insta-status">no posts yet.</p>`;
+        wrap.innerHTML = `<p class="insta-status">no posts yet.</p>`;
         return;
       }
 
-      grid.innerHTML = posts.map((post) => {
-        const src   = post.media_type === "VIDEO" ? (post.thumbnail_url ?? "") : post.media_url;
-        const badge = post.media_type === "VIDEO"
-          ? `<span class="insta-type-badge">&#9654; video</span>`
-          : "";
-        return `<a href="${post.permalink}" target="_blank" rel="noopener noreferrer" class="insta-card" aria-label="View post on Instagram">
-          <div class="insta-thumb">
-            <img src="${src}" alt="" loading="lazy">
+      const [latest, ...rest] = posts;
+      const caption = cleanCaption(latest.caption);
+      const badge = latest.media_type === "VIDEO"
+        ? `<span class="insta-type-badge">&#9654; video</span>`
+        : "";
+
+      const feature = `
+        <div class="insta-feature">
+          <a href="${latest.permalink}" target="_blank" rel="noopener noreferrer" class="if-img" aria-label="View latest post on Instagram">
+            <img src="${srcOf(latest)}" alt="">
             <div class="insta-overlay">${badge}<span class="insta-view">view on ig &#8599;</span></div>
+          </a>
+          <div class="if-meta">
+            <span class="m-label"><span class="lb">[</span> 01 <span class="lb">/</span> latest drop <span class="lb">]</span></span>
+            <span class="if-date">${fmtLong(latest.timestamp)}<span class="tick">.</span></span>
+            ${caption ? `<p class="if-caption">${esc(caption)}</p>` : ""}
+            <a href="${latest.permalink}" target="_blank" rel="noopener noreferrer" class="btn-line">view the drop <span aria-hidden="true">&#8599;</span></a>
           </div>
-        </a>`;
-      }).join("");
+        </div>`;
+
+      const archive = rest.length ? `
+        <div class="insta-archive">
+          <div class="ia-head">
+            <span class="m-label"><span class="lb">[</span> archive <span class="lb">/</span> previous ${rest.length} drops <span class="lb">]</span></span>
+            <span class="m-label">one per day, via cron</span>
+          </div>
+          <div class="ia-grid">
+            ${rest.map((post, i) => `
+              <a href="${post.permalink}" target="_blank" rel="noopener noreferrer" class="ia-tile" aria-label="View post from ${fmtLong(post.timestamp)} on Instagram">
+                <div class="ia-thumb"><img src="${srcOf(post)}" alt="" loading="lazy"></div>
+                <div class="ia-tag">
+                  <span>${String(i + 2).padStart(2, "0")}</span>
+                  <span class="ia-date">${post.media_type === "VIDEO" ? "&#9654; " : ""}${fmtShort(post.timestamp)}</span>
+                </div>
+              </a>`).join("")}
+          </div>
+        </div>` : "";
+
+      wrap.innerHTML = feature + archive;
 
       if (!reduced) {
-        gsap.fromTo(grid.querySelectorAll(".insta-card"),
+        gsap.fromTo(wrap.querySelector(".insta-feature"),
           { opacity: 0, y: 24 },
           {
-            opacity: 1, y: 0,
-            stagger: { amount: 0.5, from: "start" },
-            duration: 0.5,
-            ease: "power3.out",
-            scrollTrigger: { trigger: grid, start: "top 85%", once: true },
+            opacity: 1, y: 0, duration: 0.6, ease: "power3.out",
+            scrollTrigger: { trigger: wrap, start: "top 85%", once: true },
           }
         );
+        const tiles = wrap.querySelectorAll(".ia-tile");
+        if (tiles.length) {
+          gsap.fromTo(tiles,
+            { opacity: 0, y: 24 },
+            {
+              opacity: 1, y: 0,
+              stagger: { amount: 0.5, from: "start" },
+              duration: 0.5,
+              ease: "power3.out",
+              scrollTrigger: { trigger: ".insta-archive", start: "top 88%", once: true },
+            }
+          );
+        }
       }
     } catch {
-      grid.innerHTML = `<p class="insta-status">couldn't load feed.</p>`;
+      wrap.innerHTML = `<p class="insta-status">couldn't load feed.</p>`;
     }
   }
 

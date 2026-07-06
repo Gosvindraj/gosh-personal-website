@@ -96,6 +96,23 @@ button {
 .m-label .lb { color: var(--faint); }
 .m-label .hl { color: var(--acid); }
 
+/* code-comment note: mono italic aside prefixed with "//", for the
+   conversational margin notes next to titles and sections */
+.m-note {
+  font-family: var(--font-mono);
+  font-style: italic;
+  font-size: clamp(0.78rem, 1.4vw, 0.92rem);
+  letter-spacing: 0.02em;
+  color: var(--dim);
+  line-height: 1.7;
+}
+
+.m-note::before {
+  content: "// ";
+  font-style: normal;
+  color: var(--faint);
+}
+
 .display {
   font-family: var(--font-sans);
   font-stretch: 112%;
@@ -116,7 +133,8 @@ button {
 
 .display .acid { color: var(--acid); }
 
-.display .ghost {
+.display .ghost,
+.display.ghost {
   color: transparent;
   -webkit-text-stroke: 1px var(--line-strong);
 }
@@ -565,6 +583,43 @@ main {
   line-height: 0.96;
   text-transform: lowercase;
   color: var(--ink);
+}
+
+/* ── section ghosts ─────────────────────────────
+   giant outlined word drifting behind a section on scroll-scrub
+   (see BaseLayout's initGhosts). add .sec-ghosted to the section
+   and drop a `.sec-ghost display ghost` span in as first child. */
+.sec-ghosted {
+  position: relative;
+  /* clip, not hidden: an overflow-hidden ancestor would become the
+     scroll context for any position: sticky inside the section */
+  overflow-x: clip;
+}
+
+.sec-ghosted > :not(.sec-ghost) {
+  position: relative;
+  z-index: 1;
+}
+
+.sec-ghost {
+  position: absolute;
+  top: clamp(0.5rem, 3vh, 2rem);
+  right: -0.05em;
+  font-size: clamp(6rem, 18vw, 15rem);
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+  will-change: transform;
+  /* tonal watermark fill rather than -webkit-text-stroke: the stroke
+     rasterizer flattens curves into visible segments at this size,
+     while a solid fill renders perfectly smooth */
+  color: rgba(234, 231, 222, 0.07);
+}
+
+@media (max-width: 780px) {
+  .sec-ghost { font-size: clamp(4.5rem, 22vw, 8rem); opacity: 0.65; }
 }
 
 /* ── utility ───────────────────────────────────── */

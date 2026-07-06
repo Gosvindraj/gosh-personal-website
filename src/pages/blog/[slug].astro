@@ -13,6 +13,19 @@ if (!post) return Astro.redirect("/blog");
 
 const { Content } = await render(post);
 
+/* reading stats from the raw markdown source */
+const words = (post.body ?? "").trim().split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 200));
+
+/* older / newer neighbours for the end-matter navigation */
+const allPosts = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+const postIndex = allPosts.findIndex((p) => p.id === post.id);
+const newer = postIndex > 0 ? allPosts[postIndex - 1] : null;
+const older = postIndex < allPosts.length - 1 ? allPosts[postIndex + 1] : null;
+const entryNum = String(allPosts.length - postIndex).padStart(2, "0");
+
 function formatDate(date: Date) {
   return date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
@@ -35,14 +48,22 @@ const tags = (post.data.tags ?? []).filter(Boolean);
 ---
 <BaseLayout title={`Gosvindraj | ${post.data.title}`} description={post.data.description}>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+
+  <!-- acid reading-progress line, pinned under the navbar -->
+  <div id="read-progress" aria-hidden="true"></div>
+
   <article id="post">
     <div class="post-inner">
       <header class="post-header">
-        <a href="/blog" class="back-link m-label">&larr; all posts</a>
+        <a href="/blog" class="back-link m-label">&larr; all entries</a>
 
         <div class="post-meta m-label">
+          <span class="hl">entry {entryNum}</span>
+          <span class="lb">/</span>
           <span>{formatDate(post.data.date)}</span>
           {tags.map((tag: string) => <span class="hl">{tag}</span>)}
+          <span class="lb">/</span>
+          <span>{minutes} min read, {words} words</span>
           <span class="lb">/</span>
           <span>written by hand, no ai</span>
         </div>
@@ -56,13 +77,58 @@ const tags = (post.data.tags ?? []).filter(Boolean);
       </div>
 
       <footer class="post-foot">
-        <a href="/blog" class="btn-line">&larr; back to all posts</a>
+        <div class="post-end m-label">
+          <span class="pe-line" aria-hidden="true"></span>
+          <span><span class="lb">[</span> end of entry <span class="lb">]</span></span>
+          <span class="pe-line" aria-hidden="true"></span>
+        </div>
+
+        <nav class="post-nav" aria-label="Other entries">
+          {newer && (
+            <a href={`/blog/${newer.id}`} class="pn-row">
+              <span class="pn-label m-label">newer</span>
+              <span class="pn-title">{newer.data.title.toLowerCase()}</span>
+              <span class="pn-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+          )}
+          {older && (
+            <a href={`/blog/${older.id}`} class="pn-row">
+              <span class="pn-label m-label">older</span>
+              <span class="pn-title">{older.data.title.toLowerCase()}</span>
+              <span class="pn-arrow" aria-hidden="true">&#8599;</span>
+            </a>
+          )}
+          <a href="/blog" class="pn-row">
+            <span class="pn-label m-label">index</span>
+            <span class="pn-title">all entries</span>
+            <span class="pn-arrow" aria-hidden="true">&#8599;</span>
+          </a>
+        </nav>
       </footer>
     </div>
   </article>
 </BaseLayout>
 
 <style>
+  /* acid line under the navbar filling as you read (JS scrub) */
+  #read-progress {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--acid);
+    transform: scaleX(0);
+    transform-origin: left;
+    z-index: 90;
+    pointer-events: none;
+    will-change: transform;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    #read-progress { display: none; }
+  }
+
   #post {
     min-height: calc(100vh - var(--nav-height));
     padding: clamp(2rem, 6vh, 4rem) var(--gutter) clamp(3rem, 8vh, 5rem);
@@ -172,13 +238,71 @@ const tags = (post.data.tags ?? []).filter(Boolean);
 
   .post-foot {
     margin-top: 3rem;
-    padding-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  /* [ end of entry ] marker between two hairlines */
+  .post-end {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .pe-line {
+    flex: 1;
+    height: 1px;
+    background: var(--line);
+  }
+
+  /* older / newer / index rows, with the site's invert hover */
+  .post-nav {
+    display: flex;
+    flex-direction: column;
     border-top: 1px solid var(--line);
   }
+
+  .pn-row {
+    display: grid;
+    grid-template-columns: 4rem 1fr 2rem;
+    align-items: baseline;
+    gap: 1.25rem;
+    padding: 1.1rem 0.5rem;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.25s ease, padding-left 0.25s ease;
+  }
+
+  .pn-label { transition: color 0.25s ease; }
+
+  .pn-title {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 600;
+    font-size: clamp(1rem, 2.2vw, 1.25rem);
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    color: var(--ink);
+    transition: color 0.25s ease;
+  }
+
+  .pn-arrow {
+    font-size: 1.1rem;
+    color: var(--faint);
+    justify-self: end;
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+
+  .pn-row:hover { background: var(--acid); padding-left: 1.1rem; }
+  .pn-row:hover .pn-title,
+  .pn-row:hover .pn-label { color: #0c0c0a; }
+  .pn-row:hover .pn-arrow { color: #0c0c0a; transform: translate(3px, -3px); }
 </style>
 
 <script>
   import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
@@ -188,5 +312,27 @@ const tags = (post.data.tags ?? []).filter(Boolean);
     gsap.fromTo(inner, { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65, ease: "power3.out", delay: 0.1 });
   }
 
+  /* reading progress: fills as the article body scrolls past */
+  function initProgress() {
+    const bar  = document.getElementById("read-progress");
+    const body = document.querySelector<HTMLElement>(".post-body");
+    if (!bar || !body || reduced) return;
+
+    gsap.fromTo(bar,
+      { scaleX: 0 },
+      {
+        scaleX: 1,
+        ease: "none",
+        scrollTrigger: {
+          trigger: body,
+          start: "top 25%",
+          end: "bottom 75%",
+          scrub: 0.4,
+        },
+      }
+    );
+  }
+
   document.addEventListener("astro:page-load", initPost);
+  document.addEventListener("astro:page-load", initProgress);
 </script>
