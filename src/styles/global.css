@@ -574,6 +574,12 @@ main {
   margin-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
+/* drop the second (note) line on narrow screens instead of
+   stacking or wrapping — the bracketed tag alone is enough */
+@media (max-width: 480px) {
+  .sec-head > :last-child { display: none; }
+}
+
 .sec-title {
   font-family: var(--font-sans);
   font-stretch: 112%;

@@ -38,6 +38,8 @@ export default function ChatBot() {
   const lastSend  = useRef(0);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef  = useRef<HTMLTextAreaElement>(null);
+  const panelRef  = useRef<HTMLDivElement>(null);
+  const fabRef    = useRef<HTMLButtonElement>(null);
 
   // fade in shortly after mount so it doesn't fight the preloader
   useEffect(() => {
@@ -84,6 +86,19 @@ export default function ChatBot() {
   // focus input when panel opens
   useEffect(() => {
     if (open) inputRef.current?.focus();
+  }, [open]);
+
+  // click/tap outside the panel (and its launcher) closes it
+  useEffect(() => {
+    if (!open) return;
+    function onPointerDown(e: PointerEvent) {
+      const target = e.target as Node;
+      if (panelRef.current?.contains(target)) return;
+      if (fabRef.current?.contains(target)) return;
+      setOpen(false);
+    }
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [open]);
 
   async function send() {
@@ -169,6 +184,7 @@ export default function ChatBot() {
     <>
       {/* ── chat panel ─────────────────────────────────────────────────── */}
       <div
+        ref={panelRef}
         aria-hidden={!open}
         style={{
           position:       "fixed",
@@ -228,29 +244,6 @@ export default function ChatBot() {
             <span style={{ fontSize: "10px", color: T.muted, letterSpacing: "0.06em", fontFamily: FONT_MONO }}>
               [ {remaining} / {MAX_SESSION} ]
             </span>
-
-            <button
-              onClick={() => setOpen(false)}
-              aria-label="Close chat"
-              className="chatbot-close-btn"
-              style={{
-                background:     "rgba(234,231,222,0.05)",
-                border:         `1px solid ${T.border}`,
-                width:          "30px",
-                height:         "30px",
-                display:        "flex",
-                alignItems:     "center",
-                justifyContent: "center",
-                color:          T.muted,
-                flexShrink:     0,
-                transition:     "background 0.2s ease, border-color 0.2s ease, color 0.2s ease",
-              }}
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <line x1="18" y1="6" x2="6" y2="18"/>
-                <line x1="6" y1="6" x2="18" y2="18"/>
-              </svg>
-            </button>
           </div>
         </div>
 
@@ -458,6 +451,7 @@ export default function ChatBot() {
 
       {/* ── floating action button ──────────────────────────────────────── */}
       <button
+        ref={fabRef}
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Close chat" : "Open chat"}
         className="chatbot-fab"
@@ -511,7 +505,7 @@ export default function ChatBot() {
 
         /* force custom cursor on all chatbot controls */
         .chatbot-messages, .chatbot-input,
-        .chatbot-close-btn, .chatbot-send-btn, .chatbot-fab { cursor: none !important; }
+        .chatbot-send-btn, .chatbot-fab { cursor: none !important; }
 
         /* message list: slim styled scrollbar */
         .chatbot-messages::-webkit-scrollbar        { width: 4px; }
@@ -521,12 +515,6 @@ export default function ChatBot() {
         }
         .chatbot-messages::-webkit-scrollbar-thumb:hover {
           background: rgba(155, 109, 206, 0.5);
-        }
-
-        .chatbot-close-btn:hover {
-          background: rgba(155, 109, 206, 0.1) !important;
-          border-color: rgba(155, 109, 206, 0.4) !important;
-          color: #eae7de !important;
         }
 
         @keyframes chatbotPulse {

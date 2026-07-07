@@ -4,7 +4,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 const timeline = [
   {
     year: "2006",
-    range: "2006 / 2010",
+    range: "2006 - 2010",
     title: "primary school",
     place: "SK Seri Permai, Penang",
     desc: "five years in my hometown. made friends, lost erasers, somehow survived. didn't know what a computer was yet but i was already curious about everything. the pattern starts early.",
@@ -12,7 +12,7 @@ const timeline = [
   },
   {
     year: "2011",
-    range: "2011 / 2015",
+    range: "2011 - 2015",
     title: "secondary school",
     place: "Penang Free School, Penang",
     desc: "one of malaysia's oldest schools. walked in as a kid, left as someone who actually had direction. SPM came around, pulled 8As. more importantly: around 12 or 13, i discovered gaming and got obsessed with how people could connect virtually. that was the spark.",
@@ -20,7 +20,7 @@ const timeline = [
   },
   {
     year: "2016",
-    range: "2016 / 2017",
+    range: "2016 - 2017",
     title: "matriculation",
     place: "KMKT, Kelantan",
     desc: "packed my bags, moved to kelantan, and took my first real CS course. it was basic. very basic. but somewhere between the if-else blocks and the syntax errors, something clicked. i thought: yeah, i can see myself being happy doing this.",
@@ -28,7 +28,7 @@ const timeline = [
   },
   {
     year: "2017",
-    range: "2017 / 2021",
+    range: "2017 - 2021",
     title: "degree",
     place: "Universiti Sains Malaysia, Penang",
     desc: "back home in penang. enrolled in BSc Computer Science, majoring in AI, minoring in Management. four years of figuring things out, building things, and learning what i actually care about. also directed university events with crews of 220+ people, which taught me more about humans than any textbook.",
@@ -36,7 +36,7 @@ const timeline = [
   },
   {
     year: "2022",
-    range: "2022 / 2025",
+    range: "2022 - 2025",
     title: "work",
     place: "Remote",
     desc: "spent 3 years working part-time in the web3 space: technical support and community work in the blockchain industry. got hands-on with the real side of crypto beyond the hype.",
@@ -44,7 +44,7 @@ const timeline = [
   },
   {
     year: "2023",
-    range: "2023 / 2024",
+    range: "2023 - 2024",
     title: "masters",
     place: "Universiti Sains Malaysia, Penang",
     desc: "went back for an MSc in Computer Science. mixed mode, dissertation in AI and Cybersecurity. another two years of going deep on things that actually matter.",
@@ -52,7 +52,7 @@ const timeline = [
   },
   {
     year: "now",
-    range: "2025 / present",
+    range: "2025 - present",
     title: "building & exploring",
     place: "Penang / KL / The Internet",
     desc: "working on personal projects, doing volunteer blockchain education, and going deep on the AI and blockchain intersection. not chasing a title, just chasing the thing that's most interesting right now. if you're reading this, hi. we should probably talk.",
@@ -75,7 +75,7 @@ const offline = [
   { k: "gaming", v: "where the whole 'connecting virtually' obsession started." },
 ];
 ---
-<BaseLayout title="Gosvindraj | About" description="Who Gosvindraj is: AI-major computer scientist, web3 native, event director, beatboxer, and professional rabbit-hole diver from Penang." hideFootCta={true}>
+<BaseLayout title="Gosvindraj | About" description="Who Gosvindraj is: AI-major computer scientist, web3 native, event director, beatboxer, and professional rabbit-hole diver from Penang.">
 
   <!-- ── intro ─────────────────────────────────── -->
   <section id="about-intro">
@@ -93,12 +93,8 @@ const offline = [
 
     <div class="intro-bio">
       <p>
-        i'm gosvindraj. gosh for short. i make it my business to understand
-        what's coming before it arrives: AI, blockchain, whatever's next.
-        i build to stay sharp, not just to ship.
-      </p>
-      <p>
-        some of it works. all of it teaches me something.
+        i'm gosvindraj, gosh for short. i build to stay sharp, not just to
+        ship. some of it works. all of it teaches me something.
       </p>
     </div>
   </section>
@@ -123,9 +119,7 @@ const offline = [
         {timeline.map((entry, i) => (
           <div class="tl-row" data-reveal data-year={entry.year} data-step={String(i + 1).padStart(2, "0")}>
             <div class="tl-meta m-label">
-              <span class="hl">{entry.year}</span>
-              <span class="lb">/</span>
-              <span>{entry.range}</span>
+              <span class="hl">{entry.range}</span>
             </div>
             <h2 class="tl-title">{entry.title}</h2>
             <p class="tl-place">{entry.place}</p>
@@ -228,6 +222,12 @@ const offline = [
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+  }
+
+  /* drop the second (note) line on narrow screens instead of
+     stacking or wrapping — the bracketed tag alone is enough */
+  @media (max-width: 480px) {
+    .intro-top > :last-child { display: none; }
   }
 
   /* title + margin-note pair: the page name at a human scale with a

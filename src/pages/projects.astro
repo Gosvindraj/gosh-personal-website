@@ -44,7 +44,7 @@ const projects = [
   },
 ];
 ---
-<BaseLayout title="Gosvindraj | Projects" description="Things Gosvindraj built: browser games, crypto tools, ML anomaly detection, and AI agents." hideFootCta={true}>
+<BaseLayout title="Gosvindraj | Projects" description="Things Gosvindraj built: browser games, crypto tools, ML anomaly detection, and AI agents.">
 
   <section id="projects-head">
     <div class="ph-top">
@@ -110,6 +110,12 @@ const projects = [
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+  }
+
+  /* drop the second (note) line on narrow screens instead of
+     stacking or wrapping — the bracketed tag alone is enough */
+  @media (max-width: 480px) {
+    .ph-top > :last-child { display: none; }
   }
 
   /* title + margin-note pair: the page name at a human scale with a

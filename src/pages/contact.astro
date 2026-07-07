@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Gosvindraj | Contact" description="Get in touch with Gosvindraj. Open to collabs, questions, and interesting problems." hideFooter={true}>
+<BaseLayout title="Gosvindraj | Contact" description="Get in touch with Gosvindraj. Open to collabs, questions, and interesting problems.">
   <section id="contact">
 
     <div class="contact-head">
@@ -42,11 +42,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
 
       <aside class="contact-aside">
-        <p class="aside-note m-note">
-          collab idea, weird question, or just want to argue about
-          whether AI agents need wallets? all valid reasons.
-        </p>
-
         <div class="aside-block">
           <span class="m-label">direct</span>
           <a href="mailto:gosh@gosvindraj.com" class="aside-mail">gosh@gosvindraj.com</a>
@@ -63,7 +58,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
 
         <div class="aside-block">
-          <span class="m-label">location</span>
           <span class="aside-plain">penang, malaysia (gmt+8) <span class="lb">/</span> <span id="contact-clock">--:--:--</span></span>
         </div>
       </aside>
@@ -74,15 +68,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <style>
   #contact {
-    min-height: calc(100vh - var(--nav-height));
     padding: clamp(1.5rem, 4vh, 2.5rem) var(--gutter) clamp(1.25rem, 3vh, 2rem);
     display: flex;
     flex-direction: column;
-    gap: clamp(1.25rem, 3.5vh, 2rem);
+    gap: clamp(2rem, 5vh, 3rem);
   }
 
   /* on desktop, cap the whole page to one viewport instead of
-     letting it grow past it — mirrors the home page treatment */
+     letting it grow past it — mirrors the home page treatment.
+     mobile sizes to its actual content instead of forcing a full
+     viewport minimum, which used to leave dead space above the
+     footer once the footer bar was re-enabled on this page */
   @media (min-width: 821px) {
     #contact {
       height: calc(100vh - var(--nav-height));
@@ -108,6 +104,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     justify-content: space-between;
     align-items: center;
     gap: 1rem;
+  }
+
+  /* drop the second (note) line on narrow screens instead of
+     stacking or wrapping — the bracketed tag alone is enough */
+  @media (max-width: 480px) {
+    .ch-top > :last-child { display: none; }
   }
 
   /* title + margin-note pair: the page name at a human scale with a
@@ -238,10 +240,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   /* ── aside ────────────────────────────────── */
+  /* height is pinned to the form column's actual rendered height
+     via JS (see initAsideHeight) — stretching it with CSS alone
+     matched .contact-body's full leftover viewport space instead
+     of the form's real height, overshooting past the button */
   .contact-aside {
     display: flex;
     flex-direction: column;
-    gap: clamp(1.1rem, 2.6vh, 1.75rem);
+    justify-content: space-between;
+    gap: clamp(1.5rem, 4vh, 2.5rem);
   }
 
   @media (min-width: 781px) {
@@ -256,8 +263,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .aside-block {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 0.3rem;
   }
+
+  .aside-block .m-label { line-height: 1; }
 
   .aside-mail {
     font-family: var(--font-sans);
@@ -278,18 +287,22 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     flex-direction: column;
   }
 
+  /* content, not a second label: sans-serif, lowercase, ink-toned,
+     bigger — same contrast the "direct" block gets from its big
+     bold email against the small mono label above it */
   .aside-links a {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
     gap: 1rem;
-    padding: 0.5rem 0.4rem;
+    padding: 0.65rem 0.4rem;
     border-bottom: 1px solid var(--line);
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--dim);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: -0.01em;
+    text-transform: lowercase;
+    color: var(--ink);
     transition: background var(--transition), color var(--transition), padding-left var(--transition);
   }
 
@@ -426,7 +439,32 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     document.addEventListener("astro:before-swap", () => clearInterval(timer), { once: true });
   }
 
+  /* ── pin the aside's height to the form's rendered height ──
+     so the location line (via justify-content: space-between)
+     lands flush with the bottom of the form, not the taller
+     leftover space .contact-body gets stretched to on desktop */
+  function initAsideHeight() {
+    const form  = document.getElementById("contact-form-wrapper");
+    const aside = document.querySelector<HTMLElement>(".contact-aside");
+    if (!form || !aside) return;
+
+    function sync() {
+      if (window.matchMedia("(min-width: 781px)").matches) {
+        aside!.style.minHeight = form!.offsetHeight + "px";
+      } else {
+        aside!.style.minHeight = "";
+      }
+    }
+
+    sync();
+    window.addEventListener("resize", sync);
+    document.addEventListener("astro:before-swap", () => {
+      window.removeEventListener("resize", sync);
+    }, { once: true });
+  }
+
   document.addEventListener("astro:page-load", initContact);
   document.addEventListener("astro:page-load", initForm);
   document.addEventListener("astro:page-load", initClock);
+  document.addEventListener("astro:page-load", initAsideHeight);
 </script>

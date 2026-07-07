@@ -15,7 +15,7 @@ function readMinutes(body: string | undefined) {
   return Math.max(1, Math.round(words / 200));
 }
 ---
-<BaseLayout title="Gosvindraj | Blog" description="Opinions, observations, and things I'm working through. Written by hand, no AI." hideFootCta={true}>
+<BaseLayout title="Gosvindraj | Blog" description="Opinions, observations, and things I'm working through. Written by hand, no AI.">
 
   <section id="blog-head">
     <div class="bh-top">
@@ -76,6 +76,12 @@ function readMinutes(body: string | undefined) {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+  }
+
+  /* drop the second (note) line on narrow screens instead of
+     stacking or wrapping — the bracketed tag alone is enough */
+  @media (max-width: 480px) {
+    .bh-top > :last-child { display: none; }
   }
 
   /* title + margin-note pair: the page name at a human scale with a
@@ -227,7 +233,12 @@ function readMinutes(body: string | undefined) {
       gap: 0.9rem;
       padding-top: 0;
     }
-    .post-arrow { grid-row: 2; }
+    /* explicit column too: a row-only placement gets auto-placed
+       before .post-main (which has no explicit position at all),
+       so it was grabbing the wide 1fr column and squeezing the
+       title into this 2.5rem one instead */
+    .post-main  { grid-column: 1; }
+    .post-arrow { grid-row: 2; grid-column: 2; }
   }
 </style>
 

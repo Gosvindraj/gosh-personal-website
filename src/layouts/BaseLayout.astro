@@ -8,11 +8,10 @@ interface Props {
   title: string;
   description?: string;
   hideFooter?: boolean;
-  hideFootCta?: boolean;
   pageClass?: string;
 }
 
-const { title, description = "Gosvindraj's space on the internet. Projects, things I'm working on, and everything else that doesn't fit anywhere else.", hideFooter = false, hideFootCta = false, pageClass = "" } = Astro.props;
+const { title, description = "Gosvindraj's space on the internet. Projects, things I'm working on, and everything else that doesn't fit anywhere else.", hideFooter = false, pageClass = "" } = Astro.props;
 
 const siteUrl = "https://gosvindraj.com";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
@@ -101,15 +100,8 @@ const jsonLd = [
 
     {!hideFooter && (
     <footer id="site-footer">
-      {!hideFootCta && (
-      <a href="/contact" class="foot-cta">
-        <span class="m-label"><span class="lb">[</span> the inbox is open <span class="lb">]</span></span>
-        <span class="foot-cta-line">got an idea? say hi <span class="arrow">&#8599;</span></span>
-      </a>
-      )}
       <div class="foot-bottom">
         <span>&copy; {new Date().getFullYear()} gosvindraj</span>
-        <span>penang, malaysia / 5.4141&deg; n, 100.3288&deg; e</span>
         <div class="foot-socials">
           <a href="mailto:gosh@gosvindraj.com">email</a>
           <a href="https://github.com/Gosvindraj" target="_blank" rel="noopener">github</a>
@@ -138,6 +130,15 @@ const jsonLd = [
         ScrollTrigger.refresh();
       });
 
+      /* re-measure once custom fonts finish loading: triggers created
+         (or refreshed) while the display face is still the fallback
+         end up with the wrong scroll range for anything sized off a
+         big heading — most visibly the first .sec-ghost on a page,
+         whose section starts right below the giant page-title h1 */
+      if (document.fonts) {
+        document.fonts.ready.then(() => ScrollTrigger.refresh());
+      }
+
       /* ── shared reveal helper ─────────────────────
          any element with [data-reveal] rises in on scroll.
          optional data-reveal-delay (seconds). content stays
@@ -159,19 +160,51 @@ const jsonLd = [
 
       /* ── shared ghost helper ──────────────────────
          any .sec-ghost inside a .sec-ghosted section drifts
-         sideways on scroll-scrub. purely decorative. */
+         sideways on scroll-scrub. purely decorative.
+         range is pinned to one viewport height (the section
+         entering view), not the section's own height — tall
+         sections (like about's timeline) would otherwise smear
+         the drift across way more scrolling than anyone actually
+         does in there, reading as "stuck" instead of moving */
       function initGhosts() {
         if (reduced) return;
         document.querySelectorAll<HTMLElement>(".sec-ghost").forEach((ghost) => {
+          // pop in once, like the rest of the section's [data-reveal]
+          // content, instead of being fully visible on page load
+          gsap.set(ghost, { opacity: 0 });
+
+          const rect = ghost.parentElement!.getBoundingClientRect();
+          const alreadyInView = rect.top < window.innerHeight * 0.85;
+
+          if (alreadyInView) {
+            // this section is already on screen at load — a
+            // ScrollTrigger here would fire instantly (it's not
+            // really a "scroll" reveal), so give it a fixed delay
+            // instead, timed to land after the page's own entrance
+            // animation has settled
+            gsap.to(ghost, { opacity: 1, duration: 0.9, ease: "power3.out", delay: 1.1 });
+          } else {
+            gsap.to(ghost, {
+              opacity: 1,
+              duration: 0.9,
+              ease: "power3.out",
+              scrollTrigger: {
+                trigger: ghost.parentElement,
+                start: "top 85%",
+                once: true,
+              },
+            });
+          }
+
           gsap.fromTo(ghost,
-            { xPercent: 6 },
+            { xPercent: 3 },
             {
-              xPercent: -12,
+              xPercent: -5,
               ease: "none",
               scrollTrigger: {
                 trigger: ghost.parentElement,
                 start: "top bottom",
-                end: "bottom top",
+                end: "top top",
                 scrub: 0.6,
               },
             }

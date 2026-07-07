@@ -12,7 +12,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           fetches the live bitcoin price in USD from CoinGecko and the
           USD/MYR exchange rate, then converts. real-time, no cache.
         </p>
-        <a href="/projects" class="btn-line">&larr; all projects</a>
+        <a href="/projects" class="back-link m-label">&larr; all projects</a>
       </div>
 
       <div class="crypto-wrap">
@@ -114,7 +114,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     line-height: 1.85;
   }
 
-  .project-header .btn-line { align-self: flex-start; }
+  .back-link {
+    align-self: flex-start;
+    transition: color var(--transition);
+  }
+
+  .back-link:hover { color: var(--acid); }
 
   /* right */
   .crypto-wrap {

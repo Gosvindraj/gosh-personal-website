@@ -21,7 +21,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <div class="legend-item"><span class="dot dot-anomalous"></span>anomalous</div>
         </div>
 
-        <a href="/projects" class="btn-line">&larr; all projects</a>
+        <a href="/projects" class="back-link m-label">&larr; all projects</a>
       </div>
 
       <!-- ── right panel ── -->
@@ -138,7 +138,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     line-height: 1.9;
   }
 
-  #project-anomaly .btn-line { align-self: flex-start; }
+  #project-anomaly .back-link {
+    align-self: flex-start;
+    transition: color var(--transition);
+  }
+
+  #project-anomaly .back-link:hover { color: var(--acid); }
 
   .legend {
     display: flex;
@@ -597,7 +602,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   @media (max-width: 960px) {
-    #project-anomaly .project-inner { flex-direction: column; gap: 3rem; }
+    /* align-items:flex-start is meant for the desktop row layout
+       (top-align the two columns); in column mode it instead
+       controls the horizontal axis, letting .anomaly-wrap shrink
+       to its content's natural (unwrapped) width and overflow past
+       the right edge instead of filling the viewport */
+    #project-anomaly .project-inner { flex-direction: column; align-items: stretch; gap: 3rem; }
     #project-anomaly .project-header { flex: none; position: static; }
   }
 

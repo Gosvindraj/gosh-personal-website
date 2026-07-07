@@ -30,6 +30,10 @@ function formatDate(date: Date) {
   return date.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 }
 
+function formatDateShort(date: Date) {
+  return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }).toLowerCase();
+}
+
 const siteUrl = "https://gosvindraj.com";
 const postUrl = `${siteUrl}/blog/${post.id}`;
 const jsonLd = {
@@ -60,12 +64,11 @@ const tags = (post.data.tags ?? []).filter(Boolean);
         <div class="post-meta m-label">
           <span class="hl">entry {entryNum}</span>
           <span class="lb">/</span>
-          <span>{formatDate(post.data.date)}</span>
+          <span class="post-date-full">{formatDate(post.data.date)}</span>
+          <span class="post-date-short">{formatDateShort(post.data.date)}</span>
           {tags.map((tag: string) => <span class="hl">{tag}</span>)}
           <span class="lb">/</span>
-          <span>{minutes} min read, {words} words</span>
-          <span class="lb">/</span>
-          <span>written by hand, no ai</span>
+          <span>{minutes} min read</span>
         </div>
 
         <h1 class="post-title display">{post.data.title.toLowerCase()}</h1>
@@ -160,6 +163,16 @@ const tags = (post.data.tags ?? []).filter(Boolean);
     align-items: baseline;
     gap: 1rem;
     flex-wrap: wrap;
+  }
+
+  /* full date on desktop, short date on mobile — keeps the whole
+     meta row on one line instead of wrapping */
+  .post-date-short { display: none; }
+
+  @media (max-width: 480px) {
+    .post-date-full  { display: none; }
+    .post-date-short { display: inline; }
+    .post-meta { gap: 0.6rem; flex-wrap: nowrap; overflow-x: auto; }
   }
 
   .post-title {
