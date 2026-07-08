@@ -28,7 +28,7 @@ No test suite or linter is configured. `npm run build` is the correctness check.
 - **React 19** — used only for the ChatBot component (interactive island)
 - **GSAP 3** — all animations (scroll, cursor, page transitions)
 - **Astro View Transitions** (`ClientRouter`) for SPA-style navigation
-- Deployed to **GitHub Pages**, site URL `https://gosvindraj.com`
+- Deployed to **Cloudflare Pages** (auto-deploys `main` on push via Cloudflare's GitHub integration), site URL `https://gosvindraj.com`. The `functions/api/*` Pages Functions ship from this same repo and deploy alongside the static site on the same Cloudflare project.
 
 ## Design system ("the ledger", 2026 redesign)
 

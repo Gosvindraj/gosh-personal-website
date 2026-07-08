@@ -618,7 +618,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <script>
   import gsap from "gsap";
-  import { API_BASE } from "../lib/api";
 
   interface FeatureStat { raw: number; pct: number; }
 
@@ -930,7 +929,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       setInfo("fetching transactions from Glacier API...");
 
       try {
-        const res = await fetch(`${API_BASE}/api/anomaly`, {
+        const res = await fetch("/api/anomaly", {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
           body:    JSON.stringify({ address }),
