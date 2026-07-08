@@ -18,22 +18,22 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <h1 class="hero-display display">
           <span class="sr-only">Gosvindraj, a developer in Penang building AI and blockchain projects.</span>
           <span class="line-mask" aria-hidden="true"><span class="line">i build</span></span>
-          <span class="line-mask" aria-hidden="true"><span class="line"><span id="rot-word" class="acid">what's next.</span></span></span>
+          <span class="line-mask" aria-hidden="true"><span class="line"><span id="rot-word" class="acid">what's <br class="mobile-break" />next.</span></span></span>
         </h1>
 
         <div class="hero-foot">
           <p class="hero-bio">
-            penang-based developer poking at the edges of AI and blockchain.
-            i don't wait for the tutorial: if it's new, i'm already breaking
-            it to see how it works.
+            a developer poking at the edges of AI and blockchain. i don't
+            wait for the tutorial: if it's new, i'm already breaking it
+            to see how it works.
           </p>
           <div class="hero-cta-col">
             <div class="hero-cta">
-              <a href="/projects" class="btn-line">the work <span aria-hidden="true">&rarr;</span></a>
-              <a href="/about" class="btn-line">the story <span aria-hidden="true">&rarr;</span></a>
+              <a href="/projects" class="btn-solid btn-solid-invert">the work <span aria-hidden="true">&rarr;</span></a>
+              <a href="/about" class="btn-solid btn-solid-invert">the story <span aria-hidden="true">&rarr;</span></a>
             </div>
             <a href="/contact" class="hero-sayhi m-label">
-              <span class="lb">[</span> or, got an idea? say hi <span class="hl">&#8599;</span><span class="lb">]</span>
+              <span class="lb">[</span> or, got an idea? say hi <span class="hl">&#8599;</span> <span class="lb">]</span>
             </a>
           </div>
         </div>
@@ -47,14 +47,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </section>
 
     <!-- ── ticker ───────────────────────────────── -->
-    <p class="sr-only">Based in Penang, Malaysia. Currently experimenting. Powered by foresight. Open to collabs.</p>
+    <p class="sr-only">Based in Penang, Malaysia. Breaks things before reading the docs. AI major, blockchain habit. Usually mid rabbit-hole. Open to collabs.</p>
     <div class="marquee" aria-hidden="true">
       <div class="marquee-track">
         {[0, 1].map(() => (
           <div class="marquee-chunk">
             <span class="marquee-item"><span class="star">&#10035;</span> based in penang, malaysia</span>
-            <span class="marquee-item"><span class="star">&#10035;</span> currently: experimenting</span>
-            <span class="marquee-item"><span class="star">&#10035;</span> powered by foresight</span>
+            <span class="marquee-item"><span class="star">&#10035;</span> breaks things before reading the docs</span>
+            <span class="marquee-item"><span class="star">&#10035;</span> AI major, blockchain habit</span>
+            <span class="marquee-item"><span class="star">&#10035;</span> usually mid rabbit-hole</span>
             <span class="marquee-item"><span class="star">&#10035;</span> open to collabs</span>
           </div>
         ))}
@@ -150,6 +151,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   #rot-word { display: inline-block; }
 
+  /* .rot-aside and .mobile-break are injected at runtime via
+     rotWord.innerHTML, so they never receive Astro's scoping
+     attribute — these rules must stay global or they silently stop
+     matching after the first word rotation. */
+  #rot-word :global(.rot-aside) { font-weight: 400; }
+
+  /* forced breaks inside rotating words only apply on mobile, where
+     some words would otherwise sit on one line and others wrap,
+     shifting the layout below. on desktop there's always enough
+     width, so these stay plain inline breaks (hidden). */
+  #rot-word :global(.mobile-break) { display: none; }
+
   .hero-foot {
     display: flex;
     align-items: flex-end;
@@ -178,6 +191,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     flex-wrap: wrap;
   }
 
+  /* inverse of .btn-solid: acid outline instead of acid fill, flips
+     back to a solid fill on hover so the pair reads as complements */
+  .btn-solid-invert {
+    background: transparent;
+    color: var(--acid);
+  }
+
+  .btn-solid-invert:hover {
+    background: var(--acid);
+    color: var(--bg);
+  }
+
   /* echoes the footer's "got an idea? say hi" CTA, at label scale
      since the hero is already carrying the big display headline */
   .hero-sayhi {
@@ -186,10 +211,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   .hero-sayhi .hl {
     display: inline-block;
+    color: inherit;
     transition: transform var(--transition);
   }
 
-  .hero-sayhi:hover { color: var(--ink); }
+  .hero-sayhi:hover { color: var(--acid); }
   .hero-sayhi:hover .hl { transform: translate(0.12em, -0.12em); }
 
   .hero-bottom {
@@ -245,9 +271,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   @media (max-width: 700px) {
     .hero-top .m-label:last-child { display: none; }
     .hero-bottom .m-label:last-child { display: none; }
-    .hero-cta-col { width: 100%; align-items: center; }
-    .hero-cta { width: 100%; }
-    .hero-cta a { flex: 1; justify-content: center; }
+    .hero-cta-col { width: 100%; align-items: center; gap: 1.4rem; }
+    .hero-cta { justify-content: center; }
+    .hero-cta a { justify-content: center; padding: 0.8rem 1.6rem; }
+
+    /* rotating words vary in length, and some wrap to two lines at
+       this width while others fit on one. reserve room for the
+       two-line case always so swapping words never shifts the
+       content below (bio, buttons, marquee). */
+    .hero-display .line-mask:last-of-type { min-height: 1.88em; }
+
+    #rot-word :global(.mobile-break) { display: block; }
   }
 
   /* the marquee no longer scrolls in from below content — it's the
@@ -263,11 +297,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   const ROT_WORDS = [
-    "what's next.",
-    "ai agents.",
-    "onchain tools.",
-    "browser games.",
-    "this website.",
+    "what's <br class=\"mobile-break\" />next.",
+    "ai workflows.",
+    "onchain stuff.",
+    "random apps.",
+    "websites. <br class=\"mobile-break\" /><i class=\"rot-aside\">(like this)</i>",
   ];
 
   let rotTimer: ReturnType<typeof setInterval> | undefined;
@@ -290,7 +324,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         rotIdx = (rotIdx + 1) % ROT_WORDS.length;
         gsap.timeline()
           .to(rotWord, { yPercent: -110, duration: 0.4, ease: "power3.in" })
-          .add(() => { rotWord.textContent = ROT_WORDS[rotIdx]; })
+          .add(() => { rotWord.innerHTML = ROT_WORDS[rotIdx]; })
           .set(rotWord, { yPercent: 110 })
           .to(rotWord, { yPercent: 0, duration: 0.5, ease: "power3.out" });
       }, 2600);

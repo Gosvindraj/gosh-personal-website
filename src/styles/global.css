@@ -228,6 +228,20 @@ button {
   will-change: width;
 }
 
+@media (max-width: 600px) {
+  #preloader-count {
+    left: 50%;
+    bottom: 50%;
+    transform: translate(-50%, 50%);
+  }
+
+  #preloader-tag {
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+}
+
 /* ── cursor ────────────────────────────────────── */
 #cursor-dot {
   position: fixed;
@@ -299,16 +313,16 @@ header#site-nav {
 }
 
 .nav-brand {
-  font-family: var(--font-sans);
-  font-stretch: 112%;
-  font-weight: 740;
-  font-size: 20px;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-  line-height: 1;
+  display: flex;
+  align-items: center;
+  line-height: 0;
 }
 
-.nav-brand .tick { color: var(--acid); }
+.nav-brand img {
+  height: 33px;
+  width: auto;
+  display: block;
+}
 
 .nav-links {
   list-style: none;

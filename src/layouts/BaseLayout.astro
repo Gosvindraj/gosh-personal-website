@@ -132,6 +132,23 @@ const jsonLd = [
         ScrollTrigger.refresh();
       });
 
+      /* ── force scroll-to-top on real forward navigations ──
+         the router's own scroll reset can occasionally lose the
+         race against ScrollTrigger recalculating pinned/sticky
+         layouts on the incoming page, leaving the new page opened
+         mid-scroll. back/forward browser navigation and in-page
+         hash links are left alone so their scroll position still
+         restores/targets correctly. */
+      let navDirection: "forward" | "back" = "forward";
+      document.addEventListener("astro:before-preparation", (e) => {
+        navDirection = (e as unknown as { direction?: "forward" | "back" }).direction ?? "forward";
+      });
+      document.addEventListener("astro:after-swap", () => {
+        if (navDirection === "forward" && !location.hash) {
+          window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        }
+      });
+
       /* re-measure once custom fonts finish loading: triggers created
          (or refreshed) while the display face is still the fallback
          end up with the wrong scroll range for anything sized off a

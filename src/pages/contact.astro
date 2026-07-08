@@ -337,6 +337,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   @media (max-width: 780px) {
     .contact-body { grid-template-columns: 1fr; }
     #contact-form button[type="submit"] { align-self: stretch; justify-content: center; }
+    .aside-block:has(.aside-plain) { display: none; }
   }
 </style>
 
