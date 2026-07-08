@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
-<BaseLayout title="Gosvindraj | Contact" description="Get in touch with Gosvindraj. Open to collabs, questions, and interesting problems.">
+<BaseLayout title="Gosvindraj | Contact" description="Get in touch with Gosvindraj. Open to collabs, questions, and interesting problems." hideChat={true}>
   <section id="contact">
 
     <div class="contact-head">
@@ -217,15 +217,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   #response-message.response-success {
     display: block;
-    border: 1px solid rgba(155, 109, 206, 0.4);
-    background: var(--acid-dim);
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
     color: var(--acid);
   }
 
   #response-message.response-error {
     display: block;
-    border: 1px solid rgba(var(--bad-rgb), 0.35);
-    background: rgba(var(--bad-rgb), 0.08);
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
     color: var(--bad);
     animation: fadeOut 4s forwards;
   }

@@ -13,10 +13,11 @@ interface Props {
   title: string;
   description?: string;
   hideFooter?: boolean;
+  hideChat?: boolean;
   pageClass?: string;
 }
 
-const { title, description = "Gosvindraj's space on the internet. Projects, things I'm working on, and everything else that doesn't fit anywhere else.", hideFooter = false, pageClass = "" } = Astro.props;
+const { title, description = "Gosvindraj's space on the internet. Projects, things I'm working on, and everything else that doesn't fit anywhere else.", hideFooter = false, hideChat = false, pageClass = "" } = Astro.props;
 
 const siteUrl = "https://gosvindraj.com";
 const canonicalUrl = new URL(Astro.url.pathname, siteUrl).href;
@@ -114,8 +115,11 @@ const jsonLd = [
     </footer>
     )}
 
-    <!-- chatbot island: persists across page navigations -->
-    <ChatBot client:load transition:persist />
+    <!-- chatbot island: persists across page navigations. hidden on
+         pages that already offer their own "get in touch" surface,
+         where it's both redundant and (on mobile) visually collides
+         with the acid-colored submit button. -->
+    {!hideChat && <ChatBot client:load transition:persist />}
 
     <script>
       import gsap from "gsap";
