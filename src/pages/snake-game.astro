@@ -23,21 +23,23 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <canvas id="gameCanvas" width="400" height="400" tabindex="0"></canvas>
         <p class="game-hint" id="game-hint">press <kbd>enter</kbd> to start</p>
-        <div class="dpad-side dpad-side-left" id="dpad-left-group">
-          <button class="dpad-btn" id="dpad-up" aria-label="Up">
-            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
-          </button>
-          <button class="dpad-btn" id="dpad-left" aria-label="Left">
-            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-        </div>
-        <div class="dpad-side dpad-side-right" id="dpad-right-group">
-          <button class="dpad-btn" id="dpad-down" aria-label="Down">
-            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-          <button class="dpad-btn" id="dpad-right" aria-label="Right">
-            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
+        <div class="dpad-row" id="dpad-row">
+          <div class="dpad-side dpad-side-left" id="dpad-left-group">
+            <button class="dpad-btn" id="dpad-up" aria-label="Up">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+            </button>
+            <button class="dpad-btn" id="dpad-down" aria-label="Down">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+          </div>
+          <div class="dpad-side dpad-side-right" id="dpad-right-group">
+            <button class="dpad-btn" id="dpad-left" aria-label="Left">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="dpad-btn" id="dpad-right" aria-label="Right">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
         </div>
       </div>
 
@@ -127,24 +129,22 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   /* d-pad */
-  /* split into two edge-pinned clusters so both thumbs can steer
-     at once on touch devices — left thumb gets up+left, right
-     thumb gets down+right. pinned to the vertical middle of the
-     viewport (not the bottom corners) so they never collide with
-     the chatbot FAB. keyboard covers desktop, so these stay
-     display:none until the touch/coarse-pointer query below. */
-  .dpad-side {
+  /* sits below the canvas, in normal flow, split into two clusters
+     so both thumbs can steer at once — left thumb gets up/down,
+     right thumb gets left/right. keyboard covers desktop, so this
+     stays display:none until the touch/coarse-pointer query below. */
+  .dpad-row {
     display: none;
-    flex-direction: column;
-    gap: 8px;
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 50;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: 6rem;
+    margin-top: 0.25rem;
   }
 
-  .dpad-side-left  { left: 0.85rem; }
-  .dpad-side-right { right: 0.85rem; }
+  .dpad-side { display: flex; gap: 18px; }
+  .dpad-side-left  { flex-direction: column; }
+  .dpad-side-right { flex-direction: row; }
 
   .dpad-btn {
     width: 46px;
@@ -168,7 +168,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   @media (hover: none), (pointer: coarse) {
-    .dpad-side { display: flex; }
+    .dpad-row { display: flex; }
     .game-hint kbd { display: none; }
   }
 
@@ -380,12 +380,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       e.preventDefault();
     }, { passive: false });
 
-    // d-pad buttons
+    // d-pad buttons — any button also restarts from start/gameover,
+    // same as tapping the canvas
     const dpadMap: Record<string, string> = { "dpad-up": "UP", "dpad-down": "DOWN", "dpad-left": "LEFT", "dpad-right": "RIGHT" };
     Object.entries(dpadMap).forEach(([id, dir]) => {
       document.getElementById(id)?.addEventListener("touchstart", (e) => {
         e.preventDefault();
-        if (gameState === "playing") {
+        if (gameState === "start" || gameState === "gameover") {
+          startGame();
+        } else if (gameState === "playing") {
           if (dir === "LEFT"  && direction !== "RIGHT") direction = "LEFT";
           if (dir === "UP"    && direction !== "DOWN")  direction = "UP";
           if (dir === "RIGHT" && direction !== "LEFT")  direction = "RIGHT";
