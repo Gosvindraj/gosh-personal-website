@@ -1,6 +1,11 @@
 ---
 import Navbar from "../components/Navbar.astro";
 import ChatBot from "../components/ChatBot";
+import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource-variable/jetbrains-mono";
+import "@fontsource-variable/jetbrains-mono/wght-italic.css";
+import "@fontsource/instrument-serif";
+import "@fontsource/instrument-serif/400-italic.css";
 import "../styles/global.css";
 import { ClientRouter } from "astro:transitions";
 
@@ -61,22 +66,19 @@ const jsonLd = [
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="gosh. builds what's next. Gosvindraj's portfolio." />
     <meta property="og:site_name" content="Gosvindraj" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content="gosh. builds what's next. Gosvindraj's portfolio." />
 
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-      integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <ClientRouter />
     <slot name="head" />

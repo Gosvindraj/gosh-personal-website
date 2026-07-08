@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { API_BASE } from "../lib/api";
 
 interface Message {
   role: "user" | "assistant";
@@ -12,18 +13,18 @@ const STORAGE_MSGS = "chatbot_msgs";
 const STORAGE_CNT  = "chatbot_count";
 
 const T = {
-  bg:          "#0c0c0a",
-  surface:     "#141412",
-  border:      "rgba(234,231,222,0.11)",
-  borderHover: "rgba(155, 109, 206,0.5)",
-  text:        "#eae7de",
-  muted:       "#8f8c80",
-  accent:      "#9b6dce",
-  accentDim:   "rgba(155, 109, 206,0.1)",
+  bg:          "var(--bg)",
+  surface:     "var(--surface)",
+  border:      "var(--line)",
+  borderHover: "color-mix(in srgb, var(--acid) 50%, transparent)",
+  text:        "var(--ink)",
+  muted:       "var(--dim)",
+  accent:      "var(--acid)",
+  accentDim:   "var(--acid-dim)",
 } as const;
 
-const FONT_SANS = "'Archivo', system-ui, sans-serif";
-const FONT_MONO = "'JetBrains Mono', ui-monospace, monospace";
+const FONT_SANS = "'Archivo Variable', system-ui, sans-serif";
+const FONT_MONO = "'JetBrains Mono Variable', ui-monospace, monospace";
 
 export default function ChatBot() {
   const [open, setOpen]          = useState(false);
@@ -130,7 +131,7 @@ export default function ChatBot() {
     if (inputRef.current) inputRef.current.style.height = "auto";
 
     try {
-      const res  = await fetch("https://gosvindraj-github-io.pages.dev/api/chat", {
+      const res  = await fetch(`${API_BASE}/api/chat`, {
         method:  "POST",
         headers: { "Content-Type": "application/json" },
         body:    JSON.stringify({ message: trimmed, history: messages.slice(-10) }),
@@ -222,7 +223,7 @@ export default function ChatBot() {
               width:          "28px",
               height:         "28px",
               background:     T.accentDim,
-              border:         "1px solid rgba(155, 109, 206,0.35)",
+              border:         "1px solid color-mix(in srgb, var(--acid) 35%, transparent)",
               display:        "flex",
               alignItems:     "center",
               justifyContent: "center",
@@ -258,7 +259,7 @@ export default function ChatBot() {
             flexDirection: "column",
             gap:           "12px",
             scrollbarWidth:"thin",
-            scrollbarColor:`rgba(155, 109, 206,0.25) transparent`,
+            scrollbarColor:`color-mix(in srgb, var(--acid) 25%, transparent) transparent`,
           }}>
           {messages.length === 0 && (
             <div style={{
@@ -344,7 +345,7 @@ export default function ChatBot() {
           {error && (
             <div style={{
               fontSize:   "11px",
-              color:      "#e57373",
+              color:      "var(--bad)",
               textAlign:  "center",
               padding:    "4px 8px",
               lineHeight: 1.5,
@@ -469,9 +470,9 @@ export default function ChatBot() {
           zIndex:         9001,
           boxShadow:      open
             ? `0 4px 20px rgba(0,0,0,0.5)`
-            : "0 4px 20px rgba(155, 109, 206,0.3)",
+            : "0 4px 20px color-mix(in srgb, var(--acid) 30%, transparent)",
           transition:     "background 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 1s ease",
-          color:          open ? T.accent : "#0c0c0a",
+          color:          open ? T.accent : "var(--bg)",
           opacity:        visible ? 1 : 0,
           pointerEvents:  visible ? "auto" : "none",
         }}
@@ -496,8 +497,8 @@ export default function ChatBot() {
         /* acid text selection inside the chatbot */
         .chatbot-input::selection,
         .chatbot-messages *::selection {
-          background: rgba(155, 109, 206, 0.85);
-          color: #0c0c0a;
+          background: color-mix(in srgb, var(--acid) 85%, transparent);
+          color: var(--bg);
         }
 
         /* textarea: hide scrollbar (webkit + firefox) */
@@ -511,16 +512,16 @@ export default function ChatBot() {
         .chatbot-messages::-webkit-scrollbar        { width: 4px; }
         .chatbot-messages::-webkit-scrollbar-track  { background: transparent; }
         .chatbot-messages::-webkit-scrollbar-thumb  {
-          background: rgba(155, 109, 206, 0.3);
+          background: color-mix(in srgb, var(--acid) 30%, transparent);
         }
         .chatbot-messages::-webkit-scrollbar-thumb:hover {
-          background: rgba(155, 109, 206, 0.5);
+          background: color-mix(in srgb, var(--acid) 50%, transparent);
         }
 
         @keyframes chatbotPulse {
-          0%   { box-shadow: 0 0 0 0    rgba(155, 109, 206, 0.4); }
-          70%  { box-shadow: 0 0 0 14px rgba(155, 109, 206, 0);   }
-          100% { box-shadow: 0 0 0 0    rgba(155, 109, 206, 0);   }
+          0%   { box-shadow: 0 0 0 0    color-mix(in srgb, var(--acid) 40%, transparent); }
+          70%  { box-shadow: 0 0 0 14px color-mix(in srgb, var(--acid) 0%, transparent);   }
+          100% { box-shadow: 0 0 0 0    color-mix(in srgb, var(--acid) 0%, transparent);   }
         }
         .chatbot-pulse-ring { animation: chatbotPulse 2.8s ease-out infinite; }
 

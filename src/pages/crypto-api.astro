@@ -69,7 +69,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <div class="card-actions" id="card-actions">
             <button id="fetch-btn" type="button">
               <span id="btn-text">fetch live price</span>
-              <i class="fa-solid fa-arrow-right" id="btn-icon"></i>
+              <svg aria-hidden="true" id="btn-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
             </button>
           </div>
 
@@ -250,13 +250,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     transition: color var(--transition), border-color var(--transition), background var(--transition);
   }
 
-  #fetch-btn i { font-size: 11px; transition: transform var(--transition); }
+  #fetch-btn svg { transition: transform var(--transition); }
   #fetch-btn:hover { color: #f7931a; border-color: rgba(247, 147, 26, 0.7); background: rgba(247, 147, 26, 0.07); }
-  #fetch-btn:hover i { transform: translateX(4px); }
+  #fetch-btn:hover svg { transform: translateX(4px); }
   #fetch-btn:disabled { opacity: 0.45; }
 
-  .val-high { color: #4ade80; }
-  .val-low  { color: #f87171; }
+  .val-high { color: var(--ok); }
+  .val-low  { color: var(--bad); }
 
   .sparkline-wrap {
     padding: 0.5rem 0;
@@ -310,16 +310,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   .change-badge.pos {
-    color: #4ade80;
-    background: rgba(74, 222, 128, 0.1);
-    border: 1px solid rgba(74, 222, 128, 0.2);
+    color: var(--ok);
+    background: rgba(var(--ok-rgb), 0.1);
+    border: 1px solid rgba(var(--ok-rgb), 0.2);
     opacity: 1;
   }
 
   .change-badge.neg {
-    color: #f87171;
-    background: rgba(248, 113, 113, 0.1);
-    border: 1px solid rgba(248, 113, 113, 0.2);
+    color: var(--bad);
+    background: rgba(var(--bad-rgb), 0.1);
+    border: 1px solid rgba(var(--bad-rgb), 0.2);
     opacity: 1;
   }
 
@@ -342,7 +342,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     margin-top: 1rem;
     font-family: var(--font-mono);
     font-size: 0.75rem;
-    color: #eb5757;
+    color: var(--bad);
     letter-spacing: 0.04em;
     text-align: center;
   }
@@ -432,6 +432,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const NS = "http://www.w3.org/2000/svg";
       const svg = document.getElementById("sparkline-svg") as unknown as SVGSVGElement;
 
+      const rootCss = getComputedStyle(document.documentElement);
+      const okRgb  = rootCss.getPropertyValue("--ok-rgb").trim();
+      const badRgb = rootCss.getPropertyValue("--bad-rgb").trim();
+      const okHex  = rootCss.getPropertyValue("--ok").trim();
+      const badHex = rootCss.getPropertyValue("--bad").trim();
+
       // subsample to ~80 pts for performance while keeping shape
       const step = Math.max(1, Math.floor(prices.length / 80));
       const pts_raw = prices.filter((_, i) => i % step === 0 || i === prices.length - 1);
@@ -467,8 +473,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const linePath = smoothPath(pts);
       const last = pts[pts.length - 1];
       const fillPath = `${linePath} L${last[0].toFixed(2)} ${H} L${pts[0][0].toFixed(2)} ${H} Z`;
-      const color = isUp ? "74,222,128" : "248,113,113";
-      const hexColor = isUp ? "#4ade80" : "#f87171";
+      const color = isUp ? okRgb : badRgb;
+      const hexColor = isUp ? okHex : badHex;
 
       // build gradient via createElementNS so Astro scoping can't break the url() ref
       let defs = svg.querySelector("defs");

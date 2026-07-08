@@ -38,7 +38,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           />
           <button id="analyze-btn" type="button" data-magnetic>
             <span id="btn-text">analyze</span>
-            <i class="fa-solid fa-arrow-right"></i>
+            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
         </div>
 
@@ -72,7 +72,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <div id="tx-modal" class="modal-backdrop hidden" aria-modal="true" role="dialog">
     <div class="modal-panel" id="modal-panel">
       <button class="modal-close" id="modal-close" aria-label="Close">
-        <i class="fa-solid fa-xmark"></i>
+        <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
 
       <div class="modal-header">
@@ -84,10 +84,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <span class="modal-hash-val" id="modal-hash-display"></span>
           <div class="modal-hash-actions">
             <button class="icon-btn" id="modal-copy" title="Copy hash">
-              <i class="fa-regular fa-copy"></i>
+              <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>
             </button>
             <a class="icon-btn" id="modal-snowtrace" href="#" target="_blank" rel="noopener" title="View on Snowtrace">
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="8 7 17 7 17 16"/></svg>
             </a>
           </div>
         </div>
@@ -169,9 +169,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     flex-shrink: 0;
   }
 
-  .dot-normal     { background: #6fcf97; }
-  .dot-suspicious { background: #f2994a; }
-  .dot-anomalous  { background: #eb5757; }
+  .dot-normal     { background: var(--ok); }
+  .dot-suspicious { background: var(--warn); }
+  .dot-anomalous  { background: var(--bad); }
 
   /* ── right panel ── */
   .anomaly-wrap {
@@ -219,7 +219,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     gap: 0.6rem;
     background: var(--acid);
     border: none;
-    color: #0c0c0a;
+    color: var(--bg);
     font-family: var(--font-mono);
     font-size: 11px;
     font-weight: 500;
@@ -231,9 +231,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     will-change: transform;
   }
 
-  #analyze-btn i { font-size: 10px; transition: transform var(--transition); }
+  #analyze-btn svg { transition: transform var(--transition); }
   #analyze-btn:hover { background: #d9fb70; }
-  #analyze-btn:hover i { transform: translateX(3px); }
+  #analyze-btn:hover svg { transform: translateX(3px); }
   #analyze-btn:disabled { opacity: 0.4; pointer-events: none; }
 
   .info-msg {
@@ -244,7 +244,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     min-height: 1.2em;
   }
 
-  .info-msg.error { color: #eb5757; }
+  .info-msg.error { color: var(--bad); }
 
   /* ── summary ── */
   .summary {
@@ -280,8 +280,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     line-height: 1;
   }
 
-  .stat-val.has-anomalies  { color: #eb5757; }
-  .stat-val.has-suspicious { color: #f2994a; }
+  .stat-val.has-anomalies  { color: var(--bad); }
+  .stat-val.has-suspicious { color: var(--warn); }
 
   /* ── table ── */
   .table-wrap {
@@ -385,12 +385,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   .badge-dot { width: 5px; height: 5px; }
 
-  .badge-normal     { background: rgba(111,207,151,0.1); color: #6fcf97; }
-  .badge-normal     .badge-dot { background: #6fcf97; }
-  .badge-suspicious { background: rgba(242,153,74,0.1);  color: #f2994a; }
-  .badge-suspicious .badge-dot { background: #f2994a; }
-  .badge-anomalous  { background: rgba(235,87,87,0.1);   color: #eb5757; }
-  .badge-anomalous  .badge-dot { background: #eb5757; }
+  .badge-normal     { background: rgba(var(--ok-rgb), 0.1); color: var(--ok); }
+  .badge-normal     .badge-dot { background: var(--ok); }
+  .badge-suspicious { background: rgba(var(--warn-rgb), 0.1);  color: var(--warn); }
+  .badge-suspicious .badge-dot { background: var(--warn); }
+  .badge-anomalous  { background: rgba(var(--bad-rgb), 0.1);   color: var(--bad); }
+  .badge-anomalous  .badge-dot { background: var(--bad); }
 
   /* row arrow hint */
   .row-arrow {
@@ -618,6 +618,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <script>
   import gsap from "gsap";
+  import { API_BASE } from "../lib/api";
 
   interface FeatureStat { raw: number; pct: number; }
 
@@ -659,9 +660,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   function scoreColor(flag: string): string {
-    if (flag === "anomalous")  return "#eb5757";
-    if (flag === "suspicious") return "#f2994a";
-    return "#6fcf97";
+    if (flag === "anomalous")  return "var(--bad)";
+    if (flag === "suspicious") return "var(--warn)";
+    return "var(--ok)";
   }
 
   function truncate(addr: string, head = 8, tail = 6): string {
@@ -738,11 +739,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     snowtrace.href = `https://snowtrace.io/tx/${tx.hash}`;
 
     // copy
+    const COPY_ICON = `<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="1"/><path d="M5 15V5a1 1 0 0 1 1-1h10"/></svg>`;
+    const CHECK_ICON = `<svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`;
     copyBtn.onclick = () => {
       navigator.clipboard.writeText(tx.hash).then(() => {
-        const icon = copyBtn.querySelector("i")!;
-        icon.className = "fa-solid fa-check";
-        setTimeout(() => { icon.className = "fa-regular fa-copy"; }, 1500);
+        copyBtn.innerHTML = CHECK_ICON;
+        setTimeout(() => { copyBtn.innerHTML = COPY_ICON; }, 1500);
       });
     };
 
@@ -862,7 +864,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               <span class="badge-dot"></span>${tx.flag}
             </span>
           </td>
-          <td><i class="fa-solid fa-chevron-right row-arrow"></i></td>
+          <td><svg aria-hidden="true" class="row-arrow" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></td>
         </tr>
       `;
     }).join("");
@@ -928,7 +930,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       setInfo("fetching transactions from Glacier API...");
 
       try {
-        const res = await fetch("/api/anomaly", {
+        const res = await fetch(`${API_BASE}/api/anomaly`, {
           method:  "POST",
           headers: { "Content-Type": "application/json" },
           body:    JSON.stringify({ address }),

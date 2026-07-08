@@ -230,9 +230,9 @@ const projects = [
   .proj-row:hover .proj-title,
   .proj-row:hover .proj-summary,
   .proj-row:hover .proj-index,
-  .proj-row:hover .proj-cta { color: #0c0c0a; }
-  .proj-row:hover .proj-cta .hl { color: #0c0c0a; }
-  .proj-row:hover .proj-tag { color: #0c0c0a; border-color: rgba(12, 12, 10, 0.4); }
+  .proj-row:hover .proj-cta { color: var(--bg); }
+  .proj-row:hover .proj-cta .hl { color: var(--bg); }
+  .proj-row:hover .proj-tag { color: var(--bg); border-color: rgba(12, 12, 10, 0.4); }
 
   @media (max-width: 700px) {
     .proj-row { grid-template-columns: 2.5rem 1fr; }
@@ -430,7 +430,7 @@ const projects = [
   .ia-tile:hover .ia-tag,
   .ia-tile:hover .ia-tag .ia-date {
     background: var(--acid);
-    color: #0c0c0a;
+    color: var(--bg);
   }
 
   .insta-status {
