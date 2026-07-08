@@ -20,7 +20,7 @@ const projects = [
   },
   {
     index: "03",
-    title: "anomaly detector",
+    title: "detect anomaly",
     summary: "paste an avalanche c-chain wallet and an isolation forest model scores every transaction for value, gas, and timing outliers.",
     tags: ["ml", "avalanche", "security"],
     href: "/anomaly-detector",
@@ -551,17 +551,17 @@ const projects = [
             <div class="insta-overlay">${badge}<span class="insta-view">view on ig &#8599;</span></div>
           </a>
           <div class="if-meta">
-            <span class="m-label"><span class="lb">[</span> 01 <span class="lb">/</span> latest drop <span class="lb">]</span></span>
+            <span class="m-label"><span class="lb">[</span> 01 <span class="lb">/</span> latest post <span class="lb">]</span></span>
             <span class="if-date">${fmtLong(latest.timestamp)}<span class="tick">.</span></span>
             ${caption ? `<p class="if-caption">${esc(caption)}</p>` : ""}
-            <a href="${latest.permalink}" target="_blank" rel="noopener noreferrer" class="btn-line">view the drop <span aria-hidden="true">&#8599;</span></a>
+            <a href="${latest.permalink}" target="_blank" rel="noopener noreferrer" class="btn-line">view the post <span aria-hidden="true">&#8599;</span></a>
           </div>
         </div>`;
 
       const archive = rest.length ? `
         <div class="insta-archive">
           <div class="ia-head">
-            <span class="m-label"><span class="lb">[</span> archive <span class="lb">/</span> previous ${rest.length} drops <span class="lb">]</span></span>
+            <span class="m-label"><span class="lb">[</span> archive <span class="lb">/</span> previous ${rest.length} posts <span class="lb">]</span></span>
             <span class="m-label">one per day, via cron</span>
           </div>
           <div class="ia-grid">

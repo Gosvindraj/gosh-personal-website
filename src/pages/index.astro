@@ -67,35 +67,27 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </BaseLayout>
 
 <style>
-  /* ── shell: hero + marquee fill exactly one viewport on desktop ── */
+  /* ── shell: hero + marquee fill exactly one viewport, on every
+     screen size — #hero shrinks (flex:1, min-height:0) to share
+     that fixed height with the marquee instead of each claiming
+     a full viewport of its own, which is what pushed the mobile
+     page past 100vh and forced a scrollbar. */
   #home-shell {
     display: flex;
     flex-direction: column;
-  }
-
-  @media (min-width: 821px) {
-    #home-shell {
-      height: calc(100vh - var(--nav-height));
-    }
+    height: calc(100vh - var(--nav-height));
   }
 
   /* ── hero ─────────────────────────────────── */
   #hero {
-    min-height: calc(100vh - var(--nav-height));
+    flex: 1;
+    min-height: 0;
     display: flex;
     flex-direction: column;
     gap: clamp(1.25rem, 3vh, 2rem);
-    padding: 1.5rem var(--gutter) 1.25rem;
+    padding: 1.1rem var(--gutter) 0.85rem;
     position: relative;
     overflow: hidden;
-  }
-
-  @media (min-width: 821px) {
-    #hero {
-      flex: 1;
-      min-height: 0;
-      padding: 1.1rem var(--gutter) 0.85rem;
-    }
   }
 
   /* the middle .scroll-line is flex:1, so it fills whatever room is
@@ -298,9 +290,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   const ROT_WORDS = [
     "what's <br class=\"mobile-break\" />next.",
-    "ai workflows.",
-    "onchain stuff.",
-    "random apps.",
+    "ai <br class=\"mobile-break\" />workflows.",
+    "onchain <br class=\"mobile-break\" />stuff.",
+    "random <br class=\"mobile-break\" />apps.",
     "websites. <br class=\"mobile-break\" /><i class=\"rot-aside\">(like this)</i>",
   ];
 

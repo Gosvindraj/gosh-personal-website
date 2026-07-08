@@ -62,13 +62,25 @@ const links = [
   }
 
   /* ── overlay menu ──────────────────────────── */
-  const toggle  = document.getElementById("nav-toggle");
-  const overlay = document.getElementById("nav-overlay");
-  let menuOpen  = false;
+  /* toggle/overlay are re-queried on every use (never captured once
+     as module-level consts) and every listener below is delegated
+     to document instead of bound directly to these nodes. header
+     and overlay are transition:persist, so this SHOULD be
+     unnecessary — but persistence isn't 100% guaranteed on every
+     transition (mobile memory pressure, rapid back-to-back
+     navigation), and if it ever silently fails, a direct listener
+     bound to a since-detached node goes dead with no way to
+     recover, which reads to a visitor as "the menu button just
+     stopped working". delegation means a stale reference can never
+     be the failure mode. */
+  let menuOpen = false;
 
   function openMenu() {
+    const overlay = document.getElementById("nav-overlay");
+    const toggle  = document.getElementById("nav-toggle");
     if (!overlay || !toggle) return;
     menuOpen = true;
+    gsap.killTweensOf(overlay);
     overlay.style.display = "flex";
     overlay.setAttribute("aria-hidden", "false");
     toggle.setAttribute("aria-expanded", "true");
@@ -76,25 +88,31 @@ const links = [
     document.body.style.overflow = "hidden";
     const items = overlay.querySelectorAll(".ov-links a");
     if (reduced) {
+      gsap.set(overlay, { opacity: 1 });
       gsap.set(items, { y: "0%" });
       return;
     }
     gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.25, ease: "power2.out" });
+    gsap.killTweensOf(items);
     gsap.fromTo(items,
       { y: "110%" },
       { y: "0%", duration: 0.55, stagger: 0.06, ease: "power4.out", delay: 0.08 }
     );
   }
 
-  function closeMenu() {
-    if (!overlay || !toggle || !menuOpen) return;
+  function closeMenu(instant = false) {
+    const overlay = document.getElementById("nav-overlay");
+    const toggle  = document.getElementById("nav-toggle");
+    if (!overlay || !toggle) return;
     menuOpen = false;
     toggle.setAttribute("aria-expanded", "false");
     toggle.textContent = "menu";
     document.body.style.overflow = "";
     overlay.setAttribute("aria-hidden", "true");
-    if (reduced) {
+    gsap.killTweensOf(overlay);
+    if (reduced || instant) {
       overlay.style.display = "none";
+      gsap.set(overlay, { opacity: 1 });
       return;
     }
     gsap.to(overlay, {
@@ -103,9 +121,14 @@ const links = [
     });
   }
 
-  toggle?.addEventListener("click", () => (menuOpen ? closeMenu() : openMenu()));
-
-  overlay?.querySelectorAll("a").forEach((a) => a.addEventListener("click", closeMenu));
+  document.addEventListener("click", (e) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("#nav-toggle")) {
+      menuOpen ? closeMenu() : openMenu();
+    } else if (target.closest("#nav-overlay a")) {
+      closeMenu();
+    }
+  });
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && menuOpen) closeMenu();
@@ -122,6 +145,9 @@ const links = [
   syncActiveLinks();
   document.addEventListener("astro:page-load", () => {
     syncActiveLinks();
-    closeMenu();
+    /* unconditional + instant: guarantees a clean, fully-reset menu
+       state on every single page load, regardless of what state
+       (or mid-animation state) the previous page left things in. */
+    closeMenu(true);
   });
 </script>

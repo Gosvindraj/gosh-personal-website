@@ -83,9 +83,14 @@ export default function ChatBot() {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, open]);
 
-  // focus input when panel opens
+  // focus input when panel opens — skipped on touch devices, where
+  // focusing immediately pops the on-screen keyboard and covers half
+  // the panel before the user has even read anything. desktop still
+  // gets the convenience of landing in the input ready to type.
   useEffect(() => {
-    if (open) inputRef.current?.focus();
+    if (!open) return;
+    const isTouch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
+    if (!isTouch) inputRef.current?.focus();
   }, [open]);
 
   // click/tap outside the panel (and its launcher) closes it

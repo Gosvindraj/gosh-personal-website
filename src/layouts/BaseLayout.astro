@@ -128,6 +128,14 @@ const jsonLd = [
 
       const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+      /* mobile Safari in particular is eager to restore its own idea
+         of scroll position on navigation, fighting the manual reset
+         below. handing scroll restoration entirely to our own logic
+         avoids that race. */
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+
       /* ── ScrollTrigger cleanup on page transitions ── */
       document.addEventListener("astro:before-swap", () => {
         ScrollTrigger.getAll().forEach((t) => t.kill());
@@ -142,16 +150,22 @@ const jsonLd = [
          layouts on the incoming page, leaving the new page opened
          mid-scroll. back/forward browser navigation and in-page
          hash links are left alone so their scroll position still
-         restores/targets correctly. */
+         restores/targets correctly. asserted twice — once right
+         after swap, and again after ScrollTrigger.refresh() has
+         had a chance to resize anything pinned/sticky on the new
+         page — since a recalculation there was the more likely
+         culprit behind the reset losing on mobile. */
       let navDirection: "forward" | "back" = "forward";
       document.addEventListener("astro:before-preparation", (e) => {
         navDirection = (e as unknown as { direction?: "forward" | "back" }).direction ?? "forward";
       });
-      document.addEventListener("astro:after-swap", () => {
+      function resetScroll() {
         if (navDirection === "forward" && !location.hash) {
           window.scrollTo({ top: 0, left: 0, behavior: "instant" });
         }
-      });
+      }
+      document.addEventListener("astro:after-swap", resetScroll);
+      document.addEventListener("astro:page-load", resetScroll);
 
       /* re-measure once custom fonts finish loading: triggers created
          (or refreshed) while the display face is still the fallback

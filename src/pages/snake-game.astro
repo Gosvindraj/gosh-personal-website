@@ -23,21 +23,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
         <canvas id="gameCanvas" width="400" height="400" tabindex="0"></canvas>
         <p class="game-hint" id="game-hint">press <kbd>enter</kbd> to start</p>
-        <div class="dpad" id="dpad">
+        <div class="dpad-side dpad-side-left" id="dpad-left-group">
           <button class="dpad-btn" id="dpad-up" aria-label="Up">
             <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
           </button>
-          <div class="dpad-row">
-            <button class="dpad-btn" id="dpad-left" aria-label="Left">
-              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-            </button>
-            <div class="dpad-center"></div>
-            <button class="dpad-btn" id="dpad-right" aria-label="Right">
-              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-            </button>
-          </div>
+          <button class="dpad-btn" id="dpad-left" aria-label="Left">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+        </div>
+        <div class="dpad-side dpad-side-right" id="dpad-right-group">
           <button class="dpad-btn" id="dpad-down" aria-label="Down">
             <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <button class="dpad-btn" id="dpad-right" aria-label="Right">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
       </div>
@@ -128,28 +127,28 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   /* d-pad */
-  .dpad {
+  /* split into two edge-pinned clusters so both thumbs can steer
+     at once on touch devices — left thumb gets up+left, right
+     thumb gets down+right. pinned to the vertical middle of the
+     viewport (not the bottom corners) so they never collide with
+     the chatbot FAB. keyboard covers desktop, so these stay
+     display:none until the touch/coarse-pointer query below. */
+  .dpad-side {
     display: none;
     flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    margin-top: 0.5rem;
+    gap: 8px;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 50;
   }
 
-  .dpad-row {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
-
-  .dpad-center {
-    width: 44px;
-    height: 44px;
-  }
+  .dpad-side-left  { left: 0.85rem; }
+  .dpad-side-right { right: 0.85rem; }
 
   .dpad-btn {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     background: var(--surface);
     border: 1px solid var(--line);
     color: var(--dim);
@@ -169,7 +168,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   }
 
   @media (hover: none), (pointer: coarse) {
-    .dpad { display: flex; }
+    .dpad-side { display: flex; }
     .game-hint kbd { display: none; }
   }
 
@@ -309,16 +308,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         }
       }
 
-      // food, drawn as the favicon with a glow
-      ctx.shadowColor = "rgba(155, 109, 206,0.9)";
-      ctx.shadowBlur  = 10;
-      if (foodImg.complete && foodImg.naturalWidth > 0) {
-        ctx.drawImage(foodImg, food.x + 1, food.y + 1, BOX - 2, BOX - 2);
-      } else {
-        ctx.fillStyle = "rgba(155, 109, 206,0.9)";
-        ctx.fillRect(food.x + 3, food.y + 3, BOX - 6, BOX - 6);
+      // food, drawn as the favicon with a glow (skipped once the
+      // game is over so it doesn't show through the semi-transparent
+      // overlay behind the "game over" text)
+      if (gameState !== "gameover") {
+        ctx.shadowColor = "rgba(155, 109, 206,0.9)";
+        ctx.shadowBlur  = 10;
+        if (foodImg.complete && foodImg.naturalWidth > 0) {
+          ctx.drawImage(foodImg, food.x + 1, food.y + 1, BOX - 2, BOX - 2);
+        } else {
+          ctx.fillStyle = "rgba(155, 109, 206,0.9)";
+          ctx.fillRect(food.x + 3, food.y + 3, BOX - 6, BOX - 6);
+        }
+        ctx.shadowBlur = 0;
       }
-      ctx.shadowBlur = 0;
 
       // snake
       snake.forEach((seg, idx) => {
