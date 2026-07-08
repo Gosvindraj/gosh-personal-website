@@ -29,8 +29,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           </p>
           <div class="hero-cta-col">
             <div class="hero-cta">
-              <a href="/projects" class="btn-solid btn-solid-invert">the work <span aria-hidden="true">&rarr;</span></a>
-              <a href="/about" class="btn-solid btn-solid-invert">the story <span aria-hidden="true">&rarr;</span></a>
+              <a href="/projects" class="btn-solid btn-solid-invert">the work <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+              <a href="/about" class="btn-solid btn-solid-invert">the story <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
             </div>
             <a href="/contact" class="hero-sayhi m-label">
               <span class="lb">[</span> or, want to connect? say hi <span class="hl">&#8599;</span> <span class="lb">]</span>
@@ -75,7 +75,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   #home-shell {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - var(--nav-height));
+    height: calc(100dvh - var(--nav-height));
   }
 
   /* ── hero ─────────────────────────────────── */
@@ -181,18 +181,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
-  }
-
-  /* inverse of .btn-solid: acid outline instead of acid fill, flips
-     back to a solid fill on hover so the pair reads as complements */
-  .btn-solid-invert {
-    background: transparent;
-    color: var(--acid);
-  }
-
-  .btn-solid-invert:hover {
-    background: var(--acid);
-    color: var(--bg);
   }
 
   /* a low-key "say hi" CTA at label scale, since the hero is

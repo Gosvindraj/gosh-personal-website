@@ -418,6 +418,9 @@ export default function ChatBot() {
             aria-label="Send message"
             className="chatbot-send-btn"
             style={{
+              display:        "flex",
+              alignItems:     "center",
+              gap:            "4px",
               background:     "none",
               border:         "none",
               padding:        "0 0 8px",
@@ -432,7 +435,8 @@ export default function ChatBot() {
               transition:     "color 0.2s ease, opacity 0.2s ease",
             }}
           >
-            send &rarr;
+            send
+            <svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
         </div>
       </div>

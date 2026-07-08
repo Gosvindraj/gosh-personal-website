@@ -8,13 +8,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <span class="line-mask"><span class="line">lost</span></span><span class="serif acid err-mark">?</span>
     </h1>
     <p class="err-sub">this page doesn't exist. or it did, and we moved on.</p>
-    <a href="/" class="btn-solid">back to home <span aria-hidden="true">&rarr;</span></a>
+    <a href="/" class="btn-solid">back to home <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
   </section>
 </BaseLayout>
 
 <style>
   #not-found {
-    min-height: calc(100vh - var(--nav-height));
+    min-height: calc(100dvh - var(--nav-height));
     display: flex;
     flex-direction: column;
     align-items: center;

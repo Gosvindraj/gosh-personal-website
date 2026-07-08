@@ -36,7 +36,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             autocomplete="off"
             maxlength="42"
           />
-          <button id="analyze-btn" type="button" data-magnetic>
+          <button id="analyze-btn" type="button">
             <span id="btn-text">analyze</span>
             <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
@@ -106,7 +106,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <style is:global>
   #project-anomaly {
-    min-height: calc(100vh - var(--nav-height));
+    min-height: calc(100dvh - var(--nav-height));
     display: flex;
     align-items: flex-start;
     padding: clamp(2.5rem, 6vh, 4rem) var(--gutter);
@@ -218,7 +218,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     align-items: center;
     gap: 0.6rem;
     background: var(--acid);
-    border: none;
+    border: 1px solid var(--acid);
     color: var(--bg);
     font-family: var(--font-mono);
     font-size: 11px;
@@ -226,13 +226,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     letter-spacing: 0.16em;
     text-transform: uppercase;
     padding: 0.9rem 1.5rem;
-    transition: background var(--transition);
+    transition: background var(--transition), color var(--transition);
     white-space: nowrap;
     will-change: transform;
   }
 
   #analyze-btn svg { transition: transform var(--transition); }
-  #analyze-btn:hover { background: #d9fb70; }
+  #analyze-btn:hover { background: transparent; color: var(--acid); }
   #analyze-btn:hover svg { transform: translateX(3px); }
   #analyze-btn:disabled { opacity: 0.4; pointer-events: none; }
 
@@ -964,19 +964,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     input.addEventListener("keydown", (e) => {
       if (e.key === "Enter") btn.click();
-    });
-
-    // magnetic button
-    btn.addEventListener("mousemove", (e) => {
-      const rect = btn.getBoundingClientRect();
-      gsap.to(btn, {
-        x: (e.clientX - rect.left - rect.width  / 2) * 0.35,
-        y: (e.clientY - rect.top  - rect.height / 2) * 0.35,
-        duration: 0.3, ease: "power2.out",
-      });
-    });
-    btn.addEventListener("mouseleave", () => {
-      gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1,0.5)" });
     });
   }
 

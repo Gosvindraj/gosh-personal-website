@@ -32,7 +32,7 @@ No test suite or linter is configured. `npm run build` is the correctness check.
 
 ## Design system ("the ledger", 2026 redesign)
 
-Brutalist editorial: warm near-black, bone ink, one acid-lime accent, hairline rules everywhere. Defined in `src/styles/global.css`:
+Brutalist editorial: warm near-black, bone ink, one purple accent (`--acid`, named after an earlier lime iteration but repurposed), hairline rules everywhere. Defined in `src/styles/global.css`:
 
 | Token | Value | Purpose |
 |---|---|---|
@@ -40,7 +40,7 @@ Brutalist editorial: warm near-black, bone ink, one acid-lime accent, hairline r
 | `--surface` | `#141412` | Card/panel background |
 | `--ink` | `#eae7de` | Body text (bone white) |
 | `--dim` / `--faint` | `#8f8c80` / `#55534a` | Subdued text tiers |
-| `--acid` | `#c9f542` | The single accent colour |
+| `--acid` | `#9b6dce` | The single accent colour |
 | `--line` / `--line-strong` | white @ 11% / 26% | Hairline rules |
 | `--nav-height` | `64px` | Navbar height |
 | `--gutter` | `clamp(1.25rem, 5vw, 4.5rem)` | Horizontal page padding |

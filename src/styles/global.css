@@ -58,7 +58,7 @@ body {
   font-family: var(--font-sans);
   font-weight: 400;
   line-height: 1.6;
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
   cursor: none;
   -webkit-font-smoothing: antialiased;
@@ -161,6 +161,21 @@ button {
 }
 
 .btn-solid:hover { background: transparent; color: var(--acid); }
+
+.btn-solid svg { transition: transform var(--transition); }
+.btn-solid:hover svg { transform: translateX(3px); }
+
+/* inverse of .btn-solid: acid outline instead of acid fill, flips
+   back to a solid fill on hover so the pair reads as complements */
+.btn-solid-invert {
+  background: transparent;
+  color: var(--acid);
+}
+
+.btn-solid-invert:hover {
+  background: var(--acid);
+  color: var(--bg);
+}
 
 .btn-line {
   display: inline-flex;
@@ -506,7 +521,7 @@ header#site-nav {
 /* ── page wrapper ──────────────────────────────── */
 main {
   padding-top: var(--nav-height);
-  min-height: 100vh;
+  min-height: 100dvh;
   position: relative;
 }
 

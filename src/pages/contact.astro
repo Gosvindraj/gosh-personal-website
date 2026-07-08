@@ -34,8 +34,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <label for="message" class="field-label m-label">03 <span class="lb">/</span> message</label>
             <textarea id="message" name="message" rows="4" placeholder="what's on your mind?" required></textarea>
           </div>
-          <button type="submit" class="btn-solid" data-magnetic>
-            send it <span aria-hidden="true">&rarr;</span>
+          <button type="submit" class="btn-solid">
+            send it <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
         </form>
         <div id="response-message" role="status"></div>
@@ -366,23 +366,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         .to(aside, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" }, "-=0.5")
         .to(body, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out" }, "-=0.35")
         .to(top, { opacity: 1, duration: 0.5, ease: "power2.out" }, "-=0.3");
-    }
-
-    /* magnetic submit button */
-    const submitBtn = document.querySelector<HTMLElement>("[data-magnetic]");
-    if (submitBtn && !reduced) {
-      submitBtn.addEventListener("mousemove", (e) => {
-        const rect = submitBtn.getBoundingClientRect();
-        gsap.to(submitBtn, {
-          x: (e.clientX - (rect.left + rect.width / 2)) * 0.35,
-          y: (e.clientY - (rect.top + rect.height / 2)) * 0.35,
-          duration: 0.3,
-          ease: "power2.out",
-        });
-      });
-      submitBtn.addEventListener("mouseleave", () => {
-        gsap.to(submitBtn, { x: 0, y: 0, duration: 0.5, ease: "elastic.out(1, 0.5)" });
-      });
     }
   }
 

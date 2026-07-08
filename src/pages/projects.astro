@@ -355,7 +355,7 @@ const projects = [
     overflow: hidden;
   }
 
-  .if-meta .btn-line { align-self: flex-start; }
+  .if-meta .btn-solid { align-self: flex-start; }
 
   /* ── archive: the rest, as a dated contact sheet ── */
   .insta-archive {
@@ -554,7 +554,7 @@ const projects = [
             <span class="m-label"><span class="lb">[</span> 01 <span class="lb">/</span> latest post <span class="lb">]</span></span>
             <span class="if-date">${fmtLong(latest.timestamp)}<span class="tick">.</span></span>
             ${caption ? `<p class="if-caption">${esc(caption)}</p>` : ""}
-            <a href="${latest.permalink}" target="_blank" rel="noopener noreferrer" class="btn-line">view the post <span aria-hidden="true">&#8599;</span></a>
+            <a href="${latest.permalink}" target="_blank" rel="noopener noreferrer" class="btn-solid btn-solid-invert">view the post <span aria-hidden="true">&#8599;</span></a>
           </div>
         </div>`;
 
