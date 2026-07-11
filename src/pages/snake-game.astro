@@ -69,6 +69,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     flex-direction: column;
     gap: 1.75rem;
     opacity: 0;
+    position: sticky;
+    top: calc(var(--nav-height) + 2rem);
   }
 
   .project-title {
@@ -174,7 +176,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   @media (max-width: 900px) {
     .project-inner { flex-direction: column; gap: 3rem; }
-    .project-header { flex: none; }
+    .project-header { flex: none; position: static; }
     .game-wrap { align-items: flex-start; }
   }
 

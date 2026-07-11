@@ -414,6 +414,13 @@ header#site-nav {
   padding: var(--nav-height) var(--gutter) 3rem;
 }
 
+/* the chatbot launcher sits at a higher z-index than the overlay, so
+   hide it while the full-screen menu is open (toggled in Navbar).
+   !important is required because the FAB carries an inline display
+   value from its React inline styles, which a plain rule can't beat. */
+body.nav-open .chatbot-fab,
+body.nav-open .chatbot-pulse-ring { display: none !important; }
+
 #nav-overlay .ov-links {
   list-style: none;
   display: flex;

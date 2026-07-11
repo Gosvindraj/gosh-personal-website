@@ -74,18 +74,30 @@ const links = [
      stopped working". delegation means a stale reference can never
      be the failure mode. */
   let menuOpen = false;
+  /* whether we've pushed a throwaway history entry for the open menu.
+     it lets the OS/browser back action (android back button + back
+     swipe, ios back swipe) pop that entry to CLOSE the menu instead
+     of navigating away or leaving the site. */
+  let pushedState = false;
 
   function openMenu() {
     const overlay = document.getElementById("nav-overlay");
     const toggle  = document.getElementById("nav-toggle");
     if (!overlay || !toggle) return;
     menuOpen = true;
+    if (!pushedState) {
+      history.pushState({ navMenuOpen: true }, "");
+      pushedState = true;
+    }
     gsap.killTweensOf(overlay);
     overlay.style.display = "flex";
     overlay.setAttribute("aria-hidden", "false");
     toggle.setAttribute("aria-expanded", "true");
     toggle.textContent = "close";
     document.body.style.overflow = "hidden";
+    /* hides the chatbot launcher (higher z-index than the overlay)
+       while the full-screen menu is open — see global.css */
+    document.body.classList.add("nav-open");
     const items = overlay.querySelectorAll(".ov-links a");
     if (reduced) {
       gsap.set(overlay, { opacity: 1 });
@@ -100,7 +112,12 @@ const links = [
     );
   }
 
-  function closeMenu(instant = false) {
+  /* viaPop:     close came from a popstate (back gesture) — the throwaway
+                 entry is already gone, don't touch history.
+     navigating: close came from tapping a nav link (or a page load) — a
+                 real navigation is about to add its own history entry, so
+                 don't call history.back() here or it cancels that nav. */
+  function closeMenu(instant = false, viaPop = false, navigating = false) {
     const overlay = document.getElementById("nav-overlay");
     const toggle  = document.getElementById("nav-toggle");
     if (!overlay || !toggle) return;
@@ -108,7 +125,15 @@ const links = [
     toggle.setAttribute("aria-expanded", "false");
     toggle.textContent = "menu";
     document.body.style.overflow = "";
+    document.body.classList.remove("nav-open");
     overlay.setAttribute("aria-hidden", "true");
+    /* only a deliberate dismiss (toggle / Escape) unwinds the throwaway
+       entry. the back gesture already popped it; a link tap lets the
+       real navigation supersede it. */
+    if (pushedState) {
+      pushedState = false;
+      if (!viaPop && !navigating) history.back();
+    }
     gsap.killTweensOf(overlay);
     if (reduced || instant) {
       overlay.style.display = "none";
@@ -126,12 +151,19 @@ const links = [
     if (target.closest("#nav-toggle")) {
       menuOpen ? closeMenu() : openMenu();
     } else if (target.closest("#nav-overlay a")) {
-      closeMenu();
+      closeMenu(true, false, true); // navigating: let the link's nav proceed
     }
   });
 
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && menuOpen) closeMenu();
+  });
+
+  /* back gesture / back button while the menu is open: the throwaway
+     entry we pushed on open has just been popped, so close the menu
+     and stay on the current page (don't navigate away). */
+  window.addEventListener("popstate", () => {
+    if (menuOpen) closeMenu(true, true);
   });
 
   /* ── desktop link roll hover ───────────────── */
@@ -147,7 +179,9 @@ const links = [
     syncActiveLinks();
     /* unconditional + instant: guarantees a clean, fully-reset menu
        state on every single page load, regardless of what state
-       (or mid-animation state) the previous page left things in. */
-    closeMenu(true);
+       (or mid-animation state) the previous page left things in.
+       navigating=true: the page already changed, so don't unwind
+       history here. */
+    closeMenu(true, false, true);
   });
 </script>

@@ -1,0 +1,254 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const shots = [
+  { src: "/bill-splitter/scan.png", label: "01 / scan a receipt", alt: "Bill Splitter scan screen, ready to photograph a receipt" },
+  { src: "/bill-splitter/bill-detail.png", label: "02 / ai reads every line", alt: "An itemised receipt the app read from a photo, every line editable" },
+  { src: "/bill-splitter/split.png", label: "03 / split it your way", alt: "The split screen with even, custom, and item-by-item options" },
+  { src: "/bill-splitter/settle.png", label: "04 / settle up", alt: "The settle-up screen showing who owes who across the trip" },
+  { src: "/bill-splitter/trip.png", label: "05 / group bills into trips", alt: "A trip grouping several bills together" },
+  { src: "/bill-splitter/home.png", label: "06 / everything, at a glance", alt: "The home screen listing recent bills and trips" },
+];
+
+const steps = [
+  {
+    n: "01",
+    title: "scan",
+    body: "snap a photo of the receipt. a vision model (grok) reads every line item, the price, the quantity, and the tax, then hands you an editable draft instead of a blank form.",
+  },
+  {
+    n: "02",
+    title: "split",
+    body: "even, custom percentages, or item by item, so the person who didn't order the wagyu doesn't pay for the wagyu.",
+  },
+  {
+    n: "03",
+    title: "settle",
+    body: "one screen shows exactly who owes who, minimised across every bill in a trip. tap a debt as paid and it's done.",
+  },
+  {
+    n: "04",
+    title: "remember",
+    body: "bills and trips sync to a real backend behind real accounts, so the data survives longer than the group chat does.",
+  },
+];
+
+---
+<BaseLayout
+  title="Gosvindraj | Bill Splitter"
+  description="A React Native + Expo app that reads receipt photos with AI, splits them however the group needs, and settles who owes who across a whole trip of bills."
+>
+  <section id="project-billsplit">
+    <div class="project-inner">
+
+      <div class="project-header" data-reveal>
+        <span class="m-label"><span class="lb">[</span> project <span class="hl">04</span> <span class="lb">]</span></span>
+        <h1 class="project-title display">bill<br />splitter<span class="serif acid">.</span></h1>
+        <p class="project-desc">
+          a mobile app for the who-owes-who problem: snap one receipt for an
+          itemised split, or bundle a whole trip's worth of bills and settle
+          everyone up across all of them. built with react native and expo,
+          backed by supabase, with grok doing the actual reading.
+        </p>
+        <p class="project-note m-note">
+          not on the app store. still lives in an expo dev build on my phone,
+          which felt honest enough to say outright.
+        </p>
+        <a href="/projects" class="back-link m-label">&larr; all projects</a>
+      </div>
+
+      <div class="bill-wrap" data-reveal data-reveal-delay="0.15">
+        <div class="filmstrip">
+          {shots.map((s) => (
+            <figure class="shot-card">
+              <div class="shot-frame">
+                <img src={s.src} alt={s.alt} loading="lazy" />
+              </div>
+              <figcaption class="m-label shot-cap">{s.label}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="sec sec-ghosted" id="billsplit-how">
+    <span class="sec-ghost display" aria-hidden="true">how</span>
+    <div class="sec-head" data-reveal>
+      <span class="m-label"><span class="lb">[</span> how <span class="lb">/</span> it works <span class="lb">]</span></span>
+      <span class="m-label">four steps, no spreadsheet</span>
+    </div>
+    <div class="steps-list">
+      {steps.map((s) => (
+        <div class="step-row" data-reveal>
+          <span class="step-n">{s.n}</span>
+          <div class="step-main">
+            <span class="step-title">{s.title}</span>
+            <p class="step-body">{s.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <a href="/projects" class="back-link back-link-bottom m-label" data-reveal>&larr; all projects</a>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ── hero shell (mirrors the other project pages) ──────────── */
+  #project-billsplit {
+    min-height: calc(100dvh - var(--nav-height));
+    display: flex;
+    align-items: center;
+    padding: clamp(2.5rem, 6vh, 4rem) var(--gutter);
+  }
+
+  .project-inner {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(3rem, 7vw, 6rem);
+  }
+
+  .project-header {
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: sticky;
+    top: calc(var(--nav-height) + 2rem);
+  }
+
+  .project-title { font-size: clamp(2.3rem, 5.2vw, 4rem); }
+
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--dim);
+    line-height: 1.85;
+  }
+
+  .project-note {
+    padding-top: 0.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .back-link {
+    align-self: flex-start;
+    transition: color var(--transition);
+  }
+
+  .back-link:hover { color: var(--acid); }
+
+  /* ── filmstrip ──────────────────────────────────────────────── */
+  .bill-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .filmstrip {
+    display: flex;
+    gap: 1.1rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 0.75rem;
+    /* purple scrollbar matching the site's global (vertical) one */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(155, 109, 206, 0.3) transparent;
+  }
+
+  .filmstrip::-webkit-scrollbar { height: 6px; }
+  .filmstrip::-webkit-scrollbar-track { background: transparent; }
+  .filmstrip::-webkit-scrollbar-thumb { background: rgba(155, 109, 206, 0.3); }
+  .filmstrip::-webkit-scrollbar-thumb:hover { background: rgba(155, 109, 206, 0.55); }
+
+  .shot-card {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: clamp(150px, 20vw, 190px);
+  }
+
+  .shot-frame {
+    aspect-ratio: 430 / 932;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-top: 1px solid var(--acid);
+    overflow: hidden;
+  }
+
+  .shot-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .shot-cap { color: var(--faint); letter-spacing: 0.14em; }
+
+  @media (max-width: 900px) {
+    .project-inner { flex-direction: column; gap: 2.5rem; }
+    .project-header { flex: none; position: static; }
+    .bill-wrap { width: 100%; }
+  }
+
+  /* ── how it works ───────────────────────────────────────────── */
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  .step-row {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 2rem;
+    padding: clamp(1.5rem, 3.5vw, 2.25rem) 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* a second way back once you've scrolled through "how it works" —
+     the sticky header above only tracks the hero, not this section,
+     so re-scrolling to the top to leave felt like a dead end */
+  .back-link-bottom {
+    display: inline-block;
+    margin-top: 2rem;
+  }
+
+  .step-n {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--faint);
+    padding-top: 0.3em;
+  }
+
+  .step-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .step-title {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 740;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    color: var(--ink);
+  }
+
+  .step-body {
+    max-width: 62ch;
+    font-size: 0.88rem;
+    color: var(--dim);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 700px) {
+    .step-row { grid-template-columns: 2.5rem 1fr; }
+  }
+</style>
