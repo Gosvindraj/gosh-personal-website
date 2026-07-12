@@ -1,0 +1,318 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const botUrl = "https://t.me/habbomptracker_bot";
+const repoUrl = "https://github.com/Gosvindraj/habbo-mp-tracker-bot";
+
+const shots = [
+  { src: "/habbo-tracker/profile.jpg", label: "01 / say hi to the bot", alt: "The habbomptracker bot's Telegram profile page" },
+  { src: "/habbo-tracker/price.jpg", label: "02 / price anything", alt: "The bot answering /price with ranked marketplace results" },
+  { src: "/habbo-tracker/history.jpg", label: "03 / 30-day chart & alerts", alt: "A 30-day price chart, an intraday chart, and a price-drop alert in the chat" },
+  { src: "/habbo-tracker/watch.jpg", label: "04 / manage your watchlist", alt: "Setting a watch on an item and viewing the current watchlist" },
+];
+
+const steps = [
+  {
+    n: "01",
+    title: "search",
+    body: "type part of a name and a ranked search (exact, then prefix, then substring) picks the right furni out of fifteen thousand. up to ten results, priced in a single batched api call, never one request per item.",
+  },
+  {
+    n: "02",
+    title: "chart",
+    body: "/history draws a 30-day price chart as a png. cloudflare workers can't draw, so the bot builds a chart.js config and quickchart renders it. watched items get a second, intraday chart from the bot's own 30-minute snapshots.",
+  },
+  {
+    n: "03",
+    title: "watch",
+    body: "set a price threshold and a cron checks every 30 minutes. alerts fire once per crossing, then re-arm when the price recovers, so a cheap week doesn't mean forty identical pings.",
+  },
+];
+---
+<BaseLayout
+  title="Gosvindraj | Habbo Market Tracker"
+  description="A Telegram bot that tracks Habbo Hotel marketplace prices: ranked furni search, 30-day charts, inline mode, and price-drop alerts, running free on Cloudflare Workers."
+>
+  <section id="project-habbo">
+    <div class="project-inner">
+
+      <div class="project-header" data-reveal>
+        <span class="m-label"><span class="lb">[</span> project <span class="hl">06</span> <span class="lb">]</span></span>
+        <h1 class="project-title display">habbo<br />tracker<span class="serif acid">.</span></h1>
+        <p class="project-desc">
+          a telegram bot for habbo hotel's player marketplace. type a furni
+          name, get prices in seconds: ranked search, 30-day trend charts,
+          inline lookups from any chat, and alerts that ping you when
+          something drops below your price.
+        </p>
+        <p class="project-note m-note">
+          live on telegram, read commands open to everyone (rate limited).
+          watches stay whitelisted so strangers can't farm my cron.
+        </p>
+        <a href="/projects" class="back-link m-label">&larr; all projects</a>
+      </div>
+
+      <div class="habbo-wrap" data-reveal data-reveal-delay="0.15">
+        <div class="filmstrip">
+          {shots.map((s) => (
+            <figure class="shot-card">
+              <div class="shot-frame">
+                <img src={s.src} alt={s.alt} loading="lazy" />
+              </div>
+              <figcaption class="m-label shot-cap">{s.label}</figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="habbo-cta" id="habbo-cta">
+    <div class="project-links">
+      <a href={botUrl} target="_blank" rel="noopener noreferrer" class="btn-solid btn-solid-invert">try it <span aria-hidden="true">&#8599;</span></a>
+      <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="btn-solid btn-solid-invert">read the code <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+
+  <section class="sec sec-ghosted" id="habbo-how">
+    <span class="sec-ghost display" aria-hidden="true">how</span>
+    <div class="sec-head" data-reveal>
+      <span class="m-label"><span class="lb">[</span> how <span class="lb">/</span> it works <span class="lb">]</span></span>
+      <span class="m-label">three steps, no spreadsheet</span>
+    </div>
+    <div class="steps-list">
+      {steps.map((s) => (
+        <div class="step-row" data-reveal>
+          <span class="step-n">{s.n}</span>
+          <div class="step-main">
+            <span class="step-title">{s.title}</span>
+            <p class="step-body">{s.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    <a href="/projects" class="back-link back-link-bottom m-label" data-reveal>&larr; all projects</a>
+  </section>
+
+</BaseLayout>
+
+<style>
+  /* ── hero shell (mirrors the other project pages) ──────────── */
+  #project-habbo {
+    min-height: calc(100dvh - var(--nav-height));
+    display: flex;
+    align-items: center;
+    padding: clamp(2.5rem, 6vh, 4rem) var(--gutter);
+  }
+
+  .project-inner {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: clamp(3rem, 7vw, 6rem);
+  }
+
+  .project-header {
+    flex: 0 0 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    position: sticky;
+    top: calc(var(--nav-height) + 2rem);
+  }
+
+  .project-title { font-size: clamp(2.3rem, 5.2vw, 4rem); }
+
+  .project-desc {
+    font-size: 0.9rem;
+    color: var(--dim);
+    line-height: 1.85;
+  }
+
+  .project-note {
+    padding-top: 0.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .project-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .back-link {
+    align-self: flex-start;
+    transition: color var(--transition);
+  }
+
+  .back-link:hover { color: var(--acid); }
+
+  /* ── filmstrip ──────────────────────────────────────────────── */
+  .habbo-wrap {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .filmstrip {
+    display: flex;
+    justify-content: center;
+    gap: 1.1rem;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    padding-bottom: 0.75rem;
+    /* purple scrollbar matching the site's global (vertical) one */
+    scrollbar-width: thin;
+    scrollbar-color: rgba(155, 109, 206, 0.3) transparent;
+  }
+
+  .filmstrip::-webkit-scrollbar { height: 6px; }
+  .filmstrip::-webkit-scrollbar-track { background: transparent; }
+  .filmstrip::-webkit-scrollbar-thumb { background: rgba(155, 109, 206, 0.3); }
+  .filmstrip::-webkit-scrollbar-thumb:hover { background: rgba(155, 109, 206, 0.55); }
+
+  .shot-card {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    width: clamp(150px, 20vw, 190px);
+  }
+
+  .shot-frame {
+    aspect-ratio: 540 / 1159;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+
+  .shot-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .shot-cap { color: var(--faint); letter-spacing: 0.14em; }
+
+  @media (max-width: 900px) {
+    .project-inner { flex-direction: column; gap: 2.5rem; }
+    .project-header { flex: none; position: static; }
+    .habbo-wrap { width: 100%; }
+
+    /* the filmstrip overflows and needs to scroll at this width —
+       justify-content: center (desktop) anchors the SCROLL ORIGIN at
+       the center of the overflowing content, not the first card, so
+       it opens scrolled halfway in with the first image cut off.
+       flex-start makes it open flush at card one, like a normal
+       horizontal scroller. */
+    .filmstrip { justify-content: flex-start; }
+  }
+
+  /* ── how it works ───────────────────────────────────────────── */
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  .step-row {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 2rem;
+    padding: clamp(1.5rem, 3.5vw, 2.25rem) 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  /* the CTA: moved out of the 320px header column, where two
+     full-width solid buttons stacked heavily against the otherwise
+     light, hairline-driven sidebar. sits as its own strip between
+     the hero and "how it works", full page width, so the pair reads
+     side by side instead. */
+  .habbo-cta {
+    display: flex;
+    justify-content: center;
+    padding: 0 var(--gutter) clamp(2rem, 5vw, 3rem);
+  }
+
+  /* bigger than the site's default .btn-solid — this is the page's
+     one call to action, so it earns more visual weight than an
+     inline nav-style button */
+  .habbo-cta .btn-solid {
+    font-size: 13px;
+    padding: 1.1rem 2.2rem;
+  }
+
+  /* a second way back once you've scrolled through "how it works" —
+     the sticky header above only tracks the hero, not this section,
+     so re-scrolling to the top to leave felt like a dead end */
+  .back-link-bottom {
+    display: inline-block;
+    margin-top: 2rem;
+  }
+
+  .step-n {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--faint);
+    padding-top: 0.3em;
+  }
+
+  .step-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .step-title {
+    font-family: var(--font-sans);
+    font-stretch: 112%;
+    font-weight: 740;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    letter-spacing: -0.02em;
+    text-transform: lowercase;
+    color: var(--ink);
+  }
+
+  .step-body {
+    max-width: 62ch;
+    font-size: 0.88rem;
+    color: var(--dim);
+    line-height: 1.8;
+  }
+
+  @media (max-width: 700px) {
+    .step-row { grid-template-columns: 2.5rem 1fr; }
+  }
+</style>
+
+<script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* the CTA gets a scale pop-in instead of the standard data-reveal
+     fade-up, since it's the page's one call to action and earns a
+     bit more presence than an ordinary section reveal. no overshoot
+     on the ease — back.out looked glitchy against the fixed hairline
+     below it, briefly rendering larger than its settled size before
+     bouncing back. */
+  function initHabboCta() {
+    const cta = document.getElementById("habbo-cta");
+    if (!cta) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.set(cta, { opacity: 0, scale: 0.9 });
+    gsap.to(cta, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.5,
+      ease: "power3.out",
+      scrollTrigger: { trigger: cta, start: "top 90%", once: true },
+    });
+  }
+
+  document.addEventListener("astro:page-load", initHabboCta);
+</script>
