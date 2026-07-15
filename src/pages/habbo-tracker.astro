@@ -336,29 +336,39 @@ const steps = [
     const strip = document.querySelector<HTMLElement>(".filmstrip");
     if (!strip) return;
 
+    let down = false;
     let dragging = false;
     let moved = false;
     let startX = 0;
     let startScroll = 0;
 
     strip.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "touch") return;
-      dragging = true;
+      if (e.pointerType === "touch" || e.button !== 0) return;
+      down = true;
+      dragging = false;
       moved = false;
       startX = e.clientX;
       startScroll = strip.scrollLeft;
-      strip.setPointerCapture(e.pointerId);
-      strip.classList.add("dragging");
     });
 
     strip.addEventListener("pointermove", (e) => {
-      if (!dragging) return;
+      if (!down) return;
       const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) moved = true;
-      strip.scrollLeft = startScroll - dx;
+      // only start capturing/scrolling once real movement happens —
+      // capturing on every plain click retargets its mouseup/click to
+      // the strip instead of the link under the cursor, silently
+      // killing clicks on links inside the strip
+      if (!dragging && Math.abs(dx) > 4) {
+        dragging = true;
+        moved = true;
+        strip.classList.add("dragging");
+        strip.setPointerCapture(e.pointerId);
+      }
+      if (dragging) strip.scrollLeft = startScroll - dx;
     });
 
     const stop = () => {
+      down = false;
       dragging = false;
       strip.classList.remove("dragging");
     };
