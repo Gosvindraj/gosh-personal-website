@@ -1,6 +1,9 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
+const botUrl = "https://t.me/bayarakuwoi_bot";
+const botRepoUrl = "https://github.com/Gosvindraj/bill-splitter-bot";
+
 const shots = [
   { src: "/bill-splitter/scan.png", label: "01 / scan a receipt", alt: "Bill Splitter scan screen, ready to photograph a receipt" },
   { src: "/bill-splitter/bill-detail.png", label: "02 / ai reads every line", alt: "An itemised receipt the app read from a photo, every line editable" },
@@ -67,6 +70,19 @@ const steps = [
               <figcaption class="m-label shot-cap">{s.label}</figcaption>
             </figure>
           ))}
+          <figure class="shot-card">
+            <div class="shot-frame note-frame">
+              <div class="note-top">
+                <p class="note-title display">before<br />the app<span class="serif acid">.</span></p>
+                <p class="note-body m-note">
+                  the same problem, solved first with <a href={botUrl} target="_blank" rel="noopener noreferrer">@bayarakuwoi_bot</a>.
+                  it's locked to just me now, but the code's still worth a look.
+                </p>
+              </div>
+              <a href={botRepoUrl} target="_blank" rel="noopener noreferrer" class="btn-solid btn-solid-invert note-link">read the code <span aria-hidden="true">&#8599;</span></a>
+            </div>
+            <figcaption class="m-label shot-cap">07 / before the app</figcaption>
+          </figure>
         </div>
       </div>
 
@@ -157,6 +173,13 @@ const steps = [
     scrollbar-color: rgba(155, 109, 206, 0.3) transparent;
   }
 
+  /* click-and-drag scrolling, see the script below — snap gets in the
+     way of a held drag mid-gesture so it's suspended while dragging */
+  .filmstrip.dragging {
+    scroll-snap-type: none;
+    user-select: none;
+  }
+
   .filmstrip::-webkit-scrollbar { height: 6px; }
   .filmstrip::-webkit-scrollbar-track { background: transparent; }
   .filmstrip::-webkit-scrollbar-thumb { background: rgba(155, 109, 206, 0.3); }
@@ -169,13 +192,15 @@ const steps = [
     flex-direction: column;
     gap: 0.6rem;
     width: clamp(150px, 20vw, 190px);
+    /* lets .note-link size itself off this card's real rendered width
+       (cqw) instead of guessing per-breakpoint against the viewport */
+    container-type: inline-size;
   }
 
   .shot-frame {
     aspect-ratio: 430 / 932;
     background: var(--surface);
     border: 1px solid var(--line);
-    border-top: 1px solid var(--acid);
     overflow: hidden;
   }
 
@@ -187,6 +212,53 @@ const steps = [
   }
 
   .shot-cap { color: var(--faint); letter-spacing: 0.14em; }
+
+  /* the 7th "card": not a screenshot, so the frame swaps to a text
+     blurb about the earlier telegram-bot prototype, same footprint
+     as the image cards around it. a bold title (the same pattern as
+     the page's own project-title) gives it an anchor of its own,
+     since it otherwise reads as empty next to six colourful shots. */
+  .note-frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.1rem;
+    border-color: rgba(155, 109, 206, 0.4);
+  }
+
+  .note-top {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .note-title {
+    font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+    line-height: 1.1;
+  }
+
+  .note-body {
+    font-size: 0.74rem;
+    line-height: 1.6;
+  }
+
+  .note-body a {
+    color: var(--acid);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .note-link {
+    align-self: center;
+    /* scales with the card's own width (container query units), not
+       the viewport, so it grows as large as the card allows at every
+       breakpoint without ever risking a wrap or clip */
+    font-size: 5.5cqw;
+    letter-spacing: 0.1em;
+    gap: 0.3rem;
+    padding: 0.5rem 0.75rem;
+    white-space: nowrap;
+  }
 
   @media (max-width: 900px) {
     .project-inner { flex-direction: column; gap: 2.5rem; }
@@ -252,3 +324,52 @@ const steps = [
     .step-row { grid-template-columns: 2.5rem 1fr; }
   }
 </style>
+
+<script>
+  /* click-and-hold + swipe scrolling for the filmstrip. touch already
+     scrolls natively, so mouse/pen pointers only. */
+  function initFilmstripDrag() {
+    const strip = document.querySelector<HTMLElement>(".filmstrip");
+    if (!strip) return;
+
+    let dragging = false;
+    let moved = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    strip.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "touch") return;
+      dragging = true;
+      moved = false;
+      startX = e.clientX;
+      startScroll = strip.scrollLeft;
+      strip.setPointerCapture(e.pointerId);
+      strip.classList.add("dragging");
+    });
+
+    strip.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      strip.scrollLeft = startScroll - dx;
+    });
+
+    const stop = () => {
+      dragging = false;
+      strip.classList.remove("dragging");
+    };
+    strip.addEventListener("pointerup", stop);
+    strip.addEventListener("pointercancel", stop);
+
+    // a link inside the strip (the note card) shouldn't fire on drag-release
+    strip.addEventListener(
+      "click",
+      (e) => {
+        if (moved) e.preventDefault();
+      },
+      true,
+    );
+  }
+
+  document.addEventListener("astro:page-load", initFilmstripDrag);
+</script>

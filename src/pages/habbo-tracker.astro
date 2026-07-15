@@ -166,6 +166,13 @@ const steps = [
     scrollbar-color: rgba(155, 109, 206, 0.3) transparent;
   }
 
+  /* click-and-drag scrolling, see the script below — snap gets in the
+     way of a held drag mid-gesture so it's suspended while dragging */
+  .filmstrip.dragging {
+    scroll-snap-type: none;
+    user-select: none;
+  }
+
   .filmstrip::-webkit-scrollbar { height: 6px; }
   .filmstrip::-webkit-scrollbar-track { background: transparent; }
   .filmstrip::-webkit-scrollbar-thumb { background: rgba(155, 109, 206, 0.3); }
@@ -322,4 +329,50 @@ const steps = [
   }
 
   document.addEventListener("astro:page-load", initHabboCta);
+
+  /* click-and-hold + swipe scrolling for the filmstrip. touch already
+     scrolls natively, so mouse/pen pointers only. */
+  function initFilmstripDrag() {
+    const strip = document.querySelector<HTMLElement>(".filmstrip");
+    if (!strip) return;
+
+    let dragging = false;
+    let moved = false;
+    let startX = 0;
+    let startScroll = 0;
+
+    strip.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "touch") return;
+      dragging = true;
+      moved = false;
+      startX = e.clientX;
+      startScroll = strip.scrollLeft;
+      strip.setPointerCapture(e.pointerId);
+      strip.classList.add("dragging");
+    });
+
+    strip.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      const dx = e.clientX - startX;
+      if (Math.abs(dx) > 4) moved = true;
+      strip.scrollLeft = startScroll - dx;
+    });
+
+    const stop = () => {
+      dragging = false;
+      strip.classList.remove("dragging");
+    };
+    strip.addEventListener("pointerup", stop);
+    strip.addEventListener("pointercancel", stop);
+
+    strip.addEventListener(
+      "click",
+      (e) => {
+        if (moved) e.preventDefault();
+      },
+      true,
+    );
+  }
+
+  document.addEventListener("astro:page-load", initFilmstripDrag);
 </script>
