@@ -37,7 +37,7 @@ const steps = [
     <div class="project-inner">
 
       <div class="project-header" data-reveal>
-        <span class="m-label"><span class="lb">[</span> project <span class="hl">06</span> <span class="lb">]</span></span>
+        <span class="m-label"><span class="lb">[</span> project <span class="hl">07</span> <span class="lb">]</span></span>
         <h1 class="project-title display">habbo mp<br />tracker<span class="serif acid">.</span></h1>
         <p class="project-desc">
           a telegram bot for habbo.com's player marketplace. type a furni
@@ -156,7 +156,6 @@ const steps = [
 
   .filmstrip {
     display: flex;
-    justify-content: center;
     gap: 1.1rem;
     overflow-x: auto;
     scroll-snap-type: x proximity;
@@ -207,14 +206,6 @@ const steps = [
     .project-inner { flex-direction: column; gap: 2.5rem; }
     .project-header { flex: none; position: static; }
     .habbo-wrap { width: 100%; }
-
-    /* the filmstrip overflows and needs to scroll at this width —
-       justify-content: center (desktop) anchors the SCROLL ORIGIN at
-       the center of the overflowing content, not the first card, so
-       it opens scrolled halfway in with the first image cut off.
-       flex-start makes it open flush at card one, like a normal
-       horizontal scroller. */
-    .filmstrip { justify-content: flex-start; }
   }
 
   /* ── how it works ───────────────────────────────────────────── */

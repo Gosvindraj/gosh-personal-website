@@ -1,66 +1,66 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 
-const botUrl = "https://t.me/bayarakuwoi_bot";
-const botRepoUrl = "https://github.com/Gosvindraj/bill-splitter-bot";
+// TODO: swap in the real repo URL once it's uploaded
+const repoUrl = "#";
 
 const shots = [
-  { src: "/bill-splitter/scan.png", label: "01 / scan a receipt", alt: "Bill Splitter scan screen, ready to photograph a receipt" },
-  { src: "/bill-splitter/bill-detail.png", label: "02 / ai reads every line", alt: "An itemised receipt the app read from a photo, every line editable" },
-  { src: "/bill-splitter/split.png", label: "03 / split it your way", alt: "The split screen with even, custom, and item-by-item options" },
-  { src: "/bill-splitter/settle.png", label: "04 / settle up", alt: "The settle-up screen showing who owes who across the trip" },
-  { src: "/bill-splitter/trip.png", label: "05 / group bills into trips", alt: "A trip grouping several bills together" },
-  { src: "/bill-splitter/home.png", label: "06 / everything, at a glance", alt: "The home screen listing recent bills and trips" },
+  { src: "/expense-tracker/home.png", label: "01 / dashboard at a glance", alt: "The dashboard: total spent this month, a spending chart, and a category breakdown" },
+  { src: "/expense-tracker/add.png", label: "02 / log a spend in seconds", alt: "Adding an expense with a calculator-style amount pad and a category picker" },
+  { src: "/expense-tracker/list.png", label: "03 / every expense, searchable", alt: "The full expense list grouped by day, with running totals" },
+  { src: "/expense-tracker/plan.png", label: "04 / budgets that warn you", alt: "Per-category budgets with progress bars and a six-month pass/fail history" },
+  { src: "/expense-tracker/recurring.png", label: "05 / recurring, on autopilot", alt: "Recurring rules for subscriptions and bills, with a next-30-days projection" },
+  { src: "/expense-tracker/categories.png", label: "06 / categories, your way", alt: "Custom categories with an emoji and colour picker" },
+  { src: "/expense-tracker/backups.png", label: "07 / nightly backups", alt: "Backup status showing the last snapshot, with JSON and CSV export" },
 ];
 
 const steps = [
   {
     n: "01",
-    title: "scan",
-    body: "snap a photo of the receipt. a vision model (grok) reads every line item, the price, the quantity, and the tax, then hands you an editable draft instead of a blank form.",
+    title: "track",
+    body: "a calculator-style amount pad (type 4 5 . 9 0, not tap-tap-tap through a stepper), a category picker, and it's logged. installs as a PWA and the app shell works offline; the api is online-only by design.",
   },
   {
     n: "02",
-    title: "split",
-    body: "even, custom percentages, or item by item, so the person who didn't order the wagyu doesn't pay for the wagyu.",
+    title: "see",
+    body: "monthly totals, a category breakdown, and a spending chart you can actually zoom: drill from year to month to day, with a dynamic y-axis and a horizontal scroller once bars get narrow.",
   },
   {
     n: "03",
-    title: "settle",
-    body: "one screen shows exactly who owes who, minimised across every bill in a trip. tap a debt as paid and it's done.",
+    title: "plan",
+    body: "per-category budgets with progress bars, a six-month pass/fail history at a glance, and recurring expenses that materialise themselves on schedule, month-end dates handled correctly.",
   },
   {
     n: "04",
-    title: "remember",
-    body: "bills and trips sync to a real backend behind real accounts, so the data survives longer than the group chat does.",
+    title: "own it",
+    body: "nightly snapshots to cloud storage, JSON/CSV export any time. no subscription wall to see last month's spending, because this version doesn't have one.",
   },
 ];
-
 ---
 <BaseLayout
-  title="Gosvindraj | Bill Splitter"
-  description="A React Native + Expo app that reads receipt photos with AI, splits them however the group needs, and settles who owes who across a whole trip of bills."
+  title="Gosvindraj | Expense Tracker"
+  description="A self-built replacement for a paywalled budgeting app: React, Hono, and Cloudflare Workers/D1, with a dashboard, zoomable spending charts, budgets, and recurring expenses."
 >
-  <section id="project-billsplit">
+  <section id="project-expense">
     <div class="project-inner">
 
       <div class="project-header" data-reveal>
-        <span class="m-label"><span class="lb">[</span> project <span class="hl">01</span> <span class="lb">]</span></span>
-        <h1 class="project-title display">bill<br />splitter<span class="serif acid">.</span></h1>
+        <span class="m-label"><span class="lb">[</span> project <span class="hl">06</span> <span class="lb">]</span></span>
+        <h1 class="project-title display">expense<br />tracker<span class="serif acid">.</span></h1>
         <p class="project-desc">
-          a mobile app for the who-owes-who problem: snap one receipt for an
-          itemised split, or bundle a whole trip's worth of bills and settle
-          everyone up across all of them. built with react native and expo,
-          backed by supabase, with grok doing the actual reading.
+          the app I actually use to track where my money goes. built after
+          the paywalled app I was using locked basic filtering behind a
+          subscription: react on the front end, hono + cloudflare workers,
+          d1, and r2 on the back, no framework I didn't need.
         </p>
         <p class="project-note m-note">
-          not on the app store. still lives in an expo dev build on my phone,
-          which felt honest enough to say outright.
+          this is my personal finance data, so it stays private behind auth.
+          screenshots here run on generated sample data, not my real spending.
         </p>
         <a href="/projects" class="back-link m-label">&larr; all projects</a>
       </div>
 
-      <div class="bill-wrap" data-reveal data-reveal-delay="0.15">
+      <div class="expense-wrap" data-reveal data-reveal-delay="0.15">
         <div class="filmstrip">
           {shots.map((s) => (
             <figure class="shot-card">
@@ -70,30 +70,23 @@ const steps = [
               <figcaption class="m-label shot-cap">{s.label}</figcaption>
             </figure>
           ))}
-          <figure class="shot-card">
-            <div class="shot-frame note-frame">
-              <div class="note-top">
-                <p class="note-title display">before<br />the app<span class="serif acid">.</span></p>
-                <p class="note-body m-note">
-                  the same problem, solved first with <a href={botUrl} target="_blank" rel="noopener noreferrer">@bayarakuwoi_bot</a>.
-                  it's locked to just me now, but the code's still worth a look.
-                </p>
-              </div>
-              <a href={botRepoUrl} target="_blank" rel="noopener noreferrer" class="btn-solid btn-solid-invert note-link">read the code <span aria-hidden="true">&#8599;</span></a>
-            </div>
-            <figcaption class="m-label shot-cap">07 / before the app</figcaption>
-          </figure>
         </div>
       </div>
 
     </div>
   </section>
 
-  <section class="sec sec-ghosted" id="billsplit-how">
+  <div class="expense-cta" id="expense-cta">
+    <div class="project-links">
+      <a href={repoUrl} target="_blank" rel="noopener noreferrer" class="btn-solid btn-solid-invert">read the code <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+
+  <section class="sec sec-ghosted" id="expense-how">
     <span class="sec-ghost display" aria-hidden="true">how</span>
     <div class="sec-head" data-reveal>
       <span class="m-label"><span class="lb">[</span> how <span class="lb">/</span> it works <span class="lb">]</span></span>
-      <span class="m-label">four steps, no spreadsheet</span>
+      <span class="m-label">four steps, no subscription</span>
     </div>
     <div class="steps-list">
       {steps.map((s) => (
@@ -113,7 +106,7 @@ const steps = [
 
 <style>
   /* ── hero shell (mirrors the other project pages) ──────────── */
-  #project-billsplit {
+  #project-expense {
     min-height: calc(100dvh - var(--nav-height));
     display: flex;
     align-items: center;
@@ -149,6 +142,12 @@ const steps = [
     border-top: 1px solid var(--line);
   }
 
+  .project-links {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
   .back-link {
     align-self: flex-start;
     transition: color var(--transition);
@@ -157,7 +156,7 @@ const steps = [
   .back-link:hover { color: var(--acid); }
 
   /* ── filmstrip ──────────────────────────────────────────────── */
-  .bill-wrap {
+  .expense-wrap {
     flex: 1;
     min-width: 0;
   }
@@ -168,13 +167,10 @@ const steps = [
     overflow-x: auto;
     scroll-snap-type: x proximity;
     padding-bottom: 0.75rem;
-    /* purple scrollbar matching the site's global (vertical) one */
     scrollbar-width: thin;
     scrollbar-color: rgba(155, 109, 206, 0.3) transparent;
   }
 
-  /* click-and-drag scrolling, see the script below — snap gets in the
-     way of a held drag mid-gesture so it's suspended while dragging */
   .filmstrip.dragging {
     scroll-snap-type: none;
     user-select: none;
@@ -192,13 +188,10 @@ const steps = [
     flex-direction: column;
     gap: 0.6rem;
     width: clamp(150px, 20vw, 190px);
-    /* lets .note-link size itself off this card's real rendered width
-       (cqw) instead of guessing per-breakpoint against the viewport */
-    container-type: inline-size;
   }
 
   .shot-frame {
-    aspect-ratio: 430 / 932;
+    aspect-ratio: 780 / 1688;
     background: var(--surface);
     border: 1px solid var(--line);
     overflow: hidden;
@@ -213,57 +206,31 @@ const steps = [
 
   .shot-cap { color: var(--faint); letter-spacing: 0.14em; }
 
-  /* the 7th "card": not a screenshot, so the frame swaps to a text
-     blurb about the earlier telegram-bot prototype, same footprint
-     as the image cards around it. a bold title (the same pattern as
-     the page's own project-title) gives it an anchor of its own,
-     since it otherwise reads as empty next to six colourful shots. */
-  .note-frame {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 1.1rem;
-    border-color: rgba(155, 109, 206, 0.4);
-  }
-
-  .note-top {
-    display: flex;
-    flex-direction: column;
-    gap: 1.75rem;
-  }
-
-  .note-title {
-    font-size: clamp(1.15rem, 2.6vw, 1.4rem);
-    line-height: 1.1;
-  }
-
-  .note-body {
-    font-size: 0.74rem;
-    line-height: 1.6;
-  }
-
-  .note-body a {
-    color: var(--acid);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  .note-link {
-    align-self: center;
-    /* scales with the card's own width (container query units), not
-       the viewport, so it grows as large as the card allows at every
-       breakpoint without ever risking a wrap or clip */
-    font-size: 5.5cqw;
-    letter-spacing: 0.1em;
-    gap: 0.3rem;
-    padding: 0.5rem 0.75rem;
-    white-space: nowrap;
-  }
-
   @media (max-width: 900px) {
     .project-inner { flex-direction: column; gap: 2.5rem; }
     .project-header { flex: none; position: static; }
-    .bill-wrap { width: 100%; }
+    .expense-wrap { width: 100%; }
+  }
+
+  .expense-cta {
+    display: flex;
+    justify-content: flex-start;
+    padding: 0 var(--gutter) clamp(2rem, 5vw, 3rem);
+  }
+
+  /* bigger than the site's default .btn-solid — this is the page's
+     one call to action, so it earns more visual weight than an
+     inline nav-style button */
+  .expense-cta .btn-solid {
+    font-size: 13px;
+    padding: 1.1rem 2.2rem;
+  }
+
+  @media (max-width: 700px) {
+    .expense-cta .btn-solid {
+      font-size: 11px;
+      padding: 0.8rem 1.6rem;
+    }
   }
 
   /* ── how it works ───────────────────────────────────────────── */
@@ -281,9 +248,6 @@ const steps = [
     border-bottom: 1px solid var(--line);
   }
 
-  /* a second way back once you've scrolled through "how it works" —
-     the sticky header above only tracks the hero, not this section,
-     so re-scrolling to the top to leave felt like a dead end */
   .back-link-bottom {
     display: inline-block;
     margin-top: 2rem;
@@ -326,6 +290,33 @@ const steps = [
 </style>
 
 <script>
+  import gsap from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* the CTA gets a scale pop-in instead of the standard data-reveal
+     fade-up, since it's the page's one call to action and earns a
+     bit more presence than an ordinary section reveal. no overshoot
+     on the ease — back.out looked glitchy against the fixed hairline
+     below it, briefly rendering larger than its settled size before
+     bouncing back. */
+  function initExpenseCta() {
+    const cta = document.getElementById("expense-cta");
+    if (!cta) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    gsap.set(cta, { opacity: 0, scale: 0.9 });
+    gsap.to(cta, {
+      opacity: 1,
+      scale: 1,
+      duration: 0.5,
+      ease: "power3.out",
+      scrollTrigger: { trigger: cta, start: "top 90%", once: true },
+    });
+  }
+
+  document.addEventListener("astro:page-load", initExpenseCta);
+
   /* click-and-hold + swipe scrolling for the filmstrip. touch already
      scrolls natively, so mouse/pen pointers only. */
   function initFilmstripDrag() {
@@ -350,10 +341,6 @@ const steps = [
     strip.addEventListener("pointermove", (e) => {
       if (!down) return;
       const dx = e.clientX - startX;
-      // only start capturing/scrolling once real movement happens —
-      // capturing on every plain click retargets its mouseup/click to
-      // the strip instead of the link under the cursor, silently
-      // killing clicks on links inside the strip
       if (!dragging && Math.abs(dx) > 4) {
         dragging = true;
         moved = true;
@@ -371,7 +358,6 @@ const steps = [
     strip.addEventListener("pointerup", stop);
     strip.addEventListener("pointercancel", stop);
 
-    // a link inside the strip (the note card) shouldn't fire on drag-release
     strip.addEventListener(
       "click",
       (e) => {
